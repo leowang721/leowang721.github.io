@@ -1,0 +1,625 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT, leowang721, fe, js" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="协议(Protocol)用于定义完成某项任务或功能所必须的方法和属性
+
+协议实际上并不提供这些功能或任务的具体实现(Implementation) —— 而只用来描述这些实现应该是什么样的声明一个协议，然后类、枚举、结构体都可以实现它
+12345678910111213protocol Togglable &amp;#123;  // 可切换（开关）的协议    mutating func toggle">
+<meta property="og:type" content="website">
+<meta property="og:title" content="protocol">
+<meta property="og:url" content="https://leowang721.github.io/learning/swift/protocol.html">
+<meta property="og:site_name" content="炽天使的羽翼">
+<meta property="og:description" content="协议(Protocol)用于定义完成某项任务或功能所必须的方法和属性
+
+协议实际上并不提供这些功能或任务的具体实现(Implementation) —— 而只用来描述这些实现应该是什么样的声明一个协议，然后类、枚举、结构体都可以实现它
+12345678910111213protocol Togglable &amp;#123;  // 可切换（开关）的协议    mutating func toggle">
+<meta property="og:updated_time" content="2017-03-09T08:46:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="protocol">
+<meta name="twitter:description" content="协议(Protocol)用于定义完成某项任务或功能所必须的方法和属性
+
+协议实际上并不提供这些功能或任务的具体实现(Implementation) —— 而只用来描述这些实现应该是什么样的声明一个协议，然后类、枚举、结构体都可以实现它
+12345678910111213protocol Togglable &amp;#123;  // 可切换（开关）的协议    mutating func toggle">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://leowang721.github.io/learning/swift/protocol.html"/>
+
+
+
+
+
+  <title>
+  
+
+  
+    protocol | 炽天使的羽翼
+  
+</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1256024176&web_id=1256024176" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">炽天使的羽翼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+  <header class="post-header">
+
+	<h2 class="post-title" itemprop="name headline">protocol</h2>
+
+
+
+</header>
+
+    
+    
+      <blockquote>
+<p>协议(Protocol)用于定义完成某项任务或功能所必须的方法和属性</p>
+</blockquote>
+<p>协议实际上并不提供这些功能或任务的具体实现(Implementation) —— 而只用来描述这些实现应该是什么样的<br>声明一个协议，然后类、枚举、结构体都可以实现它</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Togglable</span> </span>&#123;  <span class="comment">// 可切换（开关）的协议</span></div><div class="line">    <span class="keyword">mutating</span> <span class="function"><span class="keyword">func</span> <span class="title">toggle</span><span class="params">()</span></span>  <span class="comment">// 切换的接口</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">SimpleResult</span> </span>&#123;  <span class="comment">// 简单的结果协议</span></div><div class="line">    <span class="keyword">var</span> result: <span class="type">Bool</span> &#123; <span class="keyword">get</span> &#125;  <span class="comment">// 读</span></div><div class="line">    <span class="keyword">var</span> message: <span class="type">String</span> &#123; <span class="keyword">get</span> <span class="keyword">set</span> &#125;  <span class="comment">// 读写</span></div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">tell</span><span class="params">()</span></span>  <span class="comment">// 自述的接口</span></div><div class="line"></div><div class="line">    <span class="comment">// 通常在协议的定义中使用class前缀表示该属性为类成员</span></div><div class="line">    <span class="comment">// 在枚举和结构体实现协议时中，需要使用static关键字作为前缀</span></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">var</span> <span class="title">name</span>: <span class="title">String</span> </span>&#123; <span class="keyword">get</span> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>##使用枚举实现<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 一个执行结果的enum</span></div><div class="line"><span class="class"><span class="keyword">enum</span> <span class="title">ExecutionResult</span>: <span class="title">Togglable</span>, <span class="title">SimpleResult</span> </span>&#123;</div><div class="line">    <span class="keyword">case</span> success(message: <span class="type">String</span>)</div><div class="line">    <span class="keyword">case</span> failure(message: <span class="type">String</span>)</div><div class="line"></div><div class="line">    <span class="keyword">static</span> <span class="keyword">var</span> name: <span class="type">String</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"ExecutionResult"</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> result: <span class="type">Bool</span> &#123;</div><div class="line">        <span class="keyword">get</span> &#123;</div><div class="line">            <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</div><div class="line">            <span class="keyword">case</span> .success:</div><div class="line">                <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">            <span class="keyword">case</span> .failure:</div><div class="line">                <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> message: <span class="type">String</span> &#123;</div><div class="line">        <span class="keyword">get</span> &#123;</div><div class="line">            <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</div><div class="line">            <span class="keyword">case</span> <span class="keyword">let</span> .success(message):</div><div class="line">                <span class="keyword">return</span> message</div><div class="line">            <span class="keyword">case</span> <span class="keyword">let</span> .failure(message):</div><div class="line">                <span class="keyword">return</span> message</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">set</span> &#123;</div><div class="line">            <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</div><div class="line">            <span class="keyword">case</span> .success:</div><div class="line">                <span class="keyword">self</span> = .success(message: newValue)</div><div class="line">            <span class="keyword">case</span> .failure:</div><div class="line">                <span class="keyword">self</span> = .failure(message: newValue)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">mutating</span> <span class="function"><span class="keyword">func</span> <span class="title">toggle</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</div><div class="line">        <span class="keyword">case</span> .success:</div><div class="line">            <span class="keyword">self</span> = .failure(message: <span class="string">"failed"</span>)</div><div class="line">        <span class="keyword">case</span> .failure:</div><div class="line">            <span class="keyword">self</span> = .success(message: <span class="string">"successful"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">mutating</span> <span class="function"><span class="keyword">func</span> <span class="title">toggle</span><span class="params">(newMessage: String)</span></span> &#123;</div><div class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</div><div class="line">        <span class="keyword">case</span> .success:</div><div class="line">            <span class="keyword">self</span> = failure(message: newMessage)</div><div class="line">        <span class="keyword">case</span> .failure:</div><div class="line">            <span class="keyword">self</span> = success(message: newMessage)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">tell</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="built_in">println</span>(<span class="string">"result is \(result), and current message is \(message)"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">showExecutionResult</span><span class="params">(result: ExecutionResult)</span></span> &#123;</div><div class="line">    <span class="keyword">switch</span> result &#123;</div><div class="line">    <span class="keyword">case</span> <span class="keyword">let</span> .success(message):</div><div class="line">        <span class="built_in">println</span>(<span class="string">"成功！消息为：\(message)"</span>)</div><div class="line">    <span class="keyword">case</span> <span class="keyword">let</span> .failure(message):</div><div class="line">        <span class="built_in">println</span>(<span class="string">"失败了……消息为：\(message)"</span>)</div><div class="line">    &#125;</div><div class="line">    result.tell()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> a = <span class="type">ExecutionResult</span>.success(message: <span class="string">"successful"</span>)</div><div class="line">a.toggle(<span class="string">"转换成失败了！哎呀呀"</span>)</div><div class="line"><span class="keyword">var</span> b = <span class="type">ExecutionResult</span>.success(message: <span class="string">"自定义的失败消息"</span>)</div><div class="line">b.message = <span class="string">"改一下消息"</span></div><div class="line"><span class="comment">// b.result可以get，但是不能set</span></div><div class="line"></div><div class="line"><span class="comment">// 输出为：</span></div><div class="line"><span class="comment">// 失败了……消息为：转换成失败了！哎呀呀</span></div><div class="line"><span class="comment">// result is false, and current message is 转换成失败了！哎呀呀</span></div><div class="line">showExecutionResult(a)</div><div class="line"></div><div class="line"><span class="comment">// 输出为：</span></div><div class="line"><span class="comment">// 成功！消息为：改一下消息</span></div><div class="line"><span class="comment">// result is true, and current message is 改一下消息</span></div><div class="line">showExecutionResult(b)</div></pre></td></tr></table></figure></p>
+<p>##使用struct<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 结构是值传递的</span></div><div class="line"><span class="comment">// 请注意，这里提供的是存储型的result，但是它满足了协议定义的get要求，并且可以修改</span></div><div class="line"><span class="comment">// 类也是一样</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">IsUsable</span>: <span class="title">Togglable</span>, <span class="title">SimpleResult</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">static</span> <span class="keyword">var</span> name: <span class="type">String</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"IsUsable"</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> result: <span class="type">Bool</span></div><div class="line"></div><div class="line">    <span class="keyword">var</span> message: <span class="type">String</span> = <span class="string">""</span></div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">mutating</span> <span class="function"><span class="keyword">func</span> <span class="title">determineMessage</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">if</span> (result) &#123;</div><div class="line">            message = <span class="string">"successful"</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            message = <span class="string">"failed"</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">init</span>(result: <span class="type">Bool</span>) &#123;</div><div class="line">        <span class="keyword">self</span>.result = result</div><div class="line">        determineMessage()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">init</span>(result: <span class="type">Bool</span>, message: <span class="type">String</span>) &#123;</div><div class="line">        <span class="keyword">self</span>.result = result</div><div class="line">        <span class="keyword">self</span>.message = message</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">tell</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="built_in">println</span>(<span class="string">"result is \(result), and message is \(message)"</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">mutating</span> <span class="function"><span class="keyword">func</span> <span class="title">toggle</span><span class="params">()</span></span> &#123;</div><div class="line">        result = !result</div><div class="line">        determineMessage()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">mutating</span> <span class="function"><span class="keyword">func</span> <span class="title">toggle</span><span class="params">(message: String)</span></span> &#123;</div><div class="line">        toggle()</div><div class="line">        <span class="keyword">self</span>.message = message</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">showIsUsableResult</span><span class="params">(result: IsUsable)</span></span> &#123;</div><div class="line">    <span class="keyword">switch</span> result.result &#123;</div><div class="line">    <span class="keyword">case</span> <span class="literal">true</span>:</div><div class="line">        <span class="built_in">println</span>(<span class="string">"成功！消息为：\(result.message)"</span>)</div><div class="line">    <span class="keyword">case</span> <span class="literal">false</span>:</div><div class="line">        <span class="built_in">println</span>(<span class="string">"失败了……消息为：\(result.message)"</span>)</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">        <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    result.tell()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> <span class="built_in">c</span> = <span class="type">IsUsable</span>(result: <span class="literal">true</span>)</div><div class="line"><span class="built_in">c</span>.toggle(<span class="string">"转换成失败了！哎呀呀"</span>)</div><div class="line"><span class="keyword">var</span> d = <span class="type">IsUsable</span>(result: <span class="literal">false</span>, message: <span class="string">"自定义的失败消息"</span>)</div><div class="line">d.result = <span class="literal">true</span></div><div class="line">d.message = <span class="string">"改一下消息"</span></div><div class="line"></div><div class="line"><span class="comment">// 输出为：</span></div><div class="line"><span class="comment">// 失败了……消息为：转换成失败了！哎呀呀</span></div><div class="line"><span class="comment">// result is false, and message is 转换成失败了！哎呀呀</span></div><div class="line">showIsUsableResult(<span class="built_in">c</span>)</div><div class="line"></div><div class="line"><span class="comment">// 输出为：</span></div><div class="line"><span class="comment">// 成功！消息为：改一下消息</span></div><div class="line"><span class="comment">// result is true, and message is 改一下消息</span></div><div class="line">showIsUsableResult(d)</div></pre></td></tr></table></figure></p>
+<p>##使用类实现<br>实际上跟结构基本类似，不需要再写了<br>注意：如果一个类在含有父类的同时也采用了协议，应当把父类放在所有的协议之前</p>
+<p>##使用协议作为类型<br>可以像使用其他命名类型一样使用协议名——例如，创建一个有不同类型但是都实现一个协议的对象集合。<br>当你处理类型是协议的值时，协议外定义的方法不可用<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> n:<span class="type">SimpleResult</span> = e</div><div class="line">n.toggle()  <span class="comment">// 编译报错，只能使用接口定义的方法和属性，即：message、result、tell</span></div></pre></td></tr></table></figure></p>
+<p>n在运行时的类型是AjaxResult，编译器会把它的类型当做SimpleResult。<br>这表示你不能调用类在它实现的协议之外实现的方法或者属性。</p>
+
+    
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="learning/swift/protocol.html"
+           data-title="protocol" data-url="https://leowang721.github.io/learning/swift/protocol.html">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.jpg"
+               alt="Leo Wang" />
+          <p class="site-author-name" itemprop="name">Leo Wang</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leowang721" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/leowang721" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/seraphwings" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/leowang721" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Wang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"leowang721"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

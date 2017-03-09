@@ -1,0 +1,960 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="React Native,全端," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="权当一个笔记，再写写或许更明白点
+
+习惯了前端世界的交互模式之后（其实就是 DOM 事件），在这个入门的过程中感觉 React Native 的交互处理就是个不适应。
+如果要做 React Native 的交互，首先至少要知道这样几个东西：
+
+Gesture Responder System E文 中文
+TouchableHighlight E文 中文
+TouchableOpacity E文 中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 浅入门 —— 交互篇">
+<meta property="og:url" content="https://leowang721.github.io/2015/08/12/learning/react-native/interactive/index.html">
+<meta property="og:site_name" content="炽天使的羽翼">
+<meta property="og:description" content="权当一个笔记，再写写或许更明白点
+
+习惯了前端世界的交互模式之后（其实就是 DOM 事件），在这个入门的过程中感觉 React Native 的交互处理就是个不适应。
+如果要做 React Native 的交互，首先至少要知道这样几个东西：
+
+Gesture Responder System E文 中文
+TouchableHighlight E文 中文
+TouchableOpacity E文 中">
+<meta property="og:image" content="https://leowang721.github.io/images/learning/react-native/react-native-interactive-lifecycle-single.png">
+<meta property="og:updated_time" content="2017-03-09T08:53:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native 浅入门 —— 交互篇">
+<meta name="twitter:description" content="权当一个笔记，再写写或许更明白点
+
+习惯了前端世界的交互模式之后（其实就是 DOM 事件），在这个入门的过程中感觉 React Native 的交互处理就是个不适应。
+如果要做 React Native 的交互，首先至少要知道这样几个东西：
+
+Gesture Responder System E文 中文
+TouchableHighlight E文 中文
+TouchableOpacity E文 中">
+<meta name="twitter:image" content="https://leowang721.github.io/images/learning/react-native/react-native-interactive-lifecycle-single.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://leowang721.github.io/2015/08/12/learning/react-native/interactive/"/>
+
+
+
+
+
+  <title> React Native 浅入门 —— 交互篇 | 炽天使的羽翼 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1256024176&web_id=1256024176" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">炽天使的羽翼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2015/08/12/learning/react-native/interactive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leo Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="炽天使的羽翼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                React Native 浅入门 —— 交互篇
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-12T11:07:51+08:00">
+                2015-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-Native/" itemprop="url" rel="index">
+                    <span itemprop="name">React Native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/08/12/learning/react-native/interactive/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/12/learning/react-native/interactive/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>权当一个笔记，再写写或许更明白点</p>
+</blockquote>
+<p>习惯了前端世界的交互模式之后（其实就是 DOM 事件），在这个入门的过程中感觉 React Native 的交互处理就是个不适应。</p>
+<p>如果要做 React Native 的交互，首先至少要知道这样几个东西：</p>
+<ul>
+<li>Gesture Responder System <a href="http://facebook.github.io/react-native/docs/gesture-responder-system.html" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/gesture-responder-system.html" target="_blank" rel="external">中文</a></li>
+<li>TouchableHighlight <a href="http://facebook.github.io/react-native/docs/touchablehighlight.html#content" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/touchable-highlight.html" target="_blank" rel="external">中文</a></li>
+<li>TouchableOpacity <a href="http://facebook.github.io/react-native/docs/touchableopacity.html#content" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/touchable-opacity.html" target="_blank" rel="external">中文</a></li>
+<li>TouchableWithoutFeedback <a href="http://facebook.github.io/react-native/docs/touchablewithoutfeedback.html#content" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/touchable-without-feedback.html" target="_blank" rel="external">中文</a></li>
+<li>PanResponder <a href="http://facebook.github.io/react-native/docs/panresponder.html" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/pan-responder.html" target="_blank" rel="external">中文</a></li>
+</ul>
+<p>不过干读这几个文档的话，基本就是一头雾水……</p>
+<p>还是一点一点来看罢：</p>
+<h2 id="普通行为"><a href="#普通行为" class="headerlink" title="普通行为"></a>普通行为</h2><p>TouchableHighlight、TouchableOpacity、TouchableWithoutFeedback 这几个很好弄，官方贴心的直接封装了最基础的 Touch 行为，在任何需要点击的 View 外面直接包上这样的标签就行了。</p>
+<p>TouchableHighlight 在点击时表现为高亮<br>TouchableOpacity 在点击时表现为透明<br>TouchableWithoutFeedback 在点击时无反馈</p>
+<p>这几个效果都是封装好了的，无需开发者操心。</p>
+<p>Sample Code<br><a id="more"></a><br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;TouchableOpacity</div><div class="line">    onPressIn=&#123;<span class="keyword">this</span>._onPressInCircle.bind(<span class="keyword">this</span>)&#125;</div><div class="line">    onPressOut=&#123;<span class="keyword">this</span>._onPressOutCircle.bind(<span class="keyword">this</span>)&#125;&gt;</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">&#123;styles.gridItem&#125;</span>&gt;</span><span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></div><div class="line">&lt;<span class="regexp">/TouchableOpacity&gt;</span></div></pre></td></tr></table></figure></p>
+<p>然而这些只适用于按钮系……</p>
+<p>支持事件：</p>
+<ul>
+<li>onPress</li>
+<li>onPressIn</li>
+<li>onPressOut</li>
+<li>onLongPress</li>
+</ul>
+<p>支持参数：</p>
+<ul>
+<li>delayLongPress {number} 单位ms</li>
+<li>delayPressIn {number} 单位ms</li>
+<li>delayPressOut {number} 单位ms</li>
+</ul>
+<p>再特殊点的行为，例如划过，就不用想用这几个货直接实现了。</p>
+<h2 id="Gesture-Responder-System"><a href="#Gesture-Responder-System" class="headerlink" title="Gesture Responder System"></a>Gesture Responder System</h2><p>中文翻译叫：手势应答系统。</p>
+<p>主要就是搞手势识别处理的，那其实也就是复杂点的触摸：例如一边摸一遍动啊，摸着还动出花样画个 L 啥的的那种。</p>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><h4 id="决定是否成为处理器"><a href="#决定是否成为处理器" class="headerlink" title="决定是否成为处理器"></a>决定是否成为处理器</h4><p>冒泡的：</p>
+<ul>
+<li>onStartShouldSetResponder <code>touchStart</code>/<code>mouseDown</code>行为发生，是否当前的元素成为处理器</li>
+<li>onMoveShouldSetResponder <code>touchMove</code>/<code>mouseMove</code>行为发生，是否当前行为成为处理器</li>
+</ul>
+<p>不冒泡/未来不冒泡的：</p>
+<ul>
+<li>onScrollShouldSetResponder 滚动行为发生了，是否当前的元素成为处理器</li>
+<li>onSelectionChangeShouldSetResponder 选择行为发生了，是否当前元素成为处理器</li>
+</ul>
+<p>是否接管成为处理器（因为冒泡是从最深处开始，可以在父级的元素使用此类方法接管）：</p>
+<ul>
+<li>onStartShouldSetResponderCapture <code>touchStart</code>/<code>mouseDown</code>行为发生，是否当前的元素代替最深层的子元素成为处理器</li>
+<li>onMoveShouldSetResponderCapture <code>touchStart</code>/<code>mouseDown</code>行为发生，是否当前的元素代替最深层的子元素成为处理器</li>
+</ul>
+<h4 id="开始处理了"><a href="#开始处理了" class="headerlink" title="开始处理了"></a>开始处理了</h4><ul>
+<li>onResponderStart 当前处理开始</li>
+<li>onResponderGrant 现在正在响应触摸事件</li>
+<li>onResponderMove 用户正移动他们的手指</li>
+<li>onResponderEnd 当前处理结束</li>
+<li>onResponderRelease 在触摸最后被引发，即<code>touchUp</code></li>
+</ul>
+<h4 id="跟拦截相关的（当前应答器的身份）"><a href="#跟拦截相关的（当前应答器的身份）" class="headerlink" title="跟拦截相关的（当前应答器的身份）"></a>跟拦截相关的（当前应答器的身份）</h4><ul>
+<li>onResponderReject 当前视图的应答器不是“我”了，并且还不释放让我来当。</li>
+<li>onResponderTerminationRequest 其他的东西想成为应答器。应该释放应答吗？返回 true 就是允许释放</li>
+<li>onResponderTerminate 应答器已经转交给别人担当了。可能在调用onResponderTerminationRequest 之后被其他视图获取，也可能是被操作系统在没有请求的情况下获取了(发生在 iOS 的 control center/notification center)</li>
+</ul>
+<blockquote>
+<p>以上都是在ResponderEventPlugin.js里面实现的，我们直接使用视图 View 配置</p>
+</blockquote>
+<h4 id="行为生命周期"><a href="#行为生命周期" class="headerlink" title="行为生命周期"></a>行为生命周期</h4><p><img src="/images/learning/react-native/react-native-interactive-lifecycle-single.png" alt="单个元素的行为生命周期"></p>
+<p>这个图画的我头晕啊……</p>
+<h3 id="几个特性"><a href="#几个特性" class="headerlink" title="几个特性"></a>几个特性</h3><h4 id="冒泡"><a href="#冒泡" class="headerlink" title="冒泡"></a>冒泡</h4><p>之前说到，有两个东西是冒泡的：</p>
+<ul>
+<li>onScrollShouldSetResponder</li>
+<li>onSelectionChangeShouldSetResponder</li>
+</ul>
+<p>然则默认是触发最深的那个元素，也就是子级元素，如果父级要拦截作为处理器，则需要处理：</p>
+<ul>
+<li>onStartShouldSetResponderCapture</li>
+<li>onMoveShouldSetResponderCapture</li>
+</ul>
+<p>这两个事件的触发顺序是从父级开始的，所以如果父级设置了返回 true，则会执行父级的处理。</p>
+<p>但是如果任一返回了 false，则依然使用子级元素作为处理器。</p>
+<p>不过如果父级的 <code>onStartShouldSetResponder</code> 如果返回 false，干脆不会触发父级的验证，<code>onStartShouldSetResponderCapture</code> 返回 true 也没用，Move 也是同理。</p>
+<h4 id="拦截"><a href="#拦截" class="headerlink" title="拦截"></a>拦截</h4><ul>
+<li>onResponderReject 当前视图的应答器不是“我”了，并且还不释放让我来当。</li>
+<li>onResponderTerminationRequest 其他的东西想成为应答器。应该释放应答吗？返回 true 就是允许释放</li>
+<li>onResponderTerminate 应答器已经转交给别人担当了。可能在调用onResponderTerminationRequest 之后被其他视图获取，也可能是被操作系统在没有请求的情况下获取了(发生在 iOS 的 control center/notification center)</li>
+</ul>
+<p>话说这个还没搞明白怎么用……</p>
+<h3 id="简单用法"><a href="#简单用法" class="headerlink" title="简单用法"></a>简单用法</h3><p>直接写属性，作为 prop：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;View onResponderStart=&#123;(evt) =&gt; <span class="literal">true</span>&#125; /&gt;</div></pre></td></tr></table></figure></p>
+<p>也可以使用…运算符：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GridItem</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">    get touchProps() &#123;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">onStartShouldSetResponder</span>: <span class="function">(<span class="params">evt</span>) =&gt;</span> <span class="literal">true</span>,</div><div class="line">            <span class="attr">onResponderGrant</span>: <span class="function">(<span class="params">evt</span>) =&gt;</span> &#123;</div><div class="line">                <span class="built_in">console</span>.log(<span class="string">'child'</span>);</div><div class="line">                <span class="built_in">console</span>.log(evt);</div><div class="line">            &#125;,</div><div class="line">            <span class="attr">onResponderTerminationRequest</span>: <span class="function">(<span class="params">evt</span>) =&gt;</span> <span class="literal">true</span></div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">View</span> &#123;<span class="attr">...this.touchProps</span>&#125;&gt;</span><span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>也可以使用 <code>PanResponder</code>（这个会在实际处理的事件前加个 Pan，输出时又会去掉，而且会增加一个参数 <code>gestureState</code>）：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GridItem</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">    componentWillMount() &#123;</div><div class="line">        <span class="keyword">this</span>._panGesture = PanResponder.create(&#123;</div><div class="line">            <span class="attr">onStartShouldSetResponder</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> <span class="literal">true</span>,</div><div class="line">            <span class="attr">onPanResponderGrant</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> &#123;</div><div class="line">                <span class="built_in">console</span>.log(<span class="string">'child'</span>);</div><div class="line">                <span class="built_in">console</span>.log(evt);</div><div class="line">                <span class="built_in">console</span>.log(gestureState);</div><div class="line">            &#125;,</div><div class="line">            <span class="attr">onPanResponderTerminationRequest</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> <span class="literal">true</span></div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">View</span> &#123;<span class="attr">...this._panResponder.panHandlers</span>&#125;&gt;</span><span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="特殊行为"><a href="#特殊行为" class="headerlink" title="特殊行为"></a>特殊行为</h2><h3 id="划走切换的效果"><a href="#划走切换的效果" class="headerlink" title="划走切换的效果"></a>划走切换的效果</h3><p>可以参考：<a href="http://www.terlici.com/2015/04/06/simle-slide-menu-react-native.html" target="_blank" rel="external">http://www.terlici.com/2015/04/06/simle-slide-menu-react-native.html</a><br>就是使用 PanResponder + Animation做的。</p>
+<p>这个回头我自己再搞个出来。</p>
+<h3 id="手势解锁"><a href="#手势解锁" class="headerlink" title="手势解锁"></a>手势解锁</h3><p>因为不想用 WebView 做，所以这里都是从纯 React Native 的角度去考虑的。</p>
+<p>因为生命周期中，TouchIn 是起点，所以如果在外面按住了划过元素，元素是不会有反应的……</p>
+<p>单纯的子级接管作为处理器然后释放也是没用的，如果同时设置 Capture，父级的优先级大……</p>
+<p>那么是否可以这样呢？父级判断碰撞，然后释放处理权？但是拦截的判断只在最开始触发的时候能搞，所以似乎还是行不通的。而且都碰撞到了，如果能直接处理子元素不是更简便么？</p>
+<p>没那么简单，需要看看这三个方法：</p>
+<h4 id="子元素的获取"><a href="#子元素的获取" class="headerlink" title="子元素的获取"></a>子元素的获取</h4><p>使用 refs：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;View style=&#123;styles.gridView&#125; &#123;...this._panResponder.panHandlers&#125; &gt;</div><div class="line">    &lt;View style=&#123;styles.gridLine&#125;&gt;</div><div class="line">        &lt;GridItem ref="item1" /&gt;</div><div class="line">        &lt;GridItem ref="item2" /&gt;</div><div class="line">        &lt;GridItem ref="item3" /&gt;</div><div class="line">    &lt;/View&gt;</div><div class="line">    &lt;View style=&#123;styles.gridLine&#125;&gt;</div><div class="line">        &lt;GridItem ref="item4" /&gt;</div><div class="line">        &lt;GridItem ref="item5" /&gt;</div><div class="line">        &lt;GridItem ref="item6" /&gt;</div><div class="line">    &lt;/View&gt;</div><div class="line">    &lt;View style=&#123;styles.gridLine&#125;&gt;</div><div class="line">        &lt;GridItem ref="item7" /&gt;</div><div class="line">        &lt;GridItem ref="item8" /&gt;</div><div class="line">        &lt;GridItem ref="item9" /&gt;</div><div class="line">    &lt;/View&gt;</div><div class="line">&lt;/View&gt;</div></pre></td></tr></table></figure></p>
+<p>这样就可以直接通过 <code>this.refs[name]</code> 获取到子元素了。</p>
+<h4 id="获取子元素的位置"><a href="#获取子元素的位置" class="headerlink" title="获取子元素的位置"></a>获取子元素的位置</h4><p>这是从 React Native 的 <a href="https://github.com/facebook/react-native/issues/1374#issuecomment-104954196" target="_blank" rel="external">Issue 1374</a> 拿到的方法：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> RCTUIManager = <span class="built_in">require</span>(<span class="string">'NativeModules'</span>).UIManager;</div><div class="line"><span class="keyword">var</span> view = <span class="keyword">this</span>.refs[name];</div><div class="line"><span class="keyword">var</span> handle = React.findNodeHandle(view);</div><div class="line">RCTUIManager.measure(handle, (x, y, width, height, pageX, pageY) =&gt; &#123;</div><div class="line">    <span class="comment">// x,y 似乎是当前container的坐标</span></div><div class="line">    <span class="comment">// width, height 是宽高</span></div><div class="line">    <span class="comment">// pageX, pageY 是在屏幕中的坐标（起始坐标）</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>所以，元素在屏幕中的范围是：pageX ~ pageX + width, pageY ~ pageY + height</p>
+<p>至少是个简单的正方形，如果是其他形状例如圆形，可能还需要计算圆心和半径的大小。</p>
+<h4 id="获取当前-touch-的坐标"><a href="#获取当前-touch-的坐标" class="headerlink" title="获取当前 touch 的坐标"></a>获取当前 touch 的坐标</h4><p>之前说过 PanResponder 会给事件方法增加一个参数 <code>gestureState</code>：</p>
+<p>一个 gestureState 对象有以下属性：</p>
+<ul>
+<li>stateID：gestureState 的ID-在屏幕上保持至少一个触发动作的时间</li>
+<li>moveX：最近动态触发的最新的屏幕坐标</li>
+<li>x0：应答器横向的屏幕坐标</li>
+<li>y0：应答器纵向的屏幕坐标</li>
+<li>dx：触发开始后累积的横向动作距离</li>
+<li>dy：触发开始后累积的纵向动作距离</li>
+<li>vx：当前手势的横向速度</li>
+<li>vy：当前手势的纵向速度</li>
+<li>numberActiveTouch：屏幕上当前触发的数量</li>
+</ul>
+<p>那么 touch 位置的坐标可以这么获得：[x0 + dx, y0 + dy]</p>
+<p>当然也可以使用都有的 evt 参数：</p>
+<p>changedTouches - Array of all touch events that have changed since the last event<br>identifier - The ID of the touch<br>locationX - The X position of the touch, relative to the element<br>locationY - The Y position of the touch, relative to the element<br>pageX - The X position of the touch, relative to the screen<br>pageY - The Y position of the touch, relative to the screen<br>target - The node id of the element receiving the touch event<br>timestamp - A time identifier for the touch, useful for velocity calculation<br>touches - Array of all current touches on the screen</p>
+<p>直接用[pageX, pageY] 就行了。</p>
+<p>这样就可以进行简单的碰撞计算了，计算位置是否在某个子元素的范围内就行了。</p>
+<p>实际上至此手势解锁的几个关键问题已经解决，正在写一个手势解锁的组件：<a href="https://github.com/leowang721/k-react-native-swipe-unlock" target="_blank" rel="external">k-react-native-swipe-unlock</a> 玩耍。</p>
+<p>To Be Continued.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React-Native/" rel="tag"># React Native</a>
+          
+            <a href="/tags/全端/" rel="tag"># 全端</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/10/learning/react-native/structure/" rel="next" title="React Native 浅入门 —— 结构篇">
+                <i class="fa fa-chevron-left"></i> React Native 浅入门 —— 结构篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/13/learning/react-native/animation/" rel="prev" title="React Native 浅入门 —— 变形、动画篇">
+                React Native 浅入门 —— 变形、动画篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/08/12/learning/react-native/interactive/"
+     data-title="React Native 浅入门 —— 交互篇"
+     data-content=""
+     data-url="https://leowang721.github.io/2015/08/12/learning/react-native/interactive/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/08/12/learning/react-native/interactive/"
+           data-title="React Native 浅入门 —— 交互篇" data-url="https://leowang721.github.io/2015/08/12/learning/react-native/interactive/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.jpg"
+               alt="Leo Wang" />
+          <p class="site-author-name" itemprop="name">Leo Wang</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leowang721" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/leowang721" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/seraphwings" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/leowang721" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#普通行为"><span class="nav-number">1.</span> <span class="nav-text">普通行为</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gesture-Responder-System"><span class="nav-number">2.</span> <span class="nav-text">Gesture Responder System</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#事件"><span class="nav-number">2.1.</span> <span class="nav-text">事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#决定是否成为处理器"><span class="nav-number">2.1.1.</span> <span class="nav-text">决定是否成为处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开始处理了"><span class="nav-number">2.1.2.</span> <span class="nav-text">开始处理了</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跟拦截相关的（当前应答器的身份）"><span class="nav-number">2.1.3.</span> <span class="nav-text">跟拦截相关的（当前应答器的身份）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#行为生命周期"><span class="nav-number">2.1.4.</span> <span class="nav-text">行为生命周期</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#几个特性"><span class="nav-number">2.2.</span> <span class="nav-text">几个特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#冒泡"><span class="nav-number">2.2.1.</span> <span class="nav-text">冒泡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拦截"><span class="nav-number">2.2.2.</span> <span class="nav-text">拦截</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单用法"><span class="nav-number">2.3.</span> <span class="nav-text">简单用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊行为"><span class="nav-number">3.</span> <span class="nav-text">特殊行为</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#划走切换的效果"><span class="nav-number">3.1.</span> <span class="nav-text">划走切换的效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手势解锁"><span class="nav-number">3.2.</span> <span class="nav-text">手势解锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#子元素的获取"><span class="nav-number">3.2.1.</span> <span class="nav-text">子元素的获取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取子元素的位置"><span class="nav-number">3.2.2.</span> <span class="nav-text">获取子元素的位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取当前-touch-的坐标"><span class="nav-number">3.2.3.</span> <span class="nav-text">获取当前 touch 的坐标</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Wang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"leowang721"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

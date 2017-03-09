@@ -1,0 +1,634 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT, leowang721, fe, js" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Swift 并不要求你为自定义类和结构去创建独立的接口和实现文件。你所要做的是在一个单一文件中定义一个类或者结构体，系统将会自动生成面向其它代码的外部接口
+#简单的常见用法
+123456789101112131415class People &amp;#123;    var name: String;    let type = &quot;People&quot;    init(name: String) &amp;#123;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Class">
+<meta property="og:url" content="https://leowang721.github.io/learning/swift/class.html">
+<meta property="og:site_name" content="炽天使的羽翼">
+<meta property="og:description" content="Swift 并不要求你为自定义类和结构去创建独立的接口和实现文件。你所要做的是在一个单一文件中定义一个类或者结构体，系统将会自动生成面向其它代码的外部接口
+#简单的常见用法
+123456789101112131415class People &amp;#123;    var name: String;    let type = &quot;People&quot;    init(name: String) &amp;#123;">
+<meta property="og:updated_time" content="2017-03-09T08:46:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Class">
+<meta name="twitter:description" content="Swift 并不要求你为自定义类和结构去创建独立的接口和实现文件。你所要做的是在一个单一文件中定义一个类或者结构体，系统将会自动生成面向其它代码的外部接口
+#简单的常见用法
+123456789101112131415class People &amp;#123;    var name: String;    let type = &quot;People&quot;    init(name: String) &amp;#123;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://leowang721.github.io/learning/swift/class.html"/>
+
+
+
+
+
+  <title>
+  
+
+  
+    Class | 炽天使的羽翼
+  
+</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1256024176&web_id=1256024176" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">炽天使的羽翼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+  <header class="post-header">
+
+	<h2 class="post-title" itemprop="name headline">Class</h2>
+
+
+
+</header>
+
+    
+    
+      <p>Swift 并不要求你为自定义类和结构去创建独立的接口和实现文件。你所要做的是在一个单一文件中定义一个类或者结构体，系统将会自动生成面向其它代码的外部接口</p>
+<p>#简单的常见用法</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> name: <span class="type">String</span>;</div><div class="line">    <span class="keyword">let</span> type = <span class="string">"People"</span></div><div class="line"></div><div class="line">    <span class="keyword">init</span>(name: <span class="type">String</span>) &#123;</div><div class="line">        <span class="keyword">self</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">sayHello</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="built_in">println</span>(<span class="string">"\(self.name) says hello"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> me = <span class="type">People</span>(name: <span class="string">"Leo"</span>)  <span class="comment">// 注意，init实际上参数都是使用了外部参数名（External Parameter Names），必须指定参数名</span></div><div class="line">me.sayHello()</div></pre></td></tr></table></figure>
+<ul>
+<li>每个参数都必须初始化，要么直接初始化，要么在init里面</li>
+<li>self就是this……</li>
+</ul>
+<p>外部参数名（External Parameter Names）可参看<a href="./function.html#外部参数名">这里</a></p>
+<p>#继承</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Man</span>: <span class="title">People</span> </span>&#123;</div><div class="line">    <span class="keyword">let</span> sex = <span class="string">"male"</span></div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">sayHello</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.sayHello()</div><div class="line">        <span class="built_in">println</span>(<span class="string">"he's a \(sex)"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">me = <span class="type">Man</span>(name: <span class="string">"Leo"</span>);</div><div class="line">me.sayHello()</div></pre></td></tr></table></figure>
+<ul>
+<li>使用override覆盖声明，init也是一样</li>
+<li>使用super引用父类</li>
+</ul>
+<p>#计算属性<br>GETTER &amp; SETTER 不真的存储，但是在读和写的时候可以进行计算<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> me = <span class="type">Man</span>(name: <span class="string">"Leo Wang"</span>);</div><div class="line">me.sayHello()</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span>: <span class="title">People</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> fatherName: <span class="type">String</span> = <span class="string">"unknown yet"</span></div><div class="line">    <span class="keyword">var</span> father: <span class="type">Man</span> &#123;</div><div class="line">        <span class="keyword">get</span> &#123;</div><div class="line">            <span class="keyword">return</span> <span class="type">Man</span>(name: fatherName)</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">set</span> &#123;  <span class="comment">// 这里可以用 set(people)来指定名称，就不是newValue了</span></div><div class="line">            fatherName = newValue.name</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">sayHello</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.sayHello()</div><div class="line">        <span class="built_in">println</span>(<span class="string">"his or her father is \(self.fatherName)"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> her = <span class="type">Child</span>(name: <span class="string">"兜兜"</span>)</div><div class="line">her.father = me</div><div class="line">her.sayHello()</div></pre></td></tr></table></figure></p>
+<p>输出：<br><code>Leo Wang says hello</code><br><code>he&#39;s a male</code><br><code>兜兜 says hello</code><br><code>his or her father is Leo Wang</code></p>
+<p>这个例子不是很恰当，最好是做计算啥的…… 例如存了一个圆的基础数据，搞个圆心的计算属性，更恰当一些，可以结合下面的两个东东给出来</p>
+<p>##只读计算属性</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> area: <span class="type">Double</span> &#123;  <span class="comment">// 只读计算属性</span></div><div class="line">    <span class="keyword">return</span> <span class="number">2</span> * π * radius</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> it = <span class="type">Circle</span>(radius: <span class="number">20</span>)</div><div class="line"><span class="built_in">println</span>(it.area  <span class="comment">// 输出125.663704</span></div></pre></td></tr></table></figure>
+<p>get和{}可以省略</p>
+<p>##观察器willSet和didSet<br>不能和get和set一起用！<br>willSet是在真正赋值之前的处理，newValue表示要设置的值<br>didSet在赋值之后，oldValue表示设置之前的旧值<br>依然可以使用()的方式指定为其他的名称<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> radius: <span class="type">Double</span> &#123;</div><div class="line">    <span class="keyword">willSet</span>(newRadius) &#123;</div><div class="line">        <span class="built_in">println</span>(<span class="string">"will set radius to \(newRadius)"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">didSet</span> &#123;</div><div class="line">        <span class="keyword">if</span> (radius != oldValue) &#123;</div><div class="line">            <span class="built_in">println</span>(<span class="string">"new area \(area) is automatically setted"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>完整些的恰当例子：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> </span>&#123;</div><div class="line">    <span class="keyword">let</span> π = <span class="number">3.1415926</span></div><div class="line">    <span class="keyword">var</span> radius: <span class="type">Double</span> &#123;</div><div class="line">        <span class="keyword">willSet</span>(newRadius) &#123;</div><div class="line">            <span class="built_in">println</span>(<span class="string">"will set radius to \(newRadius)"</span>)</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">didSet</span> &#123;</div><div class="line">            <span class="keyword">if</span> (radius != oldValue) &#123;</div><div class="line">                <span class="built_in">println</span>(<span class="string">"new area \(area) is automatically setted"</span>)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> area: <span class="type">Double</span> &#123;  <span class="comment">// 只读计算属性</span></div><div class="line">        <span class="keyword">return</span> <span class="number">2</span> * π * radius</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">init</span>(radius: <span class="type">Double</span>) &#123;</div><div class="line">        <span class="keyword">self</span>.radius = radius</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> it = <span class="type">Circle</span>(radius: <span class="number">20</span>)</div><div class="line"><span class="built_in">println</span>(it.area)</div><div class="line">it.radius = <span class="number">30</span></div><div class="line"><span class="built_in">println</span>(it.area)</div></pre></td></tr></table></figure></p>
+
+    
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="learning/swift/class.html"
+           data-title="Class" data-url="https://leowang721.github.io/learning/swift/class.html">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.jpg"
+               alt="Leo Wang" />
+          <p class="site-author-name" itemprop="name">Leo Wang</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leowang721" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/leowang721" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/seraphwings" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/leowang721" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Wang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"leowang721"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

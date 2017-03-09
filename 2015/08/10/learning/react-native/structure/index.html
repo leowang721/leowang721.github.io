@@ -1,0 +1,886 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="React Native,全端," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="权当一个笔记，再写写或许更明白点
+
+结构布局说到布局，首先作为一个前端同学，我想到的是：div、p、span、section … 以及 article、header、footer…
+这些非语义化的&amp;amp;语义化的标签，在前端的世界中，是用于按层级、按语义去实现一个可读的结构。
+一个经典的 HTML 结构：123456789101112131415161718192021222324252627">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 浅入门 —— 结构篇">
+<meta property="og:url" content="https://leowang721.github.io/2015/08/10/learning/react-native/structure/index.html">
+<meta property="og:site_name" content="炽天使的羽翼">
+<meta property="og:description" content="权当一个笔记，再写写或许更明白点
+
+结构布局说到布局，首先作为一个前端同学，我想到的是：div、p、span、section … 以及 article、header、footer…
+这些非语义化的&amp;amp;语义化的标签，在前端的世界中，是用于按层级、按语义去实现一个可读的结构。
+一个经典的 HTML 结构：123456789101112131415161718192021222324252627">
+<meta property="og:image" content="https://leowang721.github.io/images/learning/react-native/webcomponents-structure.png">
+<meta property="og:image" content="https://leowang721.github.io/images/learning/react-native/structure.png">
+<meta property="og:image" content="https://leowang721.github.io/images/learning/react-native/text-types.png">
+<meta property="og:image" content="https://leowang721.github.io/images/learning/react-native/ui.png">
+<meta property="og:updated_time" content="2017-03-09T08:53:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native 浅入门 —— 结构篇">
+<meta name="twitter:description" content="权当一个笔记，再写写或许更明白点
+
+结构布局说到布局，首先作为一个前端同学，我想到的是：div、p、span、section … 以及 article、header、footer…
+这些非语义化的&amp;amp;语义化的标签，在前端的世界中，是用于按层级、按语义去实现一个可读的结构。
+一个经典的 HTML 结构：123456789101112131415161718192021222324252627">
+<meta name="twitter:image" content="https://leowang721.github.io/images/learning/react-native/webcomponents-structure.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://leowang721.github.io/2015/08/10/learning/react-native/structure/"/>
+
+
+
+
+
+  <title> React Native 浅入门 —— 结构篇 | 炽天使的羽翼 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1256024176&web_id=1256024176" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">炽天使的羽翼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2015/08/10/learning/react-native/structure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leo Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="炽天使的羽翼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                React Native 浅入门 —— 结构篇
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-10T11:52:30+08:00">
+                2015-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-Native/" itemprop="url" rel="index">
+                    <span itemprop="name">React Native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/08/10/learning/react-native/structure/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/10/learning/react-native/structure/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>权当一个笔记，再写写或许更明白点</p>
+</blockquote>
+<h2 id="结构布局"><a href="#结构布局" class="headerlink" title="结构布局"></a>结构布局</h2><p>说到布局，首先作为一个前端同学，我想到的是：div、p、span、section … 以及 article、header、footer…</p>
+<p>这些非语义化的&amp;语义化的标签，在前端的世界中，是用于按层级、按语义去实现一个可读的结构。</p>
+<p>一个经典的 HTML 结构：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">header</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">nav</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>首页<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>文章列表<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">id</span>=<span class="string">"article-list"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>文章列表<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">header</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">hgroup</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">h1</span>&gt;</span>title<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>作者<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">hgroup</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">section</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>第一段<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>第二段<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">section</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">aside</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span>tag1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span>tag2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">aside</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></div><div class="line">    ...</div><div class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">footer</span>&gt;</span></div><div class="line">    CopyRight</div><div class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>写 HTML 的时候，我们往往是直接就设计完了这样的一个结构，一个 big picture，当然我们还是先按大块设计，再去设计细节！不过在设计结构的时候，基本一直都能看到完整的东西。</p>
+<p>而在 React Native 中，讲究的是 Component 的复用，是不断的分层/块去编写 Component，但是只有在那个 Component 中才能看到再进一步的结构，因为往往是“你只需要使用我就好了，不需要关心我怎么显示的。” </p>
+<p>React 也是一样，不信去看最终 React 展现到浏览器中的样子吧，还是那么一堆 div 标签，干读基本读晕。</p>
+<p>话题转回来，我们要这么展现文章列表：<br><a id="more"></a><br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">&lt;ArticleList /&gt;</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>所以，我们需要设计个列表页：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleList</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">Text</span>&gt;</span>文章列表<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></div><div class="line">            &lt;ListView</div><div class="line">                dataSource=&#123;<span class="keyword">this</span>.state.datasource&#125;</div><div class="line">                renderRow=&#123;<span class="keyword">this</span>._renderArticle /&gt;</div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">    _renderArticle(rowData: string, <span class="attr">sectionID</span>: number, <span class="attr">rowID</span>: number) &#123;</div><div class="line">        ...</div><div class="line">        return (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">TouchableHighlight</span> <span class="attr">onPress</span>=<span class="string">&#123;()</span> =&gt;</span> this._pressArticle(rowID)&#125;&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">Article</span> <span class="attr">id</span>=<span class="string">"&#123;articleId&#125;"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">TouchableHighlight</span>&gt;</span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里确定了：我要以 ListView 的方式展现列表，点击的时候，使用 Article 的视图展现内容。</p>
+<p>所以还需要写个 Article（在写的时候直接按全屏搞的，导航什么的留给 Navigator 搞定，我才不管。）</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">"&#123;articleStyles.header&#125;"</span>&gt;</span></span></div><div class="line">                <span class="tag">&lt;<span class="name">View</span> <span class="attr">styles</span>=<span class="string">"&#123;articleStyles.title&#125;"</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">Text</span>&gt;</span>title<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">                <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">ArticleAuthor</span> <span class="attr">name</span>=<span class="string">"Leo"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">"&#123;articleStyles.content&#125;"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">Text</span>&gt;</span>第一段<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">Text</span>&gt;</span>第二段<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">"&#123;articleStyles.aside&#125;"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">ArticleTags</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样的过程，导致我们不能对当前的视图有一个像 HTML 那样的总览，看到的永远是块，而不是结构。而且由于 App 的场景专注性是极强的，所以它实际上更多的是 Navigator 式的浏览，而不是像 Web 大多数时候都要展现一个完整的 Nav 放在那里。</p>
+<p>所以在文章列表后，点击展现 Article 的时候，我们使用 navigator 提供了一个返回按钮（最多再提供上一篇、下一篇），不需要再提供 Nav 了，而且这些都跟 Article 没啥关系，Article 只关注自己要展现的东西，而且以全屏的方式展现。</p>
+<p>事实上很多 Web 站点也开始使用这种方式了。</p>
+<p>这样的好处是，独立性很强，复用性也很强。坏处是：如果你“查看元素”，只会吐槽什么鬼东西！</p>
+<p>不过思路是 OK 的，不过说实话我更喜欢 webcomponents，这样的结构看起来不是更好么？基本也是一个玩路</p>
+<p><img src="/images/learning/react-native/webcomponents-structure.png" alt="webcomponents 理念下的一个 DOM 结构" width="500"></p>
+<h2 id="标签映射"><a href="#标签映射" class="headerlink" title="标签映射"></a>标签映射</h2><h3 id="已经存在的基础映射"><a href="#已经存在的基础映射" class="headerlink" title="已经存在的基础映射"></a>已经存在的基础映射</h3><p>如图所示：<img src="/images/learning/react-native/structure.png" alt="当前 React Native 提供的跟基础 HTML 元素相关的Component（默认0.8-stable）"></p>
+<p>缺了那么多的标签，让被惯坏了的前端怎么玩……</p>
+<p>别的还好，View 和 Text 这两个东西，基本就要冒充很多标签的行为了：</p>
+<h3 id="先说Text"><a href="#先说Text" class="headerlink" title="先说Text"></a>先说Text</h3><p>在 React Native 的世界中，只有一种文本标记：Text。只要你要显示文字，就必须放在 Text 标签中，没的商量。</p>
+<p>所以 Text 对于前端同学来说，就约等于 p、div、h1~h6、section、span 等等标签，先吐会儿……</p>
+<p>标题基本就是：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Text style=<span class="string">"&#123;某个styles.title&#125;"</span>&gt;标题内容&lt;<span class="regexp">/Text&gt;</span></div></pre></td></tr></table></figure></p>
+<p>段落可能就是：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Text style=<span class="string">"&#123;某个styles.paragraph&#125;"</span>&gt;标题内容&lt;<span class="regexp">/Text&gt;</span></div></pre></td></tr></table></figure></p>
+<p>我们还是更细一些，在 Web 的世界中，文本可能为（不会出现在移动领域的就不提了，例如鼠标悬浮的 title）：</p>
+<p><img src="/images/learning/react-native/text-types.png" alt="Text Types" width="500"></p>
+<p>不是简单的一一对应的关系，可能需要不断的组合。并且在 Web 中重新实现 UI 的方式，在这里依然存在，所以有可能对应的就是某个你自行实现的或者引用自外部库的 Component。</p>
+<p>在 React Native 中，文本是信息，所以一个 Text 就够了，将文本的组合，或许引入交互，或许引入图片等等 视为 Component，转到组件的世界里去玩，而不是平铺的画板上直接画内容。</p>
+<h3 id="再说View"><a href="#再说View" class="headerlink" title="再说View"></a>再说View</h3><p>在 React Native 中，View 是最基本的视图：<br><code>View is a container that supports layout with flexbox, style, some touch handling, and accessibility controls, and is designed to be nested inside other views and to have 0 to many children of any type</code></p>
+<p>所以其实所有的 视图Component 最终都是一个 View 而已。</p>
+<p>所以从基础元素的角度来说：View 当前对于我们来说，约等于 div、section 等等所有跟布局相关的元素。</p>
+<p>尼玛要用盒模型？要用 flexbox？用 View 吧，还支持无限嵌套的。同时作为容器，全局的行为神马的都往 View 身上扔吧，我就是新的 div，那个爆炸扩散嵌套的 div！</p>
+<h4 id="UI-控件"><a href="#UI-控件" class="headerlink" title="UI 控件"></a>UI 控件</h4><p>这时候，来说一下 UI 控件，就是在 Web 届很喜欢搞的东东，先看已经提供了的：<br><img src="/images/learning/react-native/ui.png" alt="当前 React Native 提供的 ui Component（默认0.8-stable）"></p>
+<p>当然我们可以把基础的 View 和 Text 砍掉后剩下的东西也视为 ui 控件。</p>
+<p>Web 届的 UI 种类如此之多，但我们可以庆幸的是，在 APP 中，解决了一个大问题：控件交互的各异性。APP 中是普适性的 UI 交互，就这一种，都这么用，不用去实现什么3、4、5、6种日历控件神马的了。</p>
+<p>在 React Native 中，需要不断的根据需求进行可复用性评估，然后不断的开发出 ui Component、业务 Component、通用 Component 等等，因为我的 APP 就是用这些 Component 拼出来的视图！</p>
+<p>而这么多自行定义的 Component，你说你不搞各异性体验的 UI？？</p>
+<h4 id="还有呢"><a href="#还有呢" class="headerlink" title="还有呢"></a>还有呢</h4><ol>
+<li>怎么画图？Canvas 木有了，怎么搞手势解锁呢？<br>直接 View 拼接？直接调用 Native 的组件？还是像 lwansbrough/react-native-canvas 现在占位用 WebView 内嵌个 Canvas？还是自行实现一个 Canvas To UIView 绘图的东西？<br>我想要的是一个通用的东西，写一个 SwipeUnlocker 出来，是期望 Web、M 站、APP 上都直接可用的，哪个解决方案能满足呢？</li>
+</ol>
+<p><code>2015-08-24 更新</code><br>绘图可使用：ReactART，位置：Libraries/ART/ReactNativeART.js<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ReactART = &#123;</div><div class="line">  <span class="attr">LinearGradient</span>: LinearGradient,</div><div class="line">  <span class="attr">RadialGradient</span>: RadialGradient,</div><div class="line">  <span class="attr">Pattern</span>: Pattern,</div><div class="line">  <span class="attr">Transform</span>: Transform,</div><div class="line">  <span class="attr">Path</span>: Path,</div><div class="line">  <span class="attr">Surface</span>: Surface,</div><div class="line">  <span class="attr">Group</span>: Group,</div><div class="line">  <span class="attr">ClippingRectangle</span>: ClippingRectangle,</div><div class="line">  <span class="attr">Shape</span>: Shape,</div><div class="line">  <span class="attr">Text</span>: Text,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>例子可暂时查看 <a href="https://github.com/reactjs/react-page/blob/art/" target="_blank" rel="external">https://github.com/reactjs/react-page/blob/art/</a></p>
+<p>关于绘图，再单独记录一篇笔记罢：[React Native 浅入门 —— 绘图篇]</p>
+<ol>
+<li><p>Form 没有了，不过还有 tcomb-form-native，不过这东西的使用模式需要适应下……</p>
+</li>
+<li><p>WebView 有多大的性能问题呢？</p>
+</li>
+<li><p>当前来说 OC &lt;-&gt; JS 的 Component 映射是不是还是主流模式？</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React-Native/" rel="tag"># React Native</a>
+          
+            <a href="/tags/全端/" rel="tag"># 全端</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/10/learning/react-native/index/" rel="next" title="React Native 浅入门">
+                <i class="fa fa-chevron-left"></i> React Native 浅入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/12/learning/react-native/interactive/" rel="prev" title="React Native 浅入门 —— 交互篇">
+                React Native 浅入门 —— 交互篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/08/10/learning/react-native/structure/"
+     data-title="React Native 浅入门 —— 结构篇"
+     data-content=""
+     data-url="https://leowang721.github.io/2015/08/10/learning/react-native/structure/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/08/10/learning/react-native/structure/"
+           data-title="React Native 浅入门 —— 结构篇" data-url="https://leowang721.github.io/2015/08/10/learning/react-native/structure/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.jpg"
+               alt="Leo Wang" />
+          <p class="site-author-name" itemprop="name">Leo Wang</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leowang721" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/leowang721" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/seraphwings" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/leowang721" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#结构布局"><span class="nav-number">1.</span> <span class="nav-text">结构布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签映射"><span class="nav-number">2.</span> <span class="nav-text">标签映射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#已经存在的基础映射"><span class="nav-number">2.1.</span> <span class="nav-text">已经存在的基础映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#先说Text"><span class="nav-number">2.2.</span> <span class="nav-text">先说Text</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#再说View"><span class="nav-number">2.3.</span> <span class="nav-text">再说View</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UI-控件"><span class="nav-number">2.3.1.</span> <span class="nav-text">UI 控件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#还有呢"><span class="nav-number">2.3.2.</span> <span class="nav-text">还有呢</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Wang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"leowang721"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,945 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="React Native,全端,绘图," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="权当一个笔记，再写写或许更明白点
+
+原本搞了个模拟的，就使用元素来模拟绘图，例如直线……
+不过确实是很麻烦…… 不过再去扫了扫 Issues，果然发现有人问过，且 facebook 也有相应的方案：
+绘图可使用：ReactART，位置：Libraries/ART/ReactNativeART.js123456789101112var ReactART = &amp;#123;    LinearGrad">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 浅入门 —— 绘图篇">
+<meta property="og:url" content="https://leowang721.github.io/2015/08/24/learning/react-native/drawing/index.html">
+<meta property="og:site_name" content="炽天使的羽翼">
+<meta property="og:description" content="权当一个笔记，再写写或许更明白点
+
+原本搞了个模拟的，就使用元素来模拟绘图，例如直线……
+不过确实是很麻烦…… 不过再去扫了扫 Issues，果然发现有人问过，且 facebook 也有相应的方案：
+绘图可使用：ReactART，位置：Libraries/ART/ReactNativeART.js123456789101112var ReactART = &amp;#123;    LinearGrad">
+<meta property="og:updated_time" content="2017-03-09T08:53:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native 浅入门 —— 绘图篇">
+<meta name="twitter:description" content="权当一个笔记，再写写或许更明白点
+
+原本搞了个模拟的，就使用元素来模拟绘图，例如直线……
+不过确实是很麻烦…… 不过再去扫了扫 Issues，果然发现有人问过，且 facebook 也有相应的方案：
+绘图可使用：ReactART，位置：Libraries/ART/ReactNativeART.js123456789101112var ReactART = &amp;#123;    LinearGrad">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://leowang721.github.io/2015/08/24/learning/react-native/drawing/"/>
+
+
+
+
+
+  <title> React Native 浅入门 —— 绘图篇 | 炽天使的羽翼 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1256024176&web_id=1256024176" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">炽天使的羽翼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2015/08/24/learning/react-native/drawing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leo Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="炽天使的羽翼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                React Native 浅入门 —— 绘图篇
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-24T13:14:53+08:00">
+                2015-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-Native/" itemprop="url" rel="index">
+                    <span itemprop="name">React Native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/08/24/learning/react-native/drawing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/24/learning/react-native/drawing/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>权当一个笔记，再写写或许更明白点</p>
+</blockquote>
+<p>原本搞了个模拟的，就使用元素来模拟绘图，例如直线……</p>
+<p>不过确实是很麻烦…… 不过再去扫了扫 Issues，果然发现有人问过，且 facebook 也有相应的方案：</p>
+<p>绘图可使用：ReactART，位置：Libraries/ART/ReactNativeART.js<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ReactART = &#123;</div><div class="line">    <span class="attr">LinearGradient</span>: LinearGradient,</div><div class="line">    <span class="attr">RadialGradient</span>: RadialGradient,</div><div class="line">    <span class="attr">Pattern</span>: Pattern,</div><div class="line">    <span class="attr">Transform</span>: Transform,</div><div class="line">    <span class="attr">Path</span>: Path,</div><div class="line">    <span class="attr">Surface</span>: Surface,</div><div class="line">    <span class="attr">Group</span>: Group,</div><div class="line">    <span class="attr">ClippingRectangle</span>: ClippingRectangle,</div><div class="line">    <span class="attr">Shape</span>: Shape,</div><div class="line">    <span class="attr">Text</span>: Text,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>例子可暂时扫扫 <a href="https://github.com/reactjs/react-page/blob/art/" target="_blank" rel="external">https://github.com/reactjs/react-page/blob/art/</a></p>
+<p>继续记笔记：</p>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><p>使用这个之前，安装 art 库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i art --save</div></pre></td></tr></table></figure></p>
+<p>并且需要在项目中添加依赖：</p>
+<ol>
+<li>右键点击项目 -&gt; ‘Add Files to <code>ProjectName</code> -&gt; 选择 node_modules/react-native/React/Libraries/ART/ART.xcodeproj’</li>
+<li>将 <code>libART.a</code> 添加到 <code>Linked Frameworks and Libraries</code></li>
+</ol>
+<a id="more"></a>
+<h2 id="基础元素"><a href="#基础元素" class="headerlink" title="基础元素"></a>基础元素</h2><ul>
+<li>Surface - 长方形的容器，可渲染的区域，是其他元素的容器！</li>
+<li>Group - 可容纳形状、文本和其他的分组</li>
+<li>Shape - 一个向量路径定义的形状，可填充</li>
+<li>Text - 文本</li>
+</ul>
+<p>即一个图形，必须是这样的：最外层是一个 Surface，去定义容器的大小，就像是 Canvas 元素一样，然后其子元素由 Group 进行组装，使用 Shape 和 Text 确定内容</p>
+<h3 id="公共的-props"><a href="#公共的-props" class="headerlink" title="公共的 props"></a>公共的 props</h3><ul>
+<li>x,y: 坐标</li>
+<li>originX, originY: 原始坐标，这个给 scale 和 rotate 使用的</li>
+<li>transform: {Array} 变形相关</li>
+<li>visible: {boolean} 决定了 opacity 的值是 0|1</li>
+<li>opacity: {number} opacity 的值</li>
+<li>scale, scaleX, scaleY {number} 缩放</li>
+<li>rotation: {string} 旋转 0deg</li>
+</ul>
+<p>说明：<br>x, y 每个都可有，它指定了元素的位置。<br>originX, originY则是一个相对位置，它主要是给 scale 和 rotate 使用的，默认是0, 0，这样就意味着，默认是以起点为中心旋转，或者从起点开始缩放！</p>
+<h3 id="Surface"><a href="#Surface" class="headerlink" title="Surface"></a>Surface</h3><p>容器，接受的 props：</p>
+<ul>
+<li>width: {number}</li>
+<li>height: {number}</li>
+</ul>
+<h3 id="Group"><a href="#Group" class="headerlink" title="Group"></a>Group</h3><p>定义分组，它是一个 <code>Component</code>，实际上使用了 <code>NativeGroup</code>，可接受的 props：</p>
+<ul>
+<li>onMouseDown</li>
+<li>onMouseUp</li>
+</ul>
+<h3 id="Shape"><a href="#Shape" class="headerlink" title="Shape"></a>Shape</h3><p>形状，与 ART 或者 ReactART 不同的是，当前不支持 width 和 height，可接受的 props：</p>
+<ul>
+<li>fill: 定义笔刷，有一个用法已废弃，不多述，主要是生成颜色：new Color(colorOrBrush)，值可为：<ul>
+<li>{string} 预定义颜色：maroon: ‘#800000’, red: ‘#ff0000’, orange: ‘#ffA500’, yellow: ‘#ffff00’, olive: ‘#808000’, purple: ‘#800080’, fuchsia: “#ff00ff”, white: ‘#ffffff’, lime: ‘#00ff00’, green: ‘#008000’, navy: ‘#000080’, blue: ‘#0000ff’, aqua: ‘#00ffff’, teal: ‘#008080’, black: ‘#000000’, silver: ‘#c0c0c0’, gray: ‘#808080’</li>
+<li>rgb/rgba 颜色：rgba(0,0,0,0.1)</li>
+<li>hex #0000FF</li>
+<li>hsb</li>
+<li>hsl</li>
+</ul>
+</li>
+<li>stroke: 定义颜色，跟 fill 其实用法一样</li>
+<li>strokeDash: {Object} 画虚线<ul>
+<li>strokeDash.count {number} array 的个数，必须有此值才能生效，必须=array.length</li>
+<li>strokeDash.array：{Array} 虚线是如何交替绘制<ul>
+<li>10,10 表示先绘制10个点，再跳过10个点，如此反复</li>
+<li>10, 20, 10 先绘制10个点，跳过20个点，绘制10个点，跳过10个点，再绘制20个点，如此反复</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>strokeCap: {string} 设置线条终点形状，可取值：butt(0) , square(2) 有个默认值 round(1)</li>
+<li>strokeJoin: {string} 设置线条连接点的风格，该属性支持如下三个值 可取值：miter(0), bevel(2) 有个默认值 round(1)</li>
+<li>strokeWidth: {number} 线宽 默认1</li>
+</ul>
+<h3 id="Text"><a href="#Text" class="headerlink" title="Text"></a>Text</h3><p>文字</p>
+<ul>
+<li>path 文字的路径</li>
+<li>font 字体相关<ul>
+<li>{string} 例如 ‘normal|bold|italic 13px 字体名称’ 可选单位如 px、pt、em 等</li>
+<li>{Object}<ul>
+<li>font.fontFamily {string} 字体，可以使用逗号分隔</li>
+<li>fontSize {number}</li>
+<li>fontWeight {string} bold|normal</li>
+<li>fontStyle {string} italic|normal</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>其余几个跟 Shape 一致的</p>
+<h2 id="Transform"><a href="#Transform" class="headerlink" title="Transform"></a>Transform</h2><p>变形相关</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var t = new Transform();</div><div class="line">t.transformTo(1, 0, 0, 1, 0, 0)</div><div class="line">    .move(props.x || 0, props.y || 0)</div><div class="line">    .rotate(props.rotation || 0, props.originX, props.originY)</div><div class="line">    .scale(scaleX, scaleY, props.originX, props.originY);</div></pre></td></tr></table></figure>
+<h3 id="transform-变形矩阵"><a href="#transform-变形矩阵" class="headerlink" title="transform 变形矩阵"></a>transform 变形矩阵</h3><p>参数为(xx, yx, xy, yy[, x, y])，即 arguments<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> result       current      arguments</div><div class="line">xx  xy  x     xx  xy  x     xx  xy  x</div><div class="line">yx  yy  y  =  yx  yy  y  *  yx  yy  y</div><div class="line">0   0   1     0   0   1     0   0   1</div></pre></td></tr></table></figure></p>
+<p>xx - (number) 沿 X 轴的缩放 (default: 1)<br>yx - (number) 旋转？ multiplier to skew the x axis (default: 0)<br>xy - (number) 旋转？ multiplier to skew the y axis (default: 0)<br>yy - (number) 沿 Y 轴的缩放 (default: 1)<br>x - (number) 水平移动 (default: 0)<br>y - (number) 竖直移动 (default: 0)</p>
+<h3 id="transformTo"><a href="#transformTo" class="headerlink" title="transformTo"></a>transformTo</h3><p>重置矩阵为某个值，其实就是重置 current，跟构造函数参数一致</p>
+<h3 id="translate-amp-move-amp-moveTo"><a href="#translate-amp-move-amp-moveTo" class="headerlink" title="translate &amp; move &amp; moveTo"></a>translate &amp; move &amp; moveTo</h3><p>translate(x, y)<br>move(x, y) 水平位移和竖直位移<br>moveTo(x, y) 移动到</p>
+<h3 id="rotate-amp-rotateTo"><a href="#rotate-amp-rotateTo" class="headerlink" title="rotate &amp; rotateTo"></a>rotate &amp; rotateTo</h3><p>(deg, x, y)</p>
+<h3 id="scale-amp-scaleTo"><a href="#scale-amp-scaleTo" class="headerlink" title="scale &amp; scaleTo"></a>scale &amp; scaleTo</h3><p>(x, y)<br>缩放</p>
+<h3 id="resizeTo"><a href="#resizeTo" class="headerlink" title="resizeTo"></a>resizeTo</h3><p>resizeTo(width, height)</p>
+<h3 id="inversePoint-amp-point"><a href="#inversePoint-amp-point" class="headerlink" title="inversePoint &amp; point"></a>inversePoint &amp; point</h3><p>好像是点，不过没确认作用</p>
+<h2 id="Path"><a href="#Path" class="headerlink" title="Path"></a>Path</h2><p>是在 art/core/path的基础上扩展了一小下的 path，做了一点处理，使用跟 path 一样：</p>
+<p>所有的起点都是当前位置，往往是所在 Group 的x, y</p>
+<h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><p>move<br>moveTo<br>line<br>lineTo<br>reset<br>close<br>toJSON</p>
+<h3 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h3><ul>
+<li>curve 曲线，三阶贝塞尔曲线，参数为 c1x, c1y, c2x, c2y, ex, ey<ul>
+<li>(c1x, c1y): 第一个控制点坐标</li>
+<li>(c2x, c2y): 第二个控制点坐标</li>
+<li>(ex, ey): 曲线终点，取值是相对于起点的距离</li>
+</ul>
+</li>
+<li>curveTo 曲线，三阶贝塞尔曲线，跟 curve 唯一的区别是 (ex, ey) 是坐标值</li>
+<li>arc 弧，参数x, y, rx, ry, outer, counterClockwise, rotation<ul>
+<li>(x, y) 终点坐标举例起点坐标的相对距离</li>
+<li>(rx, ry) 这个还没搞清楚是啥，会影响弧度</li>
+<li>outer 外侧圆弧么？？</li>
+<li>counterClockwise 顺时针方向么？</li>
+<li>rotation 角度？？？<br>arcTo 跟 curve 唯一的区别是 (x, y) 是坐标值<br>counterArc<br>counterArcTo</li>
+</ul>
+</li>
+</ul>
+<h2 id="Pattern-url-width-height-left-top"><a href="#Pattern-url-width-height-left-top" class="headerlink" title="Pattern(url, width, height, left, top)"></a>Pattern(url, width, height, left, top)</h2><p>主要是笔刷</p>
+<h2 id="ClippingRectangle"><a href="#ClippingRectangle" class="headerlink" title="ClippingRectangle"></a>ClippingRectangle</h2><p>其实还是个 Group，不过似乎是有路径规划了还是神马，没确定完呢<br>props</p>
+<ul>
+<li>x, y</li>
+<li>width, height</li>
+</ul>
+<h2 id="LinearGradient-和-RadialGradient"><a href="#LinearGradient-和-RadialGradient" class="headerlink" title="LinearGradient 和 RadialGradient"></a>LinearGradient 和 RadialGradient</h2><p>似乎是笔刷定义，暂没确认</p>
+<p>to be continued</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React-Native/" rel="tag"># React Native</a>
+          
+            <a href="/tags/全端/" rel="tag"># 全端</a>
+          
+            <a href="/tags/绘图/" rel="tag"># 绘图</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/13/learning/react-native/animation/" rel="next" title="React Native 浅入门 —— 变形、动画篇">
+                <i class="fa fa-chevron-left"></i> React Native 浅入门 —— 变形、动画篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/08/24/learning/react-native/drawing/"
+     data-title="React Native 浅入门 —— 绘图篇"
+     data-content=""
+     data-url="https://leowang721.github.io/2015/08/24/learning/react-native/drawing/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/08/24/learning/react-native/drawing/"
+           data-title="React Native 浅入门 —— 绘图篇" data-url="https://leowang721.github.io/2015/08/24/learning/react-native/drawing/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.jpg"
+               alt="Leo Wang" />
+          <p class="site-author-name" itemprop="name">Leo Wang</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leowang721" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/leowang721" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/seraphwings" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/leowang721" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖"><span class="nav-number">1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础元素"><span class="nav-number">2.</span> <span class="nav-text">基础元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#公共的-props"><span class="nav-number">2.1.</span> <span class="nav-text">公共的 props</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Surface"><span class="nav-number">2.2.</span> <span class="nav-text">Surface</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Group"><span class="nav-number">2.3.</span> <span class="nav-text">Group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shape"><span class="nav-number">2.4.</span> <span class="nav-text">Shape</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Text"><span class="nav-number">2.5.</span> <span class="nav-text">Text</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transform"><span class="nav-number">3.</span> <span class="nav-text">Transform</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#transform-变形矩阵"><span class="nav-number">3.1.</span> <span class="nav-text">transform 变形矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#transformTo"><span class="nav-number">3.2.</span> <span class="nav-text">transformTo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#translate-amp-move-amp-moveTo"><span class="nav-number">3.3.</span> <span class="nav-text">translate & move & moveTo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rotate-amp-rotateTo"><span class="nav-number">3.4.</span> <span class="nav-text">rotate & rotateTo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scale-amp-scaleTo"><span class="nav-number">3.5.</span> <span class="nav-text">scale & scaleTo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resizeTo"><span class="nav-number">3.6.</span> <span class="nav-text">resizeTo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inversePoint-amp-point"><span class="nav-number">3.7.</span> <span class="nav-text">inversePoint & point</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Path"><span class="nav-number">4.</span> <span class="nav-text">Path</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础"><span class="nav-number">4.1.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高级"><span class="nav-number">4.2.</span> <span class="nav-text">高级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pattern-url-width-height-left-top"><span class="nav-number">5.</span> <span class="nav-text">Pattern(url, width, height, left, top)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ClippingRectangle"><span class="nav-number">6.</span> <span class="nav-text">ClippingRectangle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LinearGradient-和-RadialGradient"><span class="nav-number">7.</span> <span class="nav-text">LinearGradient 和 RadialGradient</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Wang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"leowang721"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

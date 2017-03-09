@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+    
+    <entry>
+      <title><![CDATA[React Native 浅入门 —— 绘图篇]]></title>
+      <url>https://leowang721.github.io/2015/08/24/learning/react-native/drawing/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>权当一个笔记，再写写或许更明白点</p>
+</blockquote>
+<p>原本搞了个模拟的，就使用元素来模拟绘图，例如直线……</p>
+<p>不过确实是很麻烦…… 不过再去扫了扫 Issues，果然发现有人问过，且 facebook 也有相应的方案：</p>
+<p>绘图可使用：ReactART，位置：Libraries/ART/ReactNativeART.js<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ReactART = &#123;</div><div class="line">    <span class="attr">LinearGradient</span>: LinearGradient,</div><div class="line">    <span class="attr">RadialGradient</span>: RadialGradient,</div><div class="line">    <span class="attr">Pattern</span>: Pattern,</div><div class="line">    <span class="attr">Transform</span>: Transform,</div><div class="line">    <span class="attr">Path</span>: Path,</div><div class="line">    <span class="attr">Surface</span>: Surface,</div><div class="line">    <span class="attr">Group</span>: Group,</div><div class="line">    <span class="attr">ClippingRectangle</span>: ClippingRectangle,</div><div class="line">    <span class="attr">Shape</span>: Shape,</div><div class="line">    <span class="attr">Text</span>: Text,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>例子可暂时扫扫 <a href="https://github.com/reactjs/react-page/blob/art/" target="_blank" rel="external">https://github.com/reactjs/react-page/blob/art/</a></p>
+<p>继续记笔记：</p>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><p>使用这个之前，安装 art 库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i art --save</div></pre></td></tr></table></figure></p>
+<p>并且需要在项目中添加依赖：</p>
+<ol>
+<li>右键点击项目 -&gt; ‘Add Files to <code>ProjectName</code> -&gt; 选择 node_modules/react-native/React/Libraries/ART/ART.xcodeproj’</li>
+<li>将 <code>libART.a</code> 添加到 <code>Linked Frameworks and Libraries</code></li>
+</ol>
+<a id="more"></a>
+<h2 id="基础元素"><a href="#基础元素" class="headerlink" title="基础元素"></a>基础元素</h2><ul>
+<li>Surface - 长方形的容器，可渲染的区域，是其他元素的容器！</li>
+<li>Group - 可容纳形状、文本和其他的分组</li>
+<li>Shape - 一个向量路径定义的形状，可填充</li>
+<li>Text - 文本</li>
+</ul>
+<p>即一个图形，必须是这样的：最外层是一个 Surface，去定义容器的大小，就像是 Canvas 元素一样，然后其子元素由 Group 进行组装，使用 Shape 和 Text 确定内容</p>
+<h3 id="公共的-props"><a href="#公共的-props" class="headerlink" title="公共的 props"></a>公共的 props</h3><ul>
+<li>x,y: 坐标</li>
+<li>originX, originY: 原始坐标，这个给 scale 和 rotate 使用的</li>
+<li>transform: {Array} 变形相关</li>
+<li>visible: {boolean} 决定了 opacity 的值是 0|1</li>
+<li>opacity: {number} opacity 的值</li>
+<li>scale, scaleX, scaleY {number} 缩放</li>
+<li>rotation: {string} 旋转 0deg</li>
+</ul>
+<p>说明：<br>x, y 每个都可有，它指定了元素的位置。<br>originX, originY则是一个相对位置，它主要是给 scale 和 rotate 使用的，默认是0, 0，这样就意味着，默认是以起点为中心旋转，或者从起点开始缩放！</p>
+<h3 id="Surface"><a href="#Surface" class="headerlink" title="Surface"></a>Surface</h3><p>容器，接受的 props：</p>
+<ul>
+<li>width: {number}</li>
+<li>height: {number}</li>
+</ul>
+<h3 id="Group"><a href="#Group" class="headerlink" title="Group"></a>Group</h3><p>定义分组，它是一个 <code>Component</code>，实际上使用了 <code>NativeGroup</code>，可接受的 props：</p>
+<ul>
+<li>onMouseDown</li>
+<li>onMouseUp</li>
+</ul>
+<h3 id="Shape"><a href="#Shape" class="headerlink" title="Shape"></a>Shape</h3><p>形状，与 ART 或者 ReactART 不同的是，当前不支持 width 和 height，可接受的 props：</p>
+<ul>
+<li>fill: 定义笔刷，有一个用法已废弃，不多述，主要是生成颜色：new Color(colorOrBrush)，值可为：<ul>
+<li>{string} 预定义颜色：maroon: ‘#800000’, red: ‘#ff0000’, orange: ‘#ffA500’, yellow: ‘#ffff00’, olive: ‘#808000’, purple: ‘#800080’, fuchsia: “#ff00ff”, white: ‘#ffffff’, lime: ‘#00ff00’, green: ‘#008000’, navy: ‘#000080’, blue: ‘#0000ff’, aqua: ‘#00ffff’, teal: ‘#008080’, black: ‘#000000’, silver: ‘#c0c0c0’, gray: ‘#808080’</li>
+<li>rgb/rgba 颜色：rgba(0,0,0,0.1)</li>
+<li>hex #0000FF</li>
+<li>hsb</li>
+<li>hsl</li>
+</ul>
+</li>
+<li>stroke: 定义颜色，跟 fill 其实用法一样</li>
+<li>strokeDash: {Object} 画虚线<ul>
+<li>strokeDash.count {number} array 的个数，必须有此值才能生效，必须=array.length</li>
+<li>strokeDash.array：{Array} 虚线是如何交替绘制<ul>
+<li>10,10 表示先绘制10个点，再跳过10个点，如此反复</li>
+<li>10, 20, 10 先绘制10个点，跳过20个点，绘制10个点，跳过10个点，再绘制20个点，如此反复</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>strokeCap: {string} 设置线条终点形状，可取值：butt(0) , square(2) 有个默认值 round(1)</li>
+<li>strokeJoin: {string} 设置线条连接点的风格，该属性支持如下三个值 可取值：miter(0), bevel(2) 有个默认值 round(1)</li>
+<li>strokeWidth: {number} 线宽 默认1</li>
+</ul>
+<h3 id="Text"><a href="#Text" class="headerlink" title="Text"></a>Text</h3><p>文字</p>
+<ul>
+<li>path 文字的路径</li>
+<li>font 字体相关<ul>
+<li>{string} 例如 ‘normal|bold|italic 13px 字体名称’ 可选单位如 px、pt、em 等</li>
+<li>{Object}<ul>
+<li>font.fontFamily {string} 字体，可以使用逗号分隔</li>
+<li>fontSize {number}</li>
+<li>fontWeight {string} bold|normal</li>
+<li>fontStyle {string} italic|normal</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>其余几个跟 Shape 一致的</p>
+<h2 id="Transform"><a href="#Transform" class="headerlink" title="Transform"></a>Transform</h2><p>变形相关</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var t = new Transform();</div><div class="line">t.transformTo(1, 0, 0, 1, 0, 0)</div><div class="line">    .move(props.x || 0, props.y || 0)</div><div class="line">    .rotate(props.rotation || 0, props.originX, props.originY)</div><div class="line">    .scale(scaleX, scaleY, props.originX, props.originY);</div></pre></td></tr></table></figure>
+<h3 id="transform-变形矩阵"><a href="#transform-变形矩阵" class="headerlink" title="transform 变形矩阵"></a>transform 变形矩阵</h3><p>参数为(xx, yx, xy, yy[, x, y])，即 arguments<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> result       current      arguments</div><div class="line">xx  xy  x     xx  xy  x     xx  xy  x</div><div class="line">yx  yy  y  =  yx  yy  y  *  yx  yy  y</div><div class="line">0   0   1     0   0   1     0   0   1</div></pre></td></tr></table></figure></p>
+<p>xx - (number) 沿 X 轴的缩放 (default: 1)<br>yx - (number) 旋转？ multiplier to skew the x axis (default: 0)<br>xy - (number) 旋转？ multiplier to skew the y axis (default: 0)<br>yy - (number) 沿 Y 轴的缩放 (default: 1)<br>x - (number) 水平移动 (default: 0)<br>y - (number) 竖直移动 (default: 0)</p>
+<h3 id="transformTo"><a href="#transformTo" class="headerlink" title="transformTo"></a>transformTo</h3><p>重置矩阵为某个值，其实就是重置 current，跟构造函数参数一致</p>
+<h3 id="translate-amp-move-amp-moveTo"><a href="#translate-amp-move-amp-moveTo" class="headerlink" title="translate &amp; move &amp; moveTo"></a>translate &amp; move &amp; moveTo</h3><p>translate(x, y)<br>move(x, y) 水平位移和竖直位移<br>moveTo(x, y) 移动到</p>
+<h3 id="rotate-amp-rotateTo"><a href="#rotate-amp-rotateTo" class="headerlink" title="rotate &amp; rotateTo"></a>rotate &amp; rotateTo</h3><p>(deg, x, y)</p>
+<h3 id="scale-amp-scaleTo"><a href="#scale-amp-scaleTo" class="headerlink" title="scale &amp; scaleTo"></a>scale &amp; scaleTo</h3><p>(x, y)<br>缩放</p>
+<h3 id="resizeTo"><a href="#resizeTo" class="headerlink" title="resizeTo"></a>resizeTo</h3><p>resizeTo(width, height)</p>
+<h3 id="inversePoint-amp-point"><a href="#inversePoint-amp-point" class="headerlink" title="inversePoint &amp; point"></a>inversePoint &amp; point</h3><p>好像是点，不过没确认作用</p>
+<h2 id="Path"><a href="#Path" class="headerlink" title="Path"></a>Path</h2><p>是在 art/core/path的基础上扩展了一小下的 path，做了一点处理，使用跟 path 一样：</p>
+<p>所有的起点都是当前位置，往往是所在 Group 的x, y</p>
+<h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><p>move<br>moveTo<br>line<br>lineTo<br>reset<br>close<br>toJSON</p>
+<h3 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h3><ul>
+<li>curve 曲线，三阶贝塞尔曲线，参数为 c1x, c1y, c2x, c2y, ex, ey<ul>
+<li>(c1x, c1y): 第一个控制点坐标</li>
+<li>(c2x, c2y): 第二个控制点坐标</li>
+<li>(ex, ey): 曲线终点，取值是相对于起点的距离</li>
+</ul>
+</li>
+<li>curveTo 曲线，三阶贝塞尔曲线，跟 curve 唯一的区别是 (ex, ey) 是坐标值</li>
+<li>arc 弧，参数x, y, rx, ry, outer, counterClockwise, rotation<ul>
+<li>(x, y) 终点坐标举例起点坐标的相对距离</li>
+<li>(rx, ry) 这个还没搞清楚是啥，会影响弧度</li>
+<li>outer 外侧圆弧么？？</li>
+<li>counterClockwise 顺时针方向么？</li>
+<li>rotation 角度？？？<br>arcTo 跟 curve 唯一的区别是 (x, y) 是坐标值<br>counterArc<br>counterArcTo</li>
+</ul>
+</li>
+</ul>
+<h2 id="Pattern-url-width-height-left-top"><a href="#Pattern-url-width-height-left-top" class="headerlink" title="Pattern(url, width, height, left, top)"></a>Pattern(url, width, height, left, top)</h2><p>主要是笔刷</p>
+<h2 id="ClippingRectangle"><a href="#ClippingRectangle" class="headerlink" title="ClippingRectangle"></a>ClippingRectangle</h2><p>其实还是个 Group，不过似乎是有路径规划了还是神马，没确定完呢<br>props</p>
+<ul>
+<li>x, y</li>
+<li>width, height</li>
+</ul>
+<h2 id="LinearGradient-和-RadialGradient"><a href="#LinearGradient-和-RadialGradient" class="headerlink" title="LinearGradient 和 RadialGradient"></a>LinearGradient 和 RadialGradient</h2><p>似乎是笔刷定义，暂没确认</p>
+<p>to be continued</p>
+]]></content>
+      
+        <categories>
+            
+            <category> React Native </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> React Native </tag>
+            
+            <tag> 全端 </tag>
+            
+            <tag> 绘图 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[React Native 浅入门 —— 变形、动画篇]]></title>
+      <url>https://leowang721.github.io/2015/08/13/learning/react-native/animation/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>权当一个笔记，再写写或许更明白点</p>
+</blockquote>
+<p>本不想这么快就写这个的，不过用到了，顺便记录一下。</p>
+<h2 id="变形（2D-或-3D-转换）"><a href="#变形（2D-或-3D-转换）" class="headerlink" title="变形（2D 或 3D 转换）"></a>变形（2D 或 3D 转换）</h2><p>支持的东西在变化，请查看 <code>/Libraries/StyleSheet/TransformPropTypes.js</code> 确定当前支持的属性。</p>
+<p>查看现有官方文档中 View 的 style 支持，会发现这么几个： <code>rotation</code> <code>scaleX</code> <code>scaleY</code> <code>transformMatrix</code> <code>translateX</code> <code>translateY</code>。</p>
+<p>但是很不幸滴，如果去看 <code>TransformPropTypes.js</code> 就会发现，这几个已经被标成了：<code>DEPRECATED</code>。</p>
+<p>甭这么用了，就算现在能用也是一样。</p>
+<p>不过官方还给了这么一段：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">transform: ReactPropTypes.arrayOf(</div><div class="line">    ReactPropTypes.oneOfType([</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">perspective</span>: ReactPropTypes.number&#125;),</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">rotate</span>: ReactPropTypes.string&#125;),</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">rotateX</span>: ReactPropTypes.string&#125;),</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">rotateY</span>: ReactPropTypes.string&#125;),</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">rotateZ</span>: ReactPropTypes.string&#125;),</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">scale</span>: ReactPropTypes.number&#125;),</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">scaleX</span>: ReactPropTypes.number&#125;),</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">scaleY</span>: ReactPropTypes.number&#125;),</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">translateX</span>: ReactPropTypes.number&#125;),</div><div class="line">        ReactPropTypes.shape(&#123;<span class="attr">translateY</span>: ReactPropTypes.number&#125;)</div><div class="line">    ])</div><div class="line">  )</div></pre></td></tr></table></figure></p>
+<p>所以实际上已经整体将变形、动画相关的切到了 <code>transform</code> 上。</p>
+<p>来看一个简单的例子，看了再对比上面那段，就知道怎么用了：</p>
+<a id="more"></a>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> styles = StyleSheet.create(&#123;</div><div class="line">    <span class="attr">line</span>: &#123;</div><div class="line">        <span class="attr">transform</span>: [</div><div class="line">            &#123;<span class="attr">rotate</span>: <span class="string">'45deg'</span>&#125;  <span class="comment">// 旋转45度</span></div><div class="line">        ]</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这些属性都能在 css3 中找到，所以就分类看下好了。</p>
+<h3 id="perspective（0-9-0-stable开始支持）"><a href="#perspective（0-9-0-stable开始支持）" class="headerlink" title="perspective（0.9.0-stable开始支持）"></a>perspective（0.9.0-stable开始支持）</h3><p>这个说明来自于：<a href="http://www.w3school.com.cn/cssref/pr_perspective.asp" target="_blank" rel="external">W3school</a><br>perspective 属性定义 3D 元素距视图的距离，以像素计。该属性允许您改变 3D 元素查看 3D 元素的视图。<br>当为元素定义 perspective 属性时，其子元素会获得透视效果，而不是元素本身。<br>注意：perspective 属性只影响 3D 转换元素。</p>
+<h3 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h3><p>值类型为字符串，例如 ‘9deg’，表示9度。</p>
+<ul>
+<li>rotate：2D旋转，绕着中心顺时针旋转多少度。</li>
+<li>rotateX, rotateY, rotateZ：3D旋转，分别是绕着 X 轴、Y 轴和 Z 轴。（0.9.0-stable开始支持）</li>
+</ul>
+<p><img src="https://cloud.githubusercontent.com/assets/90494/9020087/82598b70-37af-11e5-8a72-b8b0d8d47521.gif"></p>
+<h3 id="缩放"><a href="#缩放" class="headerlink" title="缩放"></a>缩放</h3><p>值类型为数字，表示倍数。</p>
+<ul>
+<li>scale：X、Y 同时缩放</li>
+<li>scaleX：仅 X 轴方向缩放</li>
+<li>scaleY：仅 Y 轴方向缩放</li>
+</ul>
+<h3 id="移动"><a href="#移动" class="headerlink" title="移动"></a>移动</h3><p>值行为数字：单位应该是坐标轴单位</p>
+<ul>
+<li>translateX：X 轴方向移动</li>
+<li>translateY：Y 周方向移动</li>
+</ul>
+<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><p>上面的都是设置了 style，达到一个变形的效果，那么能不能让它们动起来呢？</p>
+<p>简单的 View，再设置 state 的做法是不行的，就是一个跳跃的效果。</p>
+<p>现存的翻译过的文档都没有详细些的内容，这也是因为<code>动画</code>部分官方正在开发中，不过已经放出来了，而且E文的文档已经有更新，就翻译一些过来，顺便做点实验：</p>
+<p>Animated 库被设计用来简便的实现风格多样的动画行为，同时又有较高的性能。</p>
+<p>Animated 主要是通过声明初始/目标值，并且配置过渡的动画方式，然后通过简单的 start/stop 方法来控制动画的执行。</p>
+<p>按官方说法要比设置 state 和 prerender 快很多滴。</p>
+<h3 id="支持元素"><a href="#支持元素" class="headerlink" title="支持元素"></a>支持元素</h3><p>如例子中的 Animated.Image，默认支持：Image、Text和 View。</p>
+<p>不过可以通过 Animated.createAnimatedComponent 方法来创造你想要的 Component。</p>
+<h3 id="动画效果（速度算法）"><a href="#动画效果（速度算法）" class="headerlink" title="动画效果（速度算法）"></a>动画效果（速度算法）</h3><ul>
+<li>sprint：【弹性】简单的单弹簧物理模型，弹性的动画效果，效果符合 <a href="https://facebook.github.io/origami/" target="_blank" rel="external">Origami</a><ul>
+<li>friction: 摩擦力…… 默认 7</li>
+<li>tension: 张力 默认 40</li>
+</ul>
+</li>
+<li>decay: 【渐缓】以一个初始速度开始，并逐渐减慢直至停止<ul>
+<li>velocity: 初始速度，必须</li>
+<li>deceleration: 减速率. 默认 0.997</li>
+</ul>
+</li>
+<li>timing: 指定时间长度的平缓动画<ul>
+<li>duration: 时间长度，单位 ms， 默认 500</li>
+<li>easing: 定义曲线的平缓函数. 可查看 Easing module，其中已预定义了一些函数. iOS 默认是 Easing.inOut(Easing.ease).</li>
+<li>delay: 延迟多少 ms 执行动画，默认 0</li>
+</ul>
+</li>
+</ul>
+<h2 id="动画的执行（APIs）"><a href="#动画的执行（APIs）" class="headerlink" title="动画的执行（APIs）"></a>动画的执行（APIs）</h2><p>执行 <code>start</code> 方法开始动画效果，start 可以接受一个 <code>callback</code> 参数，在动画完成时触发执行。<br>如果动画正常执行结束，callback 会接收到一个参数 <code>{finished: true}</code>，如果是非正常结束，例如被手势或其他动画打断了，finished 则为 false。</p>
+<h3 id="一个-Component-展现时自动触发动画"><a href="#一个-Component-展现时自动触发动画" class="headerlink" title="一个 Component 展现时自动触发动画"></a>一个 Component 展现时自动触发动画</h3><p>主要是使用 <code>componentDidMount</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleAnimation</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(props: any) &#123;</div><div class="line">        <span class="keyword">super</span>(props);</div><div class="line">        <span class="keyword">this</span>.state = &#123;</div><div class="line">            <span class="attr">bounceValue</span>: <span class="keyword">new</span> Animated.Value(<span class="number">0</span>)</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">    render(): ReactElement &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            &lt;Animated.View // 支持: Image, Text, View</div><div class="line">                style=&#123;</div><div class="line">                    &#123;</div><div class="line">                        flex: 1,</div><div class="line">                        transform: [</div><div class="line">                            &#123;scale: this.state.bounceValue&#125;</div><div class="line">                        ]</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            /&gt;</div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">    componentDidMount() &#123;</div><div class="line">        this.state.bounceValue.setValue(1.5);  // 目标值</div><div class="line">        Animated.spring(  // 支持: spring, decay, timing，过渡的动画方式</div><div class="line">            this.state.bounceValue,</div><div class="line">            &#123;</div><div class="line">                toValue: 0.8,  // 目标值</div><div class="line">                friction: 1 // 动画方式的参数</div><div class="line">            &#125;</div><div class="line">        ).start();  // 开始</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="动画的组合"><a href="#动画的组合" class="headerlink" title="动画的组合"></a>动画的组合</h3><p>可以使用以下方法来进行组合：</p>
+<ul>
+<li>parallel 并行</li>
+<li>sequence 顺序执行</li>
+<li>stagger 交错？？</li>
+<li>delay 延迟执行</li>
+</ul>
+<p>这四个方法都接受数组参数，元素内容是动画效果。</p>
+<p>如果任何一个动画被 stoped，则其他动画也会终止。<br>Parallel有一个参数：stopTogether，如果被设置为 false，则不会执行这种终止的效果。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Animated.sequence([            <span class="comment">// spring to start and twirl after decay finishes</span></div><div class="line">  Animated.decay(position, &#123;   <span class="comment">// coast to a stop</span></div><div class="line">    velocity: &#123;<span class="attr">x</span>: gestureState.vx, <span class="attr">y</span>: gestureState.vy&#125;, <span class="comment">// velocity from gesture release</span></div><div class="line">    deceleration: <span class="number">0.997</span>,</div><div class="line">  &#125;),</div><div class="line">  Animated.parallel([          <span class="comment">// after decay, in parallel:</span></div><div class="line">    Animated.spring(position, &#123;</div><div class="line">      <span class="attr">toValue</span>: &#123;<span class="attr">x</span>: <span class="number">0</span>, <span class="attr">y</span>: <span class="number">0</span>&#125;    <span class="comment">// return to start</span></div><div class="line">    &#125;),</div><div class="line">    Animated.timing(twirl, &#123;   <span class="comment">// and twirl</span></div><div class="line">      toValue: <span class="number">360</span>,</div><div class="line">    &#125;),</div><div class="line">  ]),</div><div class="line">]).start();                    <span class="comment">// start the sequence group</span></div></pre></td></tr></table></figure>
+<h3 id="改变输入输出值域映射：interpolate"><a href="#改变输入输出值域映射：interpolate" class="headerlink" title="改变输入输出值域映射：interpolate"></a>改变输入输出值域映射：<code>interpolate</code></h3><p>例如：[0, 1]映射[0, 100]为：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">value.interpolate(&#123;</div><div class="line">    <span class="attr">inputRange</span>: [<span class="number">0</span>, <span class="number">1</span>],</div><div class="line">    <span class="attr">outputRange</span>: [<span class="number">0</span>, <span class="number">100</span>],</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>同样支持多重值域：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">value.interpolate(&#123;</div><div class="line">    inputRange: [-300, -100, 0, 100, 101],</div><div class="line">    outputRange: [300,    0, 1,   0,   0],</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>这意味着：</p>
+<p>-300 =&gt; 300<br>-200    150<br>-100    0<br>-50 0.5<br>0   1<br>50  0.5<br>100 0<br>101 0</p>
+<p>这几个很容易理解，主要是边界值：<br>最左侧的[-300, -100]对应着[300, 0]，这意味着，这种映射会一直向负数方向延伸下去，因此 -400 =&gt; 450<br>最右侧是[100, 101]对应这[0, 0]，这意味着此后的数目都对应0，即 200 =&gt; 0</p>
+<p><code>interpolate</code> 支持动画计算函数，很多已经在 <code>Libraries/Animation/Animated/Easing.js</code> 中定义了。</p>
+<p><code>interpolate</code>可配置，默认是 <code>extend</code>，不过 <code>clamp</code> 在防止输出超出值域上同样十分有用。</p>
+<h3 id="toValue-可以接受另一个-Animated-Value-作为参数"><a href="#toValue-可以接受另一个-Animated-Value-作为参数" class="headerlink" title="toValue 可以接受另一个 Animated.Value 作为参数"></a>toValue 可以接受另一个 Animated.Value 作为参数</h3><h3 id="Animated-events"><a href="#Animated-events" class="headerlink" title="Animated.events"></a>Animated.events</h3><p>输入事件，可以让手势或其他事件来直接对应动画的值，这当然需要一个结构化的数据才能支持：<br>第一层是数组，元素是对象：</p>
+<p>scrollX 对应着 event.nativeEvent.contentOffset.x<br>pan.x and pan.y 对应着 gestureState.dx 和 gestureState.dy<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">onScroll=&#123;Animated.event(</div><div class="line">    [&#123;nativeEvent: &#123;contentOffset: &#123;x: scrollX&#125;&#125;&#125;]   // scrollX = e.nativeEvent.contentOffset.x</div><div class="line">)&#125;</div><div class="line">onPanResponderMove=&#123;Animated.event([</div><div class="line">    null,                                          // ignore the native event</div><div class="line">    &#123;dx: pan.x, dy: pan.y&#125;                         // extract dx and dy from gestureState</div><div class="line">]);</div></pre></td></tr></table></figure></p>
+<h3 id="spring-stopAnimation-callback-终止动画"><a href="#spring-stopAnimation-callback-终止动画" class="headerlink" title="spring.stopAnimation(callback) 终止动画"></a>spring.stopAnimation(callback) 终止动画</h3><h3 id="spring-addListener-callback-增加一个-listener，在动画执行时"><a href="#spring-addListener-callback-增加一个-listener，在动画执行时" class="headerlink" title="spring.addListener(callback) 增加一个 listener，在动画执行时"></a>spring.addListener(callback) 增加一个 listener，在动画执行时</h3><h2 id="LayoutAnimation"><a href="#LayoutAnimation" class="headerlink" title="LayoutAnimation"></a>LayoutAnimation</h2><p>允许全局的进行动画的创建和更新，这会在下次的渲染时执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">var App = React.createClass(&#123;</div><div class="line">  componentWillMount() &#123;</div><div class="line">    // Animate creation</div><div class="line">    LayoutAnimation.spring();</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  getInitialState() &#123;</div><div class="line">    return &#123; w: 100, h: 100 &#125;</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  _onPress() &#123;</div><div class="line">    // Animate the update</div><div class="line">    LayoutAnimation.spring();</div><div class="line">    this.setState(&#123;w: this.state.w + 15, h: this.state.h + 15&#125;)</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  render: function() &#123;</div><div class="line">    return (</div><div class="line">      &lt;View style=&#123;styles.container&#125;&gt;</div><div class="line">        &lt;View style=&#123;[styles.box, &#123;width: this.state.w, height: this.state.h&#125;]&#125; /&gt;</div><div class="line">        &lt;TouchableOpacity onPress=&#123;this._onPress&#125;&gt;</div><div class="line">          &lt;View style=&#123;styles.button&#125;&gt;</div><div class="line">            &lt;Text style=&#123;styles.buttonText&#125;&gt;Press me!&lt;/Text&gt;</div><div class="line">          &lt;/View&gt;</div><div class="line">        &lt;/TouchableOpacity&gt;</div><div class="line">      &lt;/View&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="requestAnimationFrame"><a href="#requestAnimationFrame" class="headerlink" title="requestAnimationFrame"></a>requestAnimationFrame</h2><p>一般来说用不到这个 来自于 browser 的 API，Animations 基本封装好了。</p>
+<p>不过，我还是来个简单的例子吧，一个超级简陋的时钟秒针的动画（这结合了绘图篇的知识）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">class Timing extends Component &#123;</div><div class="line">    constructor(props) &#123;</div><div class="line">        super(props);</div><div class="line">        this.state = &#123;</div><div class="line">            secondRotation: (new Date()).getSeconds() * 6;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    animate() &#123;</div><div class="line">        var secondRotation = (new Date()).getSeconds() * 6;</div><div class="line">        this.setState(&#123;secondRotation&#125;);</div><div class="line">        requestAnimationFrame(this.animate.bind(this));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    componentDidMount() &#123;</div><div class="line">        requestAnimationFrame(this.animate.bind(this));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    render() &#123;</div><div class="line">        return (</div><div class="line">            &lt;View&gt;</div><div class="line">                &lt;Surface</div><div class="line">                    width=&#123;300&#125;</div><div class="line">                    height=&#123;400&#125;</div><div class="line">                    style=&#123;</div><div class="line">                        &#123;backgroundColor: &apos;blue&apos;&#125;</div><div class="line">                    &#125;&gt;</div><div class="line">                    &lt;Group x=&#123;150&#125; y=&#123;150&#125;&gt;</div><div class="line">                        &lt;Shape stroke=&quot;#000000&quot; strokeWidth=&#123;4&#125; d=&#123;line&#125; rotation=&#123;this.state.secondRotation&#125; /&gt;</div><div class="line">                    &lt;/Group&gt;</div><div class="line">                &lt;/Surface&gt;</div><div class="line">            &lt;/View&gt;</div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>to be continued.</p>
+]]></content>
+      
+        <categories>
+            
+            <category> React Native </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> React Native </tag>
+            
+            <tag> 全端 </tag>
+            
+            <tag> 动画 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[React Native 浅入门 —— 交互篇]]></title>
+      <url>https://leowang721.github.io/2015/08/12/learning/react-native/interactive/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>权当一个笔记，再写写或许更明白点</p>
+</blockquote>
+<p>习惯了前端世界的交互模式之后（其实就是 DOM 事件），在这个入门的过程中感觉 React Native 的交互处理就是个不适应。</p>
+<p>如果要做 React Native 的交互，首先至少要知道这样几个东西：</p>
+<ul>
+<li>Gesture Responder System <a href="http://facebook.github.io/react-native/docs/gesture-responder-system.html" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/gesture-responder-system.html" target="_blank" rel="external">中文</a></li>
+<li>TouchableHighlight <a href="http://facebook.github.io/react-native/docs/touchablehighlight.html#content" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/touchable-highlight.html" target="_blank" rel="external">中文</a></li>
+<li>TouchableOpacity <a href="http://facebook.github.io/react-native/docs/touchableopacity.html#content" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/touchable-opacity.html" target="_blank" rel="external">中文</a></li>
+<li>TouchableWithoutFeedback <a href="http://facebook.github.io/react-native/docs/touchablewithoutfeedback.html#content" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/touchable-without-feedback.html" target="_blank" rel="external">中文</a></li>
+<li>PanResponder <a href="http://facebook.github.io/react-native/docs/panresponder.html" target="_blank" rel="external">E文</a> <a href="http://wiki.jikexueyuan.com/project/react-native/pan-responder.html" target="_blank" rel="external">中文</a></li>
+</ul>
+<p>不过干读这几个文档的话，基本就是一头雾水……</p>
+<p>还是一点一点来看罢：</p>
+<h2 id="普通行为"><a href="#普通行为" class="headerlink" title="普通行为"></a>普通行为</h2><p>TouchableHighlight、TouchableOpacity、TouchableWithoutFeedback 这几个很好弄，官方贴心的直接封装了最基础的 Touch 行为，在任何需要点击的 View 外面直接包上这样的标签就行了。</p>
+<p>TouchableHighlight 在点击时表现为高亮<br>TouchableOpacity 在点击时表现为透明<br>TouchableWithoutFeedback 在点击时无反馈</p>
+<p>这几个效果都是封装好了的，无需开发者操心。</p>
+<p>Sample Code<br><a id="more"></a><br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;TouchableOpacity</div><div class="line">    onPressIn=&#123;<span class="keyword">this</span>._onPressInCircle.bind(<span class="keyword">this</span>)&#125;</div><div class="line">    onPressOut=&#123;<span class="keyword">this</span>._onPressOutCircle.bind(<span class="keyword">this</span>)&#125;&gt;</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">&#123;styles.gridItem&#125;</span>&gt;</span><span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></div><div class="line">&lt;<span class="regexp">/TouchableOpacity&gt;</span></div></pre></td></tr></table></figure></p>
+<p>然而这些只适用于按钮系……</p>
+<p>支持事件：</p>
+<ul>
+<li>onPress</li>
+<li>onPressIn</li>
+<li>onPressOut</li>
+<li>onLongPress</li>
+</ul>
+<p>支持参数：</p>
+<ul>
+<li>delayLongPress {number} 单位ms</li>
+<li>delayPressIn {number} 单位ms</li>
+<li>delayPressOut {number} 单位ms</li>
+</ul>
+<p>再特殊点的行为，例如划过，就不用想用这几个货直接实现了。</p>
+<h2 id="Gesture-Responder-System"><a href="#Gesture-Responder-System" class="headerlink" title="Gesture Responder System"></a>Gesture Responder System</h2><p>中文翻译叫：手势应答系统。</p>
+<p>主要就是搞手势识别处理的，那其实也就是复杂点的触摸：例如一边摸一遍动啊，摸着还动出花样画个 L 啥的的那种。</p>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><h4 id="决定是否成为处理器"><a href="#决定是否成为处理器" class="headerlink" title="决定是否成为处理器"></a>决定是否成为处理器</h4><p>冒泡的：</p>
+<ul>
+<li>onStartShouldSetResponder <code>touchStart</code>/<code>mouseDown</code>行为发生，是否当前的元素成为处理器</li>
+<li>onMoveShouldSetResponder <code>touchMove</code>/<code>mouseMove</code>行为发生，是否当前行为成为处理器</li>
+</ul>
+<p>不冒泡/未来不冒泡的：</p>
+<ul>
+<li>onScrollShouldSetResponder 滚动行为发生了，是否当前的元素成为处理器</li>
+<li>onSelectionChangeShouldSetResponder 选择行为发生了，是否当前元素成为处理器</li>
+</ul>
+<p>是否接管成为处理器（因为冒泡是从最深处开始，可以在父级的元素使用此类方法接管）：</p>
+<ul>
+<li>onStartShouldSetResponderCapture <code>touchStart</code>/<code>mouseDown</code>行为发生，是否当前的元素代替最深层的子元素成为处理器</li>
+<li>onMoveShouldSetResponderCapture <code>touchStart</code>/<code>mouseDown</code>行为发生，是否当前的元素代替最深层的子元素成为处理器</li>
+</ul>
+<h4 id="开始处理了"><a href="#开始处理了" class="headerlink" title="开始处理了"></a>开始处理了</h4><ul>
+<li>onResponderStart 当前处理开始</li>
+<li>onResponderGrant 现在正在响应触摸事件</li>
+<li>onResponderMove 用户正移动他们的手指</li>
+<li>onResponderEnd 当前处理结束</li>
+<li>onResponderRelease 在触摸最后被引发，即<code>touchUp</code></li>
+</ul>
+<h4 id="跟拦截相关的（当前应答器的身份）"><a href="#跟拦截相关的（当前应答器的身份）" class="headerlink" title="跟拦截相关的（当前应答器的身份）"></a>跟拦截相关的（当前应答器的身份）</h4><ul>
+<li>onResponderReject 当前视图的应答器不是“我”了，并且还不释放让我来当。</li>
+<li>onResponderTerminationRequest 其他的东西想成为应答器。应该释放应答吗？返回 true 就是允许释放</li>
+<li>onResponderTerminate 应答器已经转交给别人担当了。可能在调用onResponderTerminationRequest 之后被其他视图获取，也可能是被操作系统在没有请求的情况下获取了(发生在 iOS 的 control center/notification center)</li>
+</ul>
+<blockquote>
+<p>以上都是在ResponderEventPlugin.js里面实现的，我们直接使用视图 View 配置</p>
+</blockquote>
+<h4 id="行为生命周期"><a href="#行为生命周期" class="headerlink" title="行为生命周期"></a>行为生命周期</h4><p><img src="/images/learning/react-native/react-native-interactive-lifecycle-single.png" alt="单个元素的行为生命周期"></p>
+<p>这个图画的我头晕啊……</p>
+<h3 id="几个特性"><a href="#几个特性" class="headerlink" title="几个特性"></a>几个特性</h3><h4 id="冒泡"><a href="#冒泡" class="headerlink" title="冒泡"></a>冒泡</h4><p>之前说到，有两个东西是冒泡的：</p>
+<ul>
+<li>onScrollShouldSetResponder</li>
+<li>onSelectionChangeShouldSetResponder</li>
+</ul>
+<p>然则默认是触发最深的那个元素，也就是子级元素，如果父级要拦截作为处理器，则需要处理：</p>
+<ul>
+<li>onStartShouldSetResponderCapture</li>
+<li>onMoveShouldSetResponderCapture</li>
+</ul>
+<p>这两个事件的触发顺序是从父级开始的，所以如果父级设置了返回 true，则会执行父级的处理。</p>
+<p>但是如果任一返回了 false，则依然使用子级元素作为处理器。</p>
+<p>不过如果父级的 <code>onStartShouldSetResponder</code> 如果返回 false，干脆不会触发父级的验证，<code>onStartShouldSetResponderCapture</code> 返回 true 也没用，Move 也是同理。</p>
+<h4 id="拦截"><a href="#拦截" class="headerlink" title="拦截"></a>拦截</h4><ul>
+<li>onResponderReject 当前视图的应答器不是“我”了，并且还不释放让我来当。</li>
+<li>onResponderTerminationRequest 其他的东西想成为应答器。应该释放应答吗？返回 true 就是允许释放</li>
+<li>onResponderTerminate 应答器已经转交给别人担当了。可能在调用onResponderTerminationRequest 之后被其他视图获取，也可能是被操作系统在没有请求的情况下获取了(发生在 iOS 的 control center/notification center)</li>
+</ul>
+<p>话说这个还没搞明白怎么用……</p>
+<h3 id="简单用法"><a href="#简单用法" class="headerlink" title="简单用法"></a>简单用法</h3><p>直接写属性，作为 prop：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;View onResponderStart=&#123;(evt) =&gt; <span class="literal">true</span>&#125; /&gt;</div></pre></td></tr></table></figure></p>
+<p>也可以使用…运算符：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GridItem</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">    get touchProps() &#123;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">onStartShouldSetResponder</span>: <span class="function">(<span class="params">evt</span>) =&gt;</span> <span class="literal">true</span>,</div><div class="line">            <span class="attr">onResponderGrant</span>: <span class="function">(<span class="params">evt</span>) =&gt;</span> &#123;</div><div class="line">                <span class="built_in">console</span>.log(<span class="string">'child'</span>);</div><div class="line">                <span class="built_in">console</span>.log(evt);</div><div class="line">            &#125;,</div><div class="line">            <span class="attr">onResponderTerminationRequest</span>: <span class="function">(<span class="params">evt</span>) =&gt;</span> <span class="literal">true</span></div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">View</span> &#123;<span class="attr">...this.touchProps</span>&#125;&gt;</span><span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>也可以使用 <code>PanResponder</code>（这个会在实际处理的事件前加个 Pan，输出时又会去掉，而且会增加一个参数 <code>gestureState</code>）：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GridItem</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">    componentWillMount() &#123;</div><div class="line">        <span class="keyword">this</span>._panGesture = PanResponder.create(&#123;</div><div class="line">            <span class="attr">onStartShouldSetResponder</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> <span class="literal">true</span>,</div><div class="line">            <span class="attr">onPanResponderGrant</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> &#123;</div><div class="line">                <span class="built_in">console</span>.log(<span class="string">'child'</span>);</div><div class="line">                <span class="built_in">console</span>.log(evt);</div><div class="line">                <span class="built_in">console</span>.log(gestureState);</div><div class="line">            &#125;,</div><div class="line">            <span class="attr">onPanResponderTerminationRequest</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> <span class="literal">true</span></div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">View</span> &#123;<span class="attr">...this._panResponder.panHandlers</span>&#125;&gt;</span><span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="特殊行为"><a href="#特殊行为" class="headerlink" title="特殊行为"></a>特殊行为</h2><h3 id="划走切换的效果"><a href="#划走切换的效果" class="headerlink" title="划走切换的效果"></a>划走切换的效果</h3><p>可以参考：<a href="http://www.terlici.com/2015/04/06/simle-slide-menu-react-native.html" target="_blank" rel="external">http://www.terlici.com/2015/04/06/simle-slide-menu-react-native.html</a><br>就是使用 PanResponder + Animation做的。</p>
+<p>这个回头我自己再搞个出来。</p>
+<h3 id="手势解锁"><a href="#手势解锁" class="headerlink" title="手势解锁"></a>手势解锁</h3><p>因为不想用 WebView 做，所以这里都是从纯 React Native 的角度去考虑的。</p>
+<p>因为生命周期中，TouchIn 是起点，所以如果在外面按住了划过元素，元素是不会有反应的……</p>
+<p>单纯的子级接管作为处理器然后释放也是没用的，如果同时设置 Capture，父级的优先级大……</p>
+<p>那么是否可以这样呢？父级判断碰撞，然后释放处理权？但是拦截的判断只在最开始触发的时候能搞，所以似乎还是行不通的。而且都碰撞到了，如果能直接处理子元素不是更简便么？</p>
+<p>没那么简单，需要看看这三个方法：</p>
+<h4 id="子元素的获取"><a href="#子元素的获取" class="headerlink" title="子元素的获取"></a>子元素的获取</h4><p>使用 refs：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;View style=&#123;styles.gridView&#125; &#123;...this._panResponder.panHandlers&#125; &gt;</div><div class="line">    &lt;View style=&#123;styles.gridLine&#125;&gt;</div><div class="line">        &lt;GridItem ref="item1" /&gt;</div><div class="line">        &lt;GridItem ref="item2" /&gt;</div><div class="line">        &lt;GridItem ref="item3" /&gt;</div><div class="line">    &lt;/View&gt;</div><div class="line">    &lt;View style=&#123;styles.gridLine&#125;&gt;</div><div class="line">        &lt;GridItem ref="item4" /&gt;</div><div class="line">        &lt;GridItem ref="item5" /&gt;</div><div class="line">        &lt;GridItem ref="item6" /&gt;</div><div class="line">    &lt;/View&gt;</div><div class="line">    &lt;View style=&#123;styles.gridLine&#125;&gt;</div><div class="line">        &lt;GridItem ref="item7" /&gt;</div><div class="line">        &lt;GridItem ref="item8" /&gt;</div><div class="line">        &lt;GridItem ref="item9" /&gt;</div><div class="line">    &lt;/View&gt;</div><div class="line">&lt;/View&gt;</div></pre></td></tr></table></figure></p>
+<p>这样就可以直接通过 <code>this.refs[name]</code> 获取到子元素了。</p>
+<h4 id="获取子元素的位置"><a href="#获取子元素的位置" class="headerlink" title="获取子元素的位置"></a>获取子元素的位置</h4><p>这是从 React Native 的 <a href="https://github.com/facebook/react-native/issues/1374#issuecomment-104954196" target="_blank" rel="external">Issue 1374</a> 拿到的方法：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> RCTUIManager = <span class="built_in">require</span>(<span class="string">'NativeModules'</span>).UIManager;</div><div class="line"><span class="keyword">var</span> view = <span class="keyword">this</span>.refs[name];</div><div class="line"><span class="keyword">var</span> handle = React.findNodeHandle(view);</div><div class="line">RCTUIManager.measure(handle, (x, y, width, height, pageX, pageY) =&gt; &#123;</div><div class="line">    <span class="comment">// x,y 似乎是当前container的坐标</span></div><div class="line">    <span class="comment">// width, height 是宽高</span></div><div class="line">    <span class="comment">// pageX, pageY 是在屏幕中的坐标（起始坐标）</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>所以，元素在屏幕中的范围是：pageX ~ pageX + width, pageY ~ pageY + height</p>
+<p>至少是个简单的正方形，如果是其他形状例如圆形，可能还需要计算圆心和半径的大小。</p>
+<h4 id="获取当前-touch-的坐标"><a href="#获取当前-touch-的坐标" class="headerlink" title="获取当前 touch 的坐标"></a>获取当前 touch 的坐标</h4><p>之前说过 PanResponder 会给事件方法增加一个参数 <code>gestureState</code>：</p>
+<p>一个 gestureState 对象有以下属性：</p>
+<ul>
+<li>stateID：gestureState 的ID-在屏幕上保持至少一个触发动作的时间</li>
+<li>moveX：最近动态触发的最新的屏幕坐标</li>
+<li>x0：应答器横向的屏幕坐标</li>
+<li>y0：应答器纵向的屏幕坐标</li>
+<li>dx：触发开始后累积的横向动作距离</li>
+<li>dy：触发开始后累积的纵向动作距离</li>
+<li>vx：当前手势的横向速度</li>
+<li>vy：当前手势的纵向速度</li>
+<li>numberActiveTouch：屏幕上当前触发的数量</li>
+</ul>
+<p>那么 touch 位置的坐标可以这么获得：[x0 + dx, y0 + dy]</p>
+<p>当然也可以使用都有的 evt 参数：</p>
+<p>changedTouches - Array of all touch events that have changed since the last event<br>identifier - The ID of the touch<br>locationX - The X position of the touch, relative to the element<br>locationY - The Y position of the touch, relative to the element<br>pageX - The X position of the touch, relative to the screen<br>pageY - The Y position of the touch, relative to the screen<br>target - The node id of the element receiving the touch event<br>timestamp - A time identifier for the touch, useful for velocity calculation<br>touches - Array of all current touches on the screen</p>
+<p>直接用[pageX, pageY] 就行了。</p>
+<p>这样就可以进行简单的碰撞计算了，计算位置是否在某个子元素的范围内就行了。</p>
+<p>实际上至此手势解锁的几个关键问题已经解决，正在写一个手势解锁的组件：<a href="https://github.com/leowang721/k-react-native-swipe-unlock" target="_blank" rel="external">k-react-native-swipe-unlock</a> 玩耍。</p>
+<p>To Be Continued.</p>
+]]></content>
+      
+        <categories>
+            
+            <category> React Native </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> React Native </tag>
+            
+            <tag> 全端 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[React Native 浅入门 —— 结构篇]]></title>
+      <url>https://leowang721.github.io/2015/08/10/learning/react-native/structure/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>权当一个笔记，再写写或许更明白点</p>
+</blockquote>
+<h2 id="结构布局"><a href="#结构布局" class="headerlink" title="结构布局"></a>结构布局</h2><p>说到布局，首先作为一个前端同学，我想到的是：div、p、span、section … 以及 article、header、footer…</p>
+<p>这些非语义化的&amp;语义化的标签，在前端的世界中，是用于按层级、按语义去实现一个可读的结构。</p>
+<p>一个经典的 HTML 结构：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">header</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">nav</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>首页<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>文章列表<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">id</span>=<span class="string">"article-list"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>文章列表<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">header</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">hgroup</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">h1</span>&gt;</span>title<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>作者<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">hgroup</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">section</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>第一段<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>第二段<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">section</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">aside</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span>tag1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span>tag2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">aside</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></div><div class="line">    ...</div><div class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">footer</span>&gt;</span></div><div class="line">    CopyRight</div><div class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>写 HTML 的时候，我们往往是直接就设计完了这样的一个结构，一个 big picture，当然我们还是先按大块设计，再去设计细节！不过在设计结构的时候，基本一直都能看到完整的东西。</p>
+<p>而在 React Native 中，讲究的是 Component 的复用，是不断的分层/块去编写 Component，但是只有在那个 Component 中才能看到再进一步的结构，因为往往是“你只需要使用我就好了，不需要关心我怎么显示的。” </p>
+<p>React 也是一样，不信去看最终 React 展现到浏览器中的样子吧，还是那么一堆 div 标签，干读基本读晕。</p>
+<p>话题转回来，我们要这么展现文章列表：<br><a id="more"></a><br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">&lt;ArticleList /&gt;</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>所以，我们需要设计个列表页：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleList</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">Text</span>&gt;</span>文章列表<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></div><div class="line">            &lt;ListView</div><div class="line">                dataSource=&#123;<span class="keyword">this</span>.state.datasource&#125;</div><div class="line">                renderRow=&#123;<span class="keyword">this</span>._renderArticle /&gt;</div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">    _renderArticle(rowData: string, <span class="attr">sectionID</span>: number, <span class="attr">rowID</span>: number) &#123;</div><div class="line">        ...</div><div class="line">        return (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">TouchableHighlight</span> <span class="attr">onPress</span>=<span class="string">&#123;()</span> =&gt;</span> this._pressArticle(rowID)&#125;&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">Article</span> <span class="attr">id</span>=<span class="string">"&#123;articleId&#125;"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">TouchableHighlight</span>&gt;</span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里确定了：我要以 ListView 的方式展现列表，点击的时候，使用 Article 的视图展现内容。</p>
+<p>所以还需要写个 Article（在写的时候直接按全屏搞的，导航什么的留给 Navigator 搞定，我才不管。）</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">"&#123;articleStyles.header&#125;"</span>&gt;</span></span></div><div class="line">                <span class="tag">&lt;<span class="name">View</span> <span class="attr">styles</span>=<span class="string">"&#123;articleStyles.title&#125;"</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">Text</span>&gt;</span>title<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">                <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">ArticleAuthor</span> <span class="attr">name</span>=<span class="string">"Leo"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">"&#123;articleStyles.content&#125;"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">Text</span>&gt;</span>第一段<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">Text</span>&gt;</span>第二段<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">"&#123;articleStyles.aside&#125;"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">ArticleTags</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样的过程，导致我们不能对当前的视图有一个像 HTML 那样的总览，看到的永远是块，而不是结构。而且由于 App 的场景专注性是极强的，所以它实际上更多的是 Navigator 式的浏览，而不是像 Web 大多数时候都要展现一个完整的 Nav 放在那里。</p>
+<p>所以在文章列表后，点击展现 Article 的时候，我们使用 navigator 提供了一个返回按钮（最多再提供上一篇、下一篇），不需要再提供 Nav 了，而且这些都跟 Article 没啥关系，Article 只关注自己要展现的东西，而且以全屏的方式展现。</p>
+<p>事实上很多 Web 站点也开始使用这种方式了。</p>
+<p>这样的好处是，独立性很强，复用性也很强。坏处是：如果你“查看元素”，只会吐槽什么鬼东西！</p>
+<p>不过思路是 OK 的，不过说实话我更喜欢 webcomponents，这样的结构看起来不是更好么？基本也是一个玩路</p>
+<p><img src="/images/learning/react-native/webcomponents-structure.png" alt="webcomponents 理念下的一个 DOM 结构" width="500"></p>
+<h2 id="标签映射"><a href="#标签映射" class="headerlink" title="标签映射"></a>标签映射</h2><h3 id="已经存在的基础映射"><a href="#已经存在的基础映射" class="headerlink" title="已经存在的基础映射"></a>已经存在的基础映射</h3><p>如图所示：<img src="/images/learning/react-native/structure.png" alt="当前 React Native 提供的跟基础 HTML 元素相关的Component（默认0.8-stable）"></p>
+<p>缺了那么多的标签，让被惯坏了的前端怎么玩……</p>
+<p>别的还好，View 和 Text 这两个东西，基本就要冒充很多标签的行为了：</p>
+<h3 id="先说Text"><a href="#先说Text" class="headerlink" title="先说Text"></a>先说Text</h3><p>在 React Native 的世界中，只有一种文本标记：Text。只要你要显示文字，就必须放在 Text 标签中，没的商量。</p>
+<p>所以 Text 对于前端同学来说，就约等于 p、div、h1~h6、section、span 等等标签，先吐会儿……</p>
+<p>标题基本就是：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Text style=<span class="string">"&#123;某个styles.title&#125;"</span>&gt;标题内容&lt;<span class="regexp">/Text&gt;</span></div></pre></td></tr></table></figure></p>
+<p>段落可能就是：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Text style=<span class="string">"&#123;某个styles.paragraph&#125;"</span>&gt;标题内容&lt;<span class="regexp">/Text&gt;</span></div></pre></td></tr></table></figure></p>
+<p>我们还是更细一些，在 Web 的世界中，文本可能为（不会出现在移动领域的就不提了，例如鼠标悬浮的 title）：</p>
+<p><img src="/images/learning/react-native/text-types.png" alt="Text Types" width="500"></p>
+<p>不是简单的一一对应的关系，可能需要不断的组合。并且在 Web 中重新实现 UI 的方式，在这里依然存在，所以有可能对应的就是某个你自行实现的或者引用自外部库的 Component。</p>
+<p>在 React Native 中，文本是信息，所以一个 Text 就够了，将文本的组合，或许引入交互，或许引入图片等等 视为 Component，转到组件的世界里去玩，而不是平铺的画板上直接画内容。</p>
+<h3 id="再说View"><a href="#再说View" class="headerlink" title="再说View"></a>再说View</h3><p>在 React Native 中，View 是最基本的视图：<br><code>View is a container that supports layout with flexbox, style, some touch handling, and accessibility controls, and is designed to be nested inside other views and to have 0 to many children of any type</code></p>
+<p>所以其实所有的 视图Component 最终都是一个 View 而已。</p>
+<p>所以从基础元素的角度来说：View 当前对于我们来说，约等于 div、section 等等所有跟布局相关的元素。</p>
+<p>尼玛要用盒模型？要用 flexbox？用 View 吧，还支持无限嵌套的。同时作为容器，全局的行为神马的都往 View 身上扔吧，我就是新的 div，那个爆炸扩散嵌套的 div！</p>
+<h4 id="UI-控件"><a href="#UI-控件" class="headerlink" title="UI 控件"></a>UI 控件</h4><p>这时候，来说一下 UI 控件，就是在 Web 届很喜欢搞的东东，先看已经提供了的：<br><img src="/images/learning/react-native/ui.png" alt="当前 React Native 提供的 ui Component（默认0.8-stable）"></p>
+<p>当然我们可以把基础的 View 和 Text 砍掉后剩下的东西也视为 ui 控件。</p>
+<p>Web 届的 UI 种类如此之多，但我们可以庆幸的是，在 APP 中，解决了一个大问题：控件交互的各异性。APP 中是普适性的 UI 交互，就这一种，都这么用，不用去实现什么3、4、5、6种日历控件神马的了。</p>
+<p>在 React Native 中，需要不断的根据需求进行可复用性评估，然后不断的开发出 ui Component、业务 Component、通用 Component 等等，因为我的 APP 就是用这些 Component 拼出来的视图！</p>
+<p>而这么多自行定义的 Component，你说你不搞各异性体验的 UI？？</p>
+<h4 id="还有呢"><a href="#还有呢" class="headerlink" title="还有呢"></a>还有呢</h4><ol>
+<li>怎么画图？Canvas 木有了，怎么搞手势解锁呢？<br>直接 View 拼接？直接调用 Native 的组件？还是像 lwansbrough/react-native-canvas 现在占位用 WebView 内嵌个 Canvas？还是自行实现一个 Canvas To UIView 绘图的东西？<br>我想要的是一个通用的东西，写一个 SwipeUnlocker 出来，是期望 Web、M 站、APP 上都直接可用的，哪个解决方案能满足呢？</li>
+</ol>
+<p><code>2015-08-24 更新</code><br>绘图可使用：ReactART，位置：Libraries/ART/ReactNativeART.js<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ReactART = &#123;</div><div class="line">  <span class="attr">LinearGradient</span>: LinearGradient,</div><div class="line">  <span class="attr">RadialGradient</span>: RadialGradient,</div><div class="line">  <span class="attr">Pattern</span>: Pattern,</div><div class="line">  <span class="attr">Transform</span>: Transform,</div><div class="line">  <span class="attr">Path</span>: Path,</div><div class="line">  <span class="attr">Surface</span>: Surface,</div><div class="line">  <span class="attr">Group</span>: Group,</div><div class="line">  <span class="attr">ClippingRectangle</span>: ClippingRectangle,</div><div class="line">  <span class="attr">Shape</span>: Shape,</div><div class="line">  <span class="attr">Text</span>: Text,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>例子可暂时查看 <a href="https://github.com/reactjs/react-page/blob/art/" target="_blank" rel="external">https://github.com/reactjs/react-page/blob/art/</a></p>
+<p>关于绘图，再单独记录一篇笔记罢：[React Native 浅入门 —— 绘图篇]</p>
+<ol>
+<li><p>Form 没有了，不过还有 tcomb-form-native，不过这东西的使用模式需要适应下……</p>
+</li>
+<li><p>WebView 有多大的性能问题呢？</p>
+</li>
+<li><p>当前来说 OC &lt;-&gt; JS 的 Component 映射是不是还是主流模式？</p>
+</li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> React Native </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> React Native </tag>
+            
+            <tag> 全端 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[React Native 浅入门]]></title>
+      <url>https://leowang721.github.io/2015/08/10/learning/react-native/index/</url>
+      <content type="html"><![CDATA[<p>作为一个前端，怎么可能不去尝一下 React Native，这位号称“learn once, write anywhere”的家伙。</p>
+<p><img src="/images/learning/react-native/react-native-structure.jpg" alt="learn once, write anywhere"></p>
+<p>浅尝之后，觉得还是有必要简单的进行一下总结，主要就是从前端的角度罢，看是否可转换或者从“老前端”的角度来学习和使用 React Native。</p>
+<p>权当一个笔记，再写写或许更明白点</p>
+<p>有些需要注意的地方，也顺手写在这里：<br><a id="more"></a></p>
+<h2 id="使用es6语法后，getInitialState、getDefaultProps和propTypes使用模式发生了变化："><a href="#使用es6语法后，getInitialState、getDefaultProps和propTypes使用模式发生了变化：" class="headerlink" title="使用es6语法后，getInitialState、getDefaultProps和propTypes使用模式发生了变化："></a>使用es6语法后，getInitialState、getDefaultProps和propTypes使用模式发生了变化：</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(props) &#123;</div><div class="line">        <span class="keyword">super</span>(props);</div><div class="line">        <span class="keyword">this</span>.state = &#123;<span class="attr">count</span>: props.initialCount&#125;;</div><div class="line">    &#125;</div><div class="line">    tick() &#123;</div><div class="line">        <span class="keyword">this</span>.setState(&#123;<span class="attr">count</span>: <span class="keyword">this</span>.state.count + <span class="number">1</span>&#125;);</div><div class="line">    &#125;</div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            &lt;div onClick=&#123;this.tick.bind(this)&#125;&gt;</div><div class="line">                Clicks: &#123;this.state.count&#125; </div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">Counter.propTypes = &#123; initialCount: React.PropTypes.number &#125;;</div><div class="line">Counter.defaultProps = &#123; initialCount: 0 &#125;;</div></pre></td></tr></table></figure>
+<h2 id="React-Native-的-Component-如何显示其背后的内容，即变得透明"><a href="#React-Native-的-Component-如何显示其背后的内容，即变得透明" class="headerlink" title="React Native 的 Component 如何显示其背后的内容，即变得透明"></a>React Native 的 Component 如何显示其背后的内容，即变得透明</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    backgroundColor: &apos;transparent&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+      
+        <categories>
+            
+            <category> React Native </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> React Native </tag>
+            
+            <tag> 全端 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+  
+  
+</search>
