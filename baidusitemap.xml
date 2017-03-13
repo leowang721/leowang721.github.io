@@ -5,7 +5,7 @@
     
   <url>
     <loc>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async&await/</loc>
-    <lastmod>2017-03-13T12:14:53.000Z</lastmod>
+    <lastmod>2017-03-13T12:17:19.000Z</lastmod>
     <data>
         <display>
         <title>koa的中间件机制原理及async/await版本实现</title>
@@ -22,7 +22,7 @@
          
            
              
-              <breadCrumb title="es6" url="https://leowang721.github.io/categories/es6/"/>
+              <breadCrumb title="架构" url="https://leowang721.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
           
         </display>
     </data>
