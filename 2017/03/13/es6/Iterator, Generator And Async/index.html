@@ -99,7 +99,7 @@ ES6规定，默认的Iterator接口部署在">
 它的流程其实是跟链表的遍历很相似的：创建一个指针对象，指向当前数据结构的起始位置，然后不断的next()，每次返回的是一个对象数据，包含value和done两个字段供访问。
 for...of循环实际上会去自动找Iterator接口。
 ES6规定，默认的Iterator接口部署在">
-<meta property="og:updated_time" content="2017-03-13T12:09:54.000Z">
+<meta property="og:updated_time" content="2017-03-13T12:12:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Iterator, Generator 和 Async">
 <meta name="twitter:description" content="IteratorIterator为不同的数据结构提供统一的访问机制，只要它部署Iterator接口，就可以完成遍历操作。
@@ -428,6 +428,7 @@ ES6规定，默认的Iterator接口部署在">
 <p><code>Object</code>默认不支持，其实非要手写支持的话，还不如直接用<code>Map</code>。</p>
 <p>字符串也支持，因为它类似于<code>Array</code></p>
 <h3 id="手动支持Iterator"><a href="#手动支持Iterator" class="headerlink" title="手动支持Iterator"></a>手动支持Iterator</h3><p><code>Symbol.iterator</code>是一个函数，返回的是一个遍历器，执行next()，不断的返回包含value和done两个字段的对象数据。</p>
+<a id="more"></a>
 <h4 id="类似于Array的Object"><a href="#类似于Array的Object" class="headerlink" title="类似于Array的Object"></a>类似于Array的Object</h4><p>例如<code>arguments</code>，对于这种，其实我们可以直接使用<code>Array</code>的<code>Iterator</code>接口：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">    <span class="number">0</span>: <span class="string">'a'</span>,</div><div class="line">    <span class="number">1</span>: <span class="string">'b'</span>,</div><div class="line">    <span class="number">2</span>: <span class="string">'c'</span>,</div><div class="line">    <span class="attr">length</span>: <span class="number">3</span>,</div><div class="line">    [<span class="built_in">Symbol</span>.iterator]: <span class="built_in">Array</span>.prototype[<span class="built_in">Symbol</span>.iterator]</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>如之前所述，能否支持遍历，仅是检查<code>Symbol.iterator</code>这个key而已，所以普通的对象也能支持<code>Iterator</code>，单还不如用<code>Set</code>呢</p>

@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async&await/</loc>
-    <lastmod>2017-03-13T12:09:58.000Z</lastmod>
+    <loc>https://leowang721.github.io/2017/03/13/es6/Iterator,%20Generator%20And%20Async/</loc>
+    <lastmod>2017-03-13T12:12:38.000Z</lastmod>
     <data>
         <display>
-        <title>koa的中间件机制原理及async/await版本实现</title>
-        <pubTime>2017-03-13T12:04:28.000Z</pubTime>
+        <title>Iterator, Generator 和 Async</title>
+        <pubTime>2017-03-13T02:23:38.000Z</pubTime>
         
         <tag>es6</tag>
          
@@ -24,12 +24,12 @@
 
     
   <url>
-    <loc>https://leowang721.github.io/2017/03/13/es6/Iterator,%20Generator%20And%20Async/</loc>
-    <lastmod>2017-03-13T12:09:54.000Z</lastmod>
+    <loc>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async&await/</loc>
+    <lastmod>2017-03-13T12:12:25.000Z</lastmod>
     <data>
         <display>
-        <title>Iterator, Generator 和 Async</title>
-        <pubTime>2017-03-13T02:23:38.000Z</pubTime>
+        <title>koa的中间件机制原理及async/await版本实现</title>
+        <pubTime>2017-03-13T12:04:28.000Z</pubTime>
         
         <tag>es6</tag>
          
