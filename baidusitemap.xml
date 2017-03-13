@@ -4,6 +4,41 @@
 
     
   <url>
+    <loc>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async&await/</loc>
+    <lastmod>2017-03-13T12:07:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>koa的中间件机制原理及async/await版本实现</title>
+        <pubTime>2017-03-13T12:04:28.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://leowang721.github.io/2017/03/13/es6/Iterator,%20Generator%20And%20Async/</loc>
+    <lastmod>2017-03-13T12:02:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>Iterator, Generator 和 Async</title>
+        <pubTime>2017-03-13T02:23:38.000Z</pubTime>
+        
+        <tag>es6</tag>
+         
+         
+           
+             
+              <breadCrumb title="es6" url="https://leowang721.github.io/categories/es6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://leowang721.github.io/2015/08/10/learning/react-native/structure/</loc>
     <lastmod>2017-03-09T08:53:34.000Z</lastmod>
     <data>

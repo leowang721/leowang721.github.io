@@ -87,28 +87,15 @@
 
 
 
-<meta name="description" content="Swift很少需要声明类型。常量和变量虽然需要明确类型，但是大部分工作并不需要自己来完成。推测的方式：总是选择范围大的，例如Double而不是Float。变量可修改值，常量则不能。
-
-尽管常量值在编译时无需知晓，但是声明时必须指定一个赋值
-
-#基础声明常量与变量名不能包含数学符号，箭头，保留的（或者非法的）Unicode 码位，连线与制表符。也不能以数字开头。123456var name = &amp;q">
+<meta name="description" content="I&apos;m a leaf on the wind, watch how I soar.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="使用var定义变量，使用let定义常量">
-<meta property="og:url" content="https://leowang721.github.io/learning/swift/variable.html">
+<meta property="og:title" content="炽天使的羽翼">
+<meta property="og:url" content="https://leowang721.github.io/categories/es6/index.html">
 <meta property="og:site_name" content="炽天使的羽翼">
-<meta property="og:description" content="Swift很少需要声明类型。常量和变量虽然需要明确类型，但是大部分工作并不需要自己来完成。推测的方式：总是选择范围大的，例如Double而不是Float。变量可修改值，常量则不能。
-
-尽管常量值在编译时无需知晓，但是声明时必须指定一个赋值
-
-#基础声明常量与变量名不能包含数学符号，箭头，保留的（或者非法的）Unicode 码位，连线与制表符。也不能以数字开头。123456var name = &amp;q">
-<meta property="og:updated_time" content="2017-03-09T08:46:06.000Z">
+<meta property="og:description" content="I&apos;m a leaf on the wind, watch how I soar.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用var定义变量，使用let定义常量">
-<meta name="twitter:description" content="Swift很少需要声明类型。常量和变量虽然需要明确类型，但是大部分工作并不需要自己来完成。推测的方式：总是选择范围大的，例如Double而不是Float。变量可修改值，常量则不能。
-
-尽管常量值在编译时无需知晓，但是声明时必须指定一个赋值
-
-#基础声明常量与变量名不能包含数学符号，箭头，保留的（或者非法的）Unicode 码位，连线与制表符。也不能以数字开头。123456var name = &amp;q">
+<meta name="twitter:title" content="炽天使的羽翼">
+<meta name="twitter:description" content="I&apos;m a leaf on the wind, watch how I soar.">
 
 
 
@@ -136,19 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://leowang721.github.io/learning/swift/variable.html"/>
+  <link rel="canonical" href="https://leowang721.github.io/categories/es6/"/>
 
 
 
 
 
-  <title>
-  
-
-  
-    使用var定义变量，使用let定义常量 | 炽天使的羽翼
-  
-</title>
+  <title> 分类: es6 | 炽天使的羽翼 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -312,34 +293,47 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-  <header class="post-header">
-
-	<h2 class="post-title" itemprop="name headline">使用var定义变量，使用let定义常量</h2>
-
-
-
-</header>
-
-    
-    
-      <p>Swift很少需要声明类型。常量和变量虽然需要明确类型，但是大部分工作并不需要自己来完成。<br>推测的方式：总是选择范围大的，例如Double而不是Float。<br>变量可修改值，常量则不能。</p>
-<blockquote>
-<p>尽管常量值在编译时无需知晓，但是声明时必须指定一个赋值</p>
-</blockquote>
-<p>#基础声明<br>常量与变量名不能包含数学符号，箭头，保留的（或者非法的）Unicode 码位，连线与制表符。也不能以数字开头。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var name = &quot;Leo&quot;</div><div class="line">var x = 0.0, y = 0.0, z = 0.0</div><div class="line">let 你好 = &quot;世界&quot;  // 你可以用任意字符命名变量</div><div class="line">let π = 3.14159  // 包括Unicode字符（不是全部）</div><div class="line">var httpError = (404, &quot;Not Found&quot;)  // 疑惑这是啥或者怎么用，移步下面的#元组</div><div class="line">let num: Double = 70  // 显示声明类型</div></pre></td></tr></table></figure></p>
-<p>#没有隐式类型转换<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> name = <span class="string">"Leo"</span></div><div class="line"><span class="keyword">let</span> age = <span class="number">30</span>;</div><div class="line"><span class="keyword">let</span> desc = name + <span class="string">" is "</span> + age  <span class="comment">// what happened?</span></div></pre></td></tr></table></figure></p>
-<p>xcode直接报错，提示不能做这种隐式类型转换。</p>
-<p>所以要进行类似的处理，只能这样<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> desc = name + <span class="string">" is "</span> + <span class="type">String</span>(age)</div><div class="line"><span class="keyword">let</span> desc = name + <span class="string">" is \(age)"</span>  <span class="comment">// for string only</span></div></pre></td></tr></table></figure></p>
-<p>但如果age是这么声明的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let age: Double = 30</div><div class="line">let desc = name + &quot; is &quot; + String(age)</div></pre></td></tr></table></figure></p>
-<p>又一个编译错误出现…… </p>
-<p>麻烦的很，另外一种方式则完全没这个问题，因为\()语法就是为了在字符串中引入一个值，而且可以做计算：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let desc = name + &quot; is \(age + 1)&quot;</div><div class="line">println(desc)</div></pre></td></tr></table></figure></p>
-<p>输出结果：<code>Leo is 31.0</code></p>
-<p>#元组<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> httpError = (<span class="number">404</span>, <span class="string">"Not Found"</span>)</div><div class="line"><span class="keyword">let</span> http200Status = (statusCode: <span class="number">200</span>, description: <span class="string">"OK"</span>)</div></pre></td></tr></table></figure></p>
-<p>httpError 的类型是 (Int, String)，值是 (404, “Not Found”) ，因为是变量，所以它可以修改！<br>那么如何使用呢？<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> (code, message) = httpError</div><div class="line"><span class="keyword">let</span> (code, <span class="number">_</span>) = httpError</div><div class="line"><span class="keyword">let</span> code = httpError.<span class="number">0</span></div><div class="line"><span class="comment">// 可以用name，前提是像http200Status一样的声明</span></div><div class="line"><span class="keyword">let</span> code = http200Status.statusCode</div><div class="line"></div><div class="line"><span class="comment">// 一种简单的模式像这样</span></div><div class="line"><span class="keyword">let</span> serverCode = <span class="number">500</span></div><div class="line"><span class="keyword">let</span> serverMsg = <span class="string">"Server Error"</span></div><div class="line">httpError = (serverCode, serverMsg);</div></pre></td></tr></table></figure></p>
+  <section id="posts" class="posts-collapse">
+    <div class="collection-title">
+      <h2 >
+        es6
+        <small>分类</small>
+      </h2>
+    </div>
 
     
-  </div>
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2017/03/13/es6/Iterator, Generator And Async/" itemprop="url">
+              
+                <span itemprop="name">Iterator, Generator 和 Async</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-03-13T10:23:38+08:00"
+              content="2017-03-13" >
+          03-13
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+    
+  </section>
+
+  
+
 
           
           </div>
@@ -347,14 +341,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="learning/swift/variable.html"
-           data-title="使用var定义变量，使用let定义常量" data-url="https://leowang721.github.io/learning/swift/variable.html">
-      </div>
-    
-  </div>
-
 
         </div>
         

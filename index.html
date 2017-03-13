@@ -305,6 +305,376 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/13/es6/koa middlewares implementation with async&await/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leo Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="炽天使的羽翼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/13/es6/koa middlewares implementation with async&await/" itemprop="url">
+                  koa的中间件机制原理及async/await版本实现
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-13T20:04:28+08:00">
+                2017-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/13/es6/koa middlewares implementation with async&await/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/13/es6/koa middlewares implementation with async&await/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>个人还是很喜欢这种机制，也想搞一个这般的 <a href="https://github.com/leowang721/k-core" target="_blank" rel="external">Workflow</a> 辅助类出来，不过不想用 Generator，所以折腾了一小下……</p>
+<h2 id="不得不说的-yield"><a href="#不得不说的-yield" class="headerlink" title="不得不说的 yield *"></a>不得不说的 yield *</h2><p><code>yield*</code>最大的作用，就是将<code>Generator</code>嵌在另一个<code>Generator</code>的内部执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">a</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">    b();</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">b</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>执行结果是<code>13</code>，是的，2不会被输出，但是如果换成：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">yield</span> *b();</div></pre></td></tr></table></figure>
+<p>就等同于：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">a</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出就是<code>123</code>就好了。</p>
+<p>而这也是koa2的中间件核心实现机制，笑话一下自己最开始搞出来的遍历行为，傻在<code>next</code>上了，囧~~</p>
+<h2 id="async-await模式的实现"><a href="#async-await模式的实现" class="headerlink" title="async/await模式的实现"></a>async/await模式的实现</h2><p>如果还不明白，那么就看这个：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">a</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">    <span class="keyword">yield</span>* b();</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">5</span>);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">b</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">    <span class="keyword">yield</span>* c();</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">4</span>);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">c</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>循环内嵌之后，你只需要遍历a的Iterator就行了，会展开嵌入后面所有的<code>Generator</code>！！</p>
+<p>所以核心问题就变成了，如何定义出所需要的方法a而已。</p>
+<p>koa的<code>middlewares</code>是一个数组，为了能够得到要访问的方法，其实就是middlewares[0]的封装。我们知道每个<code>async function</code>其实就是一个<code>Generator function</code>，那么我只需要把参数<code>next</code>指向下一个中间件函数，并且确保调用时使用<code>yield*</code>去调用，并且参数绑定ctx和下一个next。</p>
+<p>所以我需要的可能是这样的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> nextc = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> nextb = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">    <span class="keyword">yield</span>* nextc();</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">4</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> nexta = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">    <span class="keyword">yield</span> * nextb();</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">5</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">nexta().next();  <span class="comment">// 执行，输出 1 2 3 4 5</span></div></pre></td></tr></table></figure>
+<p>再换一下，用async/await：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 注意这里我开始引入 next 了</span></div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params">next</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">    <span class="keyword">await</span> next();</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">5</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params">next</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">    <span class="keyword">await</span> next();</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">4</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params">next</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 然后我们来手动定义next</span></div><div class="line"><span class="keyword">let</span> nextc = <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    c.call(<span class="keyword">this</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">let</span> nextb = <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    b.call(<span class="keyword">this</span>, nextc);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> nexta = <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    a.call(<span class="keyword">this</span>, nextb);</div><div class="line">&#125;</div><div class="line"><span class="comment">// 执行</span></div><div class="line">nexta();</div><div class="line"><span class="comment">// 输出了 1 2 3 4 5</span></div></pre></td></tr></table></figure>
+<p>发现规律了么……</p>
+<p>nexta调用的是函数a，将nextb作为next参数传入，而nextb调用b，将nextc作为参数传入，同理继续。最后一个指向空就行了，啥也不干。</p>
+<p>那么：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">middlewares</span>) </span>&#123;</div><div class="line">    <span class="keyword">let</span> i = middlewares.length;</div><div class="line">    <span class="keyword">let</span> next = <span class="keyword">async</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;  <span class="comment">// noop</span></div><div class="line">    <span class="comment">// 循环算出来next</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = middlewares.length - <span class="number">1</span>; i &gt;=<span class="number">0</span>; i--) &#123;</div><div class="line">        next = getCallback(middlewares[i], next);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> next;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getCallback</span>(<span class="params">method, next</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        method(next);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> callback = compose([a, b, c]);</div><div class="line"></div><div class="line">callback();  <span class="comment">// 输出1 2 3 4 5</span></div></pre></td></tr></table></figure>
+<p>貌似大功告成？赶紧测试先……</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/13/es6/Iterator, Generator And Async/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leo Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="炽天使的羽翼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/13/es6/Iterator, Generator And Async/" itemprop="url">
+                  Iterator, Generator 和 Async
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-13T10:23:38+08:00">
+                2017-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/es6/" itemprop="url" rel="index">
+                    <span itemprop="name">es6</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/13/es6/Iterator, Generator And Async/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/13/es6/Iterator, Generator And Async/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h2><p><code>Iterator</code>为不同的数据结构提供统一的访问机制，只要它部署Iterator接口，就可以完成遍历操作。</p>
+<p>它的流程其实是跟链表的遍历很相似的：创建一个指针对象，指向当前数据结构的起始位置，然后不断的<code>next()</code>，每次返回的是一个对象数据，包含value和done两个字段供访问。</p>
+<p><code>for...of</code>循环实际上会去自动找<code>Iterator</code>接口。</p>
+<p>ES6规定，默认的Iterator接口部署在数据结构的<code>Symbol.iterator</code>这个key上，一个数据结构只要具有<code>Symbol.iterator</code>方法，就可以认为是“可遍历的”。</p>
+<p>再次提醒，千万注意：<code>Symbol.iterator</code>里面的i是小写！！！</p>
+<h3 id="为啥要用Iterator"><a href="#为啥要用Iterator" class="headerlink" title="为啥要用Iterator"></a>为啥要用Iterator</h3><p>跟其他语言一样，提供一种方法顺序访问一个聚合对象中各个元素，而又不需暴露该对象的内部表示。</p>
+<h3 id="原生支持Iterator的类型"><a href="#原生支持Iterator的类型" class="headerlink" title="原生支持Iterator的类型"></a>原生支持Iterator的类型</h3><p>原生的表述数据集的类型：<code>Array</code>、<code>Object</code>、<code>Map</code>、<code>Set</code>。</p>
+<p>而实际上原生支持<code>Iterator</code>的数据结构是：<code>Array</code>、<code>Map</code>、<code>Set</code>。</p>
+<p><code>Object</code>默认不支持，其实非要手写支持的话，还不如直接用<code>Map</code>。</p>
+<p>字符串也支持，因为它类似于<code>Array</code></p>
+<h3 id="手动支持Iterator"><a href="#手动支持Iterator" class="headerlink" title="手动支持Iterator"></a>手动支持Iterator</h3><p><code>Symbol.iterator</code>是一个函数，返回的是一个遍历器，执行next()，不断的返回包含value和done两个字段的对象数据。</p>
+<h4 id="类似于Array的Object"><a href="#类似于Array的Object" class="headerlink" title="类似于Array的Object"></a>类似于Array的Object</h4><p>例如<code>arguments</code>，对于这种，其实我们可以直接使用<code>Array</code>的<code>Iterator</code>接口：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">    <span class="number">0</span>: <span class="string">'a'</span>,</div><div class="line">    <span class="number">1</span>: <span class="string">'b'</span>,</div><div class="line">    <span class="number">2</span>: <span class="string">'c'</span>,</div><div class="line">    <span class="attr">length</span>: <span class="number">3</span>,</div><div class="line">    [<span class="built_in">Symbol</span>.iterator]: <span class="built_in">Array</span>.prototype[<span class="built_in">Symbol</span>.iterator]</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>如之前所述，能否支持遍历，仅是检查<code>Symbol.iterator</code>这个key而已，所以普通的对象也能支持<code>Iterator</code>，单还不如用<code>Set</code>呢</p>
+<p>普通对象部署<code>Iterator</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">    <span class="attr">a</span>: <span class="string">'a'</span>,</div><div class="line">    <span class="attr">b</span>: <span class="string">'b'</span>,</div><div class="line">    [<span class="built_in">Symbol</span>.iterator]() &#123;</div><div class="line">        <span class="keyword">const</span> self = <span class="keyword">this</span>;</div><div class="line">        <span class="keyword">const</span> keys = <span class="built_in">Object</span>.keys(self);  <span class="comment">// 举个例子而已</span></div><div class="line">        <span class="keyword">let</span> i = <span class="number">0</span>;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            next() &#123;</div><div class="line">                i++;</div><div class="line">                <span class="keyword">return</span> &#123;</div><div class="line">                    <span class="attr">done</span>: i &gt;= keys.length,</div><div class="line">                    <span class="attr">value</span>: self[keys[i]]</div><div class="line">                &#125;;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>需要注意的是，<code>Iterator</code>的作用是使得数据结构的成员能够按某种次序排列，所以偶尔蛋疼的这么设定，可能仅仅是为了定义一个复杂的访问顺序，但是使用的时候仅仅<code>for...of</code>就好了。</p>
+<p>因此也不能强说这么做是不对的。</p>
+<p>不过，对于这种，用类不是更好一点么？例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListIteratorByAge</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(list) &#123;</div><div class="line">        <span class="keyword">this</span>.list = list;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    [<span class="built_in">Symbol</span>.iterator]() &#123;</div><div class="line">        <span class="keyword">const</span> self = <span class="keyword">this</span>;</div><div class="line">        <span class="keyword">const</span> arr = self.list.slice(<span class="number">0</span>).sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a.age &gt;= b.age);</div><div class="line">        <span class="keyword">let</span> i = <span class="number">-1</span>;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            next() &#123;</div><div class="line">                i++;</div><div class="line">                <span class="keyword">return</span> &#123;</div><div class="line">                    <span class="attr">done</span>: i &gt;= arr.length,</div><div class="line">                    <span class="attr">value</span>: arr[i]</div><div class="line">                &#125;;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意这里的<code>Symbol.iterator</code>的定义，能不能有更简便的方法呢：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListIteratorByAge</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(list) &#123;</div><div class="line">        <span class="keyword">this</span>.list = list;</div><div class="line">    &#125;</div><div class="line">    [<span class="built_in">Symbol</span>.iterator]() &#123;</div><div class="line">        <span class="keyword">const</span> arr = self.list.slice(<span class="number">0</span>).sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a.age &gt;= b.age);</div><div class="line">        <span class="keyword">return</span> arr[<span class="built_in">Symbol</span>.iterator]();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再次强调，只是在定义<code>某种次序的访问</code>，没规定要怎么访问！！只是在默认支持的数据结构中按顺序访问了而已。</p>
+<h3 id="Iterator的使用"><a href="#Iterator的使用" class="headerlink" title="Iterator的使用"></a>Iterator的使用</h3><p>一个经典的硬性使用Iterator的示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">10</span>];</div><div class="line"><span class="keyword">let</span> ite = arr[<span class="built_in">Symbol</span>.iterator]();</div><div class="line"><span class="keyword">let</span> eachResult = ite.next();  <span class="comment">// 调用一次访问到第一个元素</span></div><div class="line"><span class="keyword">while</span>(!eachResult.done) &#123;</div><div class="line">    <span class="comment">// do sth with eachResult.value</span></div><div class="line">    eachResult = ite.next();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实直接用<code>for...of</code>更简便：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">10</span>];</div><div class="line"><span class="keyword">for</span> (value <span class="keyword">of</span> arr) &#123;</div><div class="line">    <span class="comment">// do sth with value</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="几个默认使用-Iterator-的场景"><a href="#几个默认使用-Iterator-的场景" class="headerlink" title="几个默认使用 Iterator 的场景"></a>几个默认使用 Iterator 的场景</h3><p>总结自 <a href="http://es6.ruanyifeng.com/#docs/iterator" target="_blank" rel="external">ECMAScript6 入门</a></p>
+<ol>
+<li>解构赋值，例如<code>let [x,y] = set</code></li>
+<li>扩展运算符，例如<code>[&#39;a&#39;, ...arr, &#39;d&#39;]</code></li>
+<li>yield<em>，例如`yield</em> [2,3,4];`</li>
+<li>由于数组的遍历会调用遍历器接口，所以任何接受数组作为参数的场合都符合条件<ul>
+<li>for…of</li>
+<li>Array.from()</li>
+<li>Map(), Set(), WeakMap(), WeakSet()（比如new Map([[‘a’,1],[‘b’,2]])）</li>
+<li>Promise.all()</li>
+<li>Promise.race()</li>
+</ul>
+</li>
+</ol>
+<h2 id="Generator"><a href="#Generator" class="headerlink" title="Generator"></a>Generator</h2><p>简而言之，结合着上面的<code>Iterator</code>，可以理解<code>Generator</code>实际上是生成了一个可遍历的结果数据集，数据集的元素有哪些，由<code>yield</code>和<code>return</code>定义，函数执行的结果就是数据集的<code>Iterator</code>。</p>
+<p>例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">testGenerator</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">yield</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">yield</span> <span class="number">2</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">3</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> ite = testGenerator();</div></pre></td></tr></table></figure>
+<p>那么不断执行<code>ite.next()</code>并以<code>!ite.next().done</code>为判断条件的执行结果为：<code>1,2,3</code>。</p>
+<p><code>next</code>可以传入值，作为执行时上一个<code>yield</code>的执行返回结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">counterGen</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">let</span> i = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</div><div class="line">        <span class="keyword">let</span> signal = <span class="keyword">yield</span> i++;</div><div class="line">        <span class="comment">// console.log('now is ' + i);</span></div><div class="line">        <span class="keyword">if</span> (signal) &#123;</div><div class="line">            i = <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> counter = counterGen();</div><div class="line"></div><div class="line">counter.next();  <span class="comment">// &#123;value: 0, done: false&#125;</span></div><div class="line">...</div><div class="line">counter.next(<span class="literal">true</span>);  <span class="comment">// &#123;value: 0, done: false&#125;  重置了</span></div></pre></td></tr></table></figure></p>
+<p>需要注意的是，在执行next(true)时，counterGen 中那个注释掉的console语句中，i其实是6，后面置的0。<br>执行的最终结果中，value是0。<br>也就是说，yield的结果其实是可以被后面的语句给改掉的，或者可以将例子中while语句{}包起来的部分认为是一个函数，最后返回i是最终的结果。<br>也可以这么理解：执行到下一个<code>yield</code>时，才返回了之前的结果，大概、或许是这样吧……</p>
+<p>总结一小下：</p>
+<ol>
+<li>定义时，function 后面跟着一个<code>*</code></li>
+<li>内部用<code>yield</code>定义一个可被遍历到的元素（状态）</li>
+<li><code>return</code>也会被认为是一个可被遍历到的元素（状态），如果没有<code>return</code>或没跟返回值，value会是<code>undefined</code>。</li>
+<li>状态会被后面的同步代码所改变，直到下一次<code>yield</code>之前都可以</li>
+</ol>
+<h3 id="不得不说的-yield"><a href="#不得不说的-yield" class="headerlink" title="不得不说的 yield *"></a>不得不说的 yield *</h3><p>本来不想说这个，感觉要变成基础知识集了，不过研究中间件偏偏遇到了，不得不说……</p>
+<p><code>yield*</code>最大的作用，就是将<code>Generator</code>嵌在另一个<code>Generator</code>的内部执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">a</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">    b();</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">b</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>执行结果是<code>13</code>，是的，2不会被输出，但是如果换成：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">yield</span> *b();</div></pre></td></tr></table></figure>
+<p>就等同于：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">a</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出就是<code>123</code>就好了。</p>
+<p>而这也是koa2的中间件核心实现机制，笑话一下自己搞出来的遍历行为，然后傻在<code>next</code>的调用上了，囧~~</p>
+<p>可以查看</p>
+<h3 id="Generator更多的用法"><a href="#Generator更多的用法" class="headerlink" title="Generator更多的用法"></a>Generator更多的用法</h3><p>建议查看 <a href="http://es6.ruanyifeng.com/#docs/generator" target="_blank" rel="external">ECMAScript6 入门</a></p>
+<h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p>语法糖，是对<code>Generator</code>的改进。</p>
+<p>返回的结果是一个<code>Promise</code>。</p>
+<h3 id="错误机制"><a href="#错误机制" class="headerlink" title="错误机制"></a>错误机制</h3><p>只需注意几点就行了。</p>
+<ol>
+<li>返回结果是<code>Promise</code>，所以按<code>Promise</code>的错误处理就行了</li>
+<li><code>async</code>内部的<code>await</code>指定的状态，是<code>同步</code>的，全都成功整体状态才会成功，任何一个失败了，整体也就失败了（后面的不执行了），除非用try…catch包起来或者用.catch处理一下</li>
+</ol>
+<h3 id="for-await-of"><a href="#for-await-of" class="headerlink" title="for await of"></a>for await of</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> body = <span class="string">''</span>;</div><div class="line"><span class="keyword">for</span> <span class="keyword">await</span>(<span class="keyword">const</span> data <span class="keyword">of</span> req) body += data;</div><div class="line"><span class="keyword">const</span> parsed = <span class="built_in">JSON</span>.parse(body);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'got'</span>, parsed);</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2015/08/24/learning/react-native/drawing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1164,7 +1534,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1175,7 +1545,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1186,7 +1556,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
