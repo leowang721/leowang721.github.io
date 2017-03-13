@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://leowang721.github.io/2017/03/13/es6/Iterator,%20Generator%20And%20Async/</loc>
+    <loc>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async&await/</loc>
     
-    <lastmod>2017-03-13T12:12:38.000Z</lastmod>
+    <lastmod>2017-03-13T12:14:53.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async&await/</loc>
+    <loc>https://leowang721.github.io/2017/03/13/es6/Iterator,%20Generator%20And%20Async/</loc>
     
-    <lastmod>2017-03-13T12:12:25.000Z</lastmod>
+    <lastmod>2017-03-13T12:14:47.000Z</lastmod>
     
   </url>
   
@@ -65,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/variable.html</loc>
+    <loc>https://leowang721.github.io/learning/react-native/detail/View.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -93,7 +93,7 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/react-native/detail/View.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/variable.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -101,13 +101,6 @@
   
   <url>
     <loc>https://leowang721.github.io/learning/swift/control.html</loc>
-    
-    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://leowang721.github.io/learning/swift/enum.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -128,6 +121,13 @@
   </url>
   
   <url>
+    <loc>https://leowang721.github.io/learning/swift/enum.html</loc>
+    
+    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://leowang721.github.io/learning/swift/generics.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
@@ -135,14 +135,14 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/index.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/number.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/number.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/index.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
