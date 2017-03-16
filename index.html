@@ -305,6 +305,200 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leo Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="炽天使的羽翼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/" itemprop="url">
+                  babel6的新老AMD模块并存问题
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-16T10:27:43+08:00">
+                2017-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/es6/" itemprop="url" rel="index">
+                    <span itemprop="name">es6</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>近来又遇到了很恶心的事儿，那就是想要升级babel为6的时候，遇到了新老AMD模块并存的问题。</p>
+<p>是的，又遇到了，尽管在babel7都WIP了，升级个6还是恶心的够呛，扫了一圈之后发现，圈里貌似还是没人去解决这个问题……</p>
+<p>先列出引到的链接：</p>
+<ul>
+<li><a href="http://babeljs.io/" target="_blank" rel="external">babel</a></li>
+<li><a href="https://www.npmjs.com/package/babel-plugin-transform-es2015-modules-amd" target="_blank" rel="external">babel-plugin-transform-es2015-modules-amd</a></li>
+<li><a href="https://www.npmjs.com/package/babel-plugin-transform-es2015-modules-simple-amd" target="_blank" rel="external">babel-plugin-transform-es2015-modules-simple-amd</a></li>
+</ul>
+<h2 id="问题症结"><a href="#问题症结" class="headerlink" title="问题症结"></a>问题症结</h2><p>主要是新老模块并存导致的。</p>
+<p>简而言之，babel6的插件<code>babel-plugin-transform-es2015-modules-amd</code>在处理的时候，由于面临着这样的使用状况（示例代码）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> _ <span class="keyword">from</span> <span class="string">'lodash'</span>;</div><div class="line"><span class="keyword">import</span> &#123;add&#125; <span class="keyword">from</span> <span class="string">'./mathlib'</span>;</div><div class="line"><span class="comment">// do sth</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> tested = <span class="literal">true</span>;</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">    <span class="attr">tested</span>: <span class="literal">false</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>可以看到export let了tested，default里面也有tested，那么应该是哪个？</p>
+<p>所以babel6定义为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">exports.tested = <span class="literal">true</span>;</div><div class="line">exports.default = &#123;<span class="attr">tested</span>: <span class="literal">false</span>&#125;;</div></pre></td></tr></table></figure>
+<p>多了一个<code>default</code>，所以babel6翻译过的<code>import &#39;a&#39;</code>都变成了<code>require(&#39;a&#39;).default</code>。然而它并不会处理旧的那些AMD的模块，而如果你“不幸”的在旧的模块中去require了新的es6的模块，就挂了……</p>
+<p>关键点在于，babel6的做法没什么问题，只是不兼容旧的而已，而插件<code>babel-plugin-transform-es2015-modules-simple-amd</code>的解决方案是将babel6的AMD转换输出改成babel5的方式，去掉<code>default</code>，但是如果你用了export let，那就只能sorry了，搞不了。</p>
+<p>扫了一些文章基本结论都是：ES6 module to AMD的转码逻辑变更并且暂时没有什么好的办法解决这个问题。</p>
+<p>还有！</p>
+<p><code>babel-plugin-transform-es2015-modules-amd</code>在处理旧的<code>AMD</code>和<code>UMD</code>，都会在外面给包一层<code>define</code>，醉了么？</p>
+<h2 id="硬着头皮处理"><a href="#硬着头皮处理" class="headerlink" title="硬着头皮处理"></a>硬着头皮处理</h2><p>或者可以解决的方案：不修改babel6，而是针对旧AMD模块，然后采用插件的方式处理，将它的输出也加个<code>default</code>，require的部分也是一样。</p>
+<p>先只处理简单的状况！！</p>
+<p>下面都是使用了 preset es2015 和 <code>babel-plugin-transform-es2015-modules-amd</code>，所以代码会先被转换一次。</p>
+<p>为啥要用？因为不想去处理 es2015模块啊，万一人家支持了，我们只要撤掉这个插件就好了。</p>
+<p> 列一下要面对的问题：</p>
+<ol>
+<li>旧模块的定义</li>
+<li>定位模块主体</li>
+<li>require的处理</li>
+<li>exports的处理</li>
+</ol>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>限制为使用<code>define</code>来定义的模块，形如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params">require</span>) </span>&#123;</div><div class="line"><span class="meta">    'use strict'</span>;</div><div class="line">    <span class="keyword">var</span> a = <span class="built_in">require</span>(<span class="string">'a'</span>);</div><div class="line">    <span class="keyword">return</span> &#123;<span class="attr">hello</span>: <span class="string">'world'</span>&#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="模块主体部分"><a href="#模块主体部分" class="headerlink" title="模块主体部分"></a>模块主体部分</h3><p><code>define</code>一共有四种形式（变参）:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">define(factory);</div><div class="line">define(id, factory);</div><div class="line">define(dependencies, factory);</div><div class="line">define(id, dependencies, factory);</div></pre></td></tr></table></figure>
+<p>无论是用哪种，主体都是<code>factory</code>，最后一个参数。</p>
+<p>不过其实要处理的是<code>babel-plugin-transform-es2015-modules-amd</code>搞进来的<code>define</code>部分。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// after es2015 preset + transform-es2015-modules-amd</span></div><div class="line">define([], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">    'use strict'</span>;</div><div class="line"></div><div class="line">    define(<span class="function"><span class="keyword">function</span> (<span class="params">require</span>) </span>&#123;</div><div class="line"><span class="meta">        'use strict'</span>;</div><div class="line"></div><div class="line">        <span class="keyword">var</span> a = <span class="built_in">require</span>(<span class="string">'a'</span>);</div><div class="line">        <span class="keyword">return</span> &#123; <span class="attr">hello</span>: <span class="string">'world'</span> &#125;;</div><div class="line">    &#125;);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// babel插件的ast信息</span></div><div class="line"><span class="comment">// 'use strict'，这个东西不算语句，而是被定义为directives里 如node.directives[0].value.value = 'use strict';</span></div><div class="line"><span class="comment">// 怎么找 define？</span></div><div class="line">node.body.length === <span class="number">1</span>  <span class="comment">// 只有一个调用</span></div><div class="line">    &amp;&amp; node.body[<span class="number">0</span>].type === <span class="string">'ExpressionStatement'</span></div><div class="line">    &amp;&amp; node.body[<span class="number">0</span>].expression.type === <span class="string">'CallExpression'</span></div><div class="line">    &amp;&amp; node.body[<span class="number">0</span>].expression.callee.name === <span class="string">'define'</span>; </div><div class="line"></div><div class="line">node.body[<span class="number">0</span>];  <span class="comment">// 最外层的define</span></div><div class="line"></div><div class="line"><span class="comment">// 继续找里面的</span></div><div class="line">node.body[<span class="number">0</span>].expression.arguments[<span class="number">1</span>];  <span class="comment">// 找到了最外层的define的匿名函数参数</span></div><div class="line">node.body[<span class="number">0</span>].expression.arguments[<span class="number">1</span>].body.body[<span class="number">0</span>];  <span class="comment">// ExpressionStatement</span></div><div class="line">node.body[<span class="number">0</span>].expression.arguments[<span class="number">1</span>].body.body[<span class="number">0</span>].expression.type;  <span class="comment">// CallExpression</span></div><div class="line">node.body[<span class="number">0</span>].expression.arguments[<span class="number">1</span>].body.body[<span class="number">0</span>].expression.callee.name;  <span class="comment">// define</span></div><div class="line"><span class="comment">// 又找到了里层的define 即node.body[0].expression.arguments[1].body.body[0]</span></div><div class="line"></div><div class="line"><span class="comment">// 那么这时候设置换成这个结果数据是什么呢</span></div><div class="line">path.node.body = node.body[<span class="number">0</span>].expression.arguments[<span class="number">1</span>].body.body;</div><div class="line"></div><div class="line">define(<span class="function"><span class="keyword">function</span> (<span class="params">require</span>) </span>&#123;</div><div class="line"><span class="meta">    'use strict'</span>;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> a = <span class="built_in">require</span>(<span class="string">'a'</span>);</div><div class="line">    <span class="keyword">return</span> &#123; <span class="attr">hello</span>: <span class="string">'world'</span> &#125;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// yes，又滚回来了</span></div><div class="line"><span class="comment">// 并且 node.body[0].expression.arguments[node.body[0].expression.arguments.length - 1] 就是主体</span></div></pre></td></tr></table></figure>
+<h3 id="require的处理"><a href="#require的处理" class="headerlink" title="require的处理"></a>require的处理</h3><p>我是个较懒的人，所以选择的方式是这样的。</p>
+<p>找到对应的点，然后使用自带的 <code>_ref.types</code> 即 <code>babel-types</code> 的方法<code>callExpression</code>来替换原节点……</p>
+<p>在 visitor.Program.exit 中 <code>path.traverse(amdVisitor, this);</code> 来遍历</p>
+<p>然后就直接处理了，区分了几个使用的场景，没效率，但是架不住简单。</p>
+<p>因为是包了一层调用，所以还得加个函数进去，这个简单，ast node直接用<code>babel-template</code>搞就行了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">turnRequire</span>(<span class="params">target</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> t.callExpression(</div><div class="line">        t.identifier(<span class="string">'_interopRequireDefault'</span>),</div><div class="line">        [target]</div><div class="line">    );</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> amdVisitor = &#123;</div><div class="line">    <span class="attr">CallExpression</span>: <span class="function"><span class="keyword">function</span> <span class="title">CallExpression</span>(<span class="params">path</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (isValidRequireCall(path)) &#123;</div><div class="line">            <span class="keyword">let</span> parentKey = path.parentKey;</div><div class="line">            <span class="keyword">switch</span> (parentKey) &#123;</div><div class="line">                <span class="keyword">case</span> <span class="string">'arguments'</span>:</div><div class="line">                <span class="keyword">case</span> <span class="string">'elements'</span>:</div><div class="line">                    path.parent[path.parentKey][path.key] = turnRequire(path.parent[path.parentKey][path.key]);</div><div class="line">                    path.node = path.parent[path.parentKey][path.key];</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                <span class="keyword">default</span>:</div><div class="line">                    path.parent[path.parentKey] = turnRequire(path.parent[path.parentKey]);</div><div class="line">                    path.node = path.parent[path.parentKey];</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>没有搞 Gloabl require，形如 <code>require([&#39;main&#39;]);</code>，先手改吧。</p>
+<p>至此的效果：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line">define(function(require) &#123;</div><div class="line">    'use strict';</div><div class="line">    var a = require('a');</div><div class="line">    var c = require('b').c;</div><div class="line">    var d = require('e').f.g;</div><div class="line"></div><div class="line">    require('lodash');</div><div class="line">    require('wer')();</div><div class="line"></div><div class="line">    function t() &#123;</div><div class="line">        require('sss').go();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    require(['aaa']);</div><div class="line"></div><div class="line">    return &#123;hello: 'world'&#125;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 被转换为</div><div class="line"></div><div class="line">define(function (require) &#123;</div><div class="line">    'use strict';</div><div class="line"></div><div class="line">    var a = _interopRequireDefault(require('a'));</div><div class="line">    var c = _interopRequireDefault(require('b')).c;</div><div class="line">    var d = _interopRequireDefault(require('e')).f.g;</div><div class="line"></div><div class="line">    _interopRequireDefault(require('lodash'));</div><div class="line">    _interopRequireDefault(require('wer'))();</div><div class="line"></div><div class="line">    function t() &#123;</div><div class="line">        _interopRequireDefault(require('sss')).go();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    require(['aaa']);</div><div class="line"></div><div class="line">    return &#123;hello: 'world'&#125;;</div><div class="line"></div><div class="line">    function _interopRequireDefault(obj) &#123;</div><div class="line">        return obj &amp;&amp; obj.__esModule ? obj.default : obj;</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">### export的处理</div><div class="line"></div><div class="line">我想的是，直接就处理 Function 的 ReturnStatement 就好了……</div><div class="line"></div><div class="line">还是从第二步定位的模块主体部分入手。</div><div class="line"></div><div class="line">来看 `mainFunc.body.body` 就是所有的语句了，只看 `ReturnStatement`，如果没有，那可能是使用 exports 或 module.exports 定义的，我们没用这种，先无视。</div><div class="line"></div><div class="line">将`ReturnStatement`的前面插一个`VariableDeclaration`，然后让`ReturnStatement`返回的是`&#123;default:exports&#125;`这种，大体思路如此。</div><div class="line"></div><div class="line">```javascript</div><div class="line">// 简单的实现</div><div class="line">var mainFunc = getDefineFunction(path);</div><div class="line">var returnStatement = getReturnStatement(mainFunc);</div><div class="line">if (returnStatement &amp;&amp; returnStatement.target) &#123;</div><div class="line">    mainFunc.body.body.splice(</div><div class="line">        returnStatement.index, 0,</div><div class="line">        t.VariableDeclaration('var', [</div><div class="line">            t.VariableDeclarator(t.identifier('__esModuleAMDExport'), t.objectExpression(</div><div class="line">                [</div><div class="line">                    t.objectProperty(t.identifier('default'), returnStatement.target.argument),</div><div class="line">                    t.objectProperty(t.identifier('__esModule'), t.booleanLiteral(true))</div><div class="line">                ]</div><div class="line">            ))</div><div class="line">        ])</div><div class="line">    );</div><div class="line">    returnStatement.target.argument = t.identifier('__esModuleAMDExport');</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/13/es6/koa middlewares implementation with async&await/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1489,7 +1683,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1511,7 +1705,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
