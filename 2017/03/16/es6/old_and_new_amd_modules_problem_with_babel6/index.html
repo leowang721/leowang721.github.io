@@ -105,7 +105,7 @@ babel-plugin-transform-es2015-m">
 babel
 babel-plugin-transform-es2015-modules-amd
 babel-plugin-transform-es2015-m">
-<meta property="og:updated_time" content="2017-03-16T14:41:02.000Z">
+<meta property="og:updated_time" content="2017-03-16T14:42:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="babel6的新老AMD模块并存问题">
 <meta name="twitter:description" content="近来又遇到了很恶心的事儿，那就是想要升级babel为6的时候，遇到了新老AMD模块并存的问题。
@@ -434,7 +434,9 @@ babel-plugin-transform-es2015-m">
 <li><a href="https://www.npmjs.com/package/babel-plugin-transform-es2015-modules-amd" target="_blank" rel="external">babel-plugin-transform-es2015-modules-amd</a></li>
 <li><a href="https://www.npmjs.com/package/babel-plugin-transform-es2015-modules-simple-amd" target="_blank" rel="external">babel-plugin-transform-es2015-modules-simple-amd</a></li>
 </ul>
+<p>我开发的小插件： <a href="https://github.com/leowang721/babel-plugin-transform-es2015-modules-existed-amd" target="_blank" rel="external">babel-plugin-transform-es2015-modules-existed-amd</a></p>
 <h2 id="问题症结"><a href="#问题症结" class="headerlink" title="问题症结"></a>问题症结</h2><p>主要是新老模块并存导致的。</p>
+<a id="more"></a>
 <p>简而言之，babel6的插件<code>babel-plugin-transform-es2015-modules-amd</code>在处理的时候，由于面临着这样的使用状况（示例代码）：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> _ <span class="keyword">from</span> <span class="string">'lodash'</span>;</div><div class="line"><span class="keyword">import</span> &#123;add&#125; <span class="keyword">from</span> <span class="string">'./mathlib'</span>;</div><div class="line"><span class="comment">// do sth</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> tested = <span class="literal">true</span>;</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">    <span class="attr">tested</span>: <span class="literal">false</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>可以看到export let了tested，default里面也有tested，那么应该是哪个？</p>
