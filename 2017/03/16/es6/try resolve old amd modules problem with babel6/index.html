@@ -96,7 +96,7 @@ babel-plugin-transform-es2015-modules-amd
 babel-plugin-transform-es2015-m">
 <meta property="og:type" content="article">
 <meta property="og:title" content="babel6的新老AMD模块并存问题">
-<meta property="og:url" content="https://leowang721.github.io/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/index.html">
+<meta property="og:url" content="https://leowang721.github.io/2017/03/16/es6/try resolve old amd modules problem with babel6/index.html">
 <meta property="og:site_name" content="炽天使的羽翼">
 <meta property="og:description" content="近来又遇到了很恶心的事儿，那就是想要升级babel为6的时候，遇到了新老AMD模块并存的问题。
 是的，又遇到了，尽管在babel7都WIP了，升级个6还是恶心的够呛，扫了一圈之后发现，圈里貌似还是没人去解决这个问题……
@@ -105,7 +105,7 @@ babel-plugin-transform-es2015-m">
 babel
 babel-plugin-transform-es2015-modules-amd
 babel-plugin-transform-es2015-m">
-<meta property="og:updated_time" content="2017-03-16T14:43:09.000Z">
+<meta property="og:updated_time" content="2017-03-17T01:46:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="babel6的新老AMD模块并存问题">
 <meta name="twitter:description" content="近来又遇到了很恶心的事儿，那就是想要升级babel为6的时候，遇到了新老AMD模块并存的问题。
@@ -142,7 +142,7 @@ babel-plugin-transform-es2015-m">
 
 
 
-  <link rel="canonical" href="https://leowang721.github.io/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/"/>
+  <link rel="canonical" href="https://leowang721.github.io/2017/03/16/es6/try resolve old amd modules problem with babel6/"/>
 
 
 
@@ -322,7 +322,7 @@ babel-plugin-transform-es2015-m">
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/16/es6/try resolve old amd modules problem with babel6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Leo Wang">
@@ -399,8 +399,8 @@ babel-plugin-transform-es2015-m">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/" itemprop="commentCount"></span>
+                <a href="/2017/03/16/es6/try resolve old amd modules problem with babel6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/es6/try resolve old amd modules problem with babel6/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -474,6 +474,10 @@ babel-plugin-transform-es2015-m">
 <p>没有搞 Gloabl require，形如 <code>require([&#39;main&#39;]);</code>，先手改吧。</p>
 <p>至此的效果：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line">define(function(require) &#123;</div><div class="line">    'use strict';</div><div class="line">    var a = require('a');</div><div class="line">    var c = require('b').c;</div><div class="line">    var d = require('e').f.g;</div><div class="line"></div><div class="line">    require('lodash');</div><div class="line">    require('wer')();</div><div class="line"></div><div class="line">    function t() &#123;</div><div class="line">        require('sss').go();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    require(['aaa']);</div><div class="line"></div><div class="line">    return &#123;hello: 'world'&#125;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 被转换为</div><div class="line"></div><div class="line">define(function (require) &#123;</div><div class="line">    'use strict';</div><div class="line"></div><div class="line">    var a = _interopRequireDefault(require('a'));</div><div class="line">    var c = _interopRequireDefault(require('b')).c;</div><div class="line">    var d = _interopRequireDefault(require('e')).f.g;</div><div class="line"></div><div class="line">    _interopRequireDefault(require('lodash'));</div><div class="line">    _interopRequireDefault(require('wer'))();</div><div class="line"></div><div class="line">    function t() &#123;</div><div class="line">        _interopRequireDefault(require('sss')).go();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    require(['aaa']);</div><div class="line"></div><div class="line">    return &#123;hello: 'world'&#125;;</div><div class="line"></div><div class="line">    function _interopRequireDefault(obj) &#123;</div><div class="line">        return obj &amp;&amp; obj.__esModule ? obj.default : obj;</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">### export的处理</div><div class="line"></div><div class="line">我想的是，直接就处理 Function 的 ReturnStatement 就好了……</div><div class="line"></div><div class="line">还是从第二步定位的模块主体部分入手。</div><div class="line"></div><div class="line">来看 `mainFunc.body.body` 就是所有的语句了，只看 `ReturnStatement`，如果没有，那可能是使用 exports 或 module.exports 定义的，我们没用这种，先无视。</div><div class="line"></div><div class="line">将`ReturnStatement`的前面插一个`VariableDeclaration`，然后让`ReturnStatement`返回的是`&#123;default:exports&#125;`这种，大体思路如此。</div><div class="line"></div><div class="line">```javascript</div><div class="line">// 简单的实现</div><div class="line">var mainFunc = getDefineFunction(path);</div><div class="line">var returnStatement = getReturnStatement(mainFunc);</div><div class="line">if (returnStatement &amp;&amp; returnStatement.target) &#123;</div><div class="line">    mainFunc.body.body.splice(</div><div class="line">        returnStatement.index, 0,</div><div class="line">        t.VariableDeclaration('var', [</div><div class="line">            t.VariableDeclarator(t.identifier('__esModuleAMDExport'), t.objectExpression(</div><div class="line">                [</div><div class="line">                    t.objectProperty(t.identifier('default'), returnStatement.target.argument),</div><div class="line">                    t.objectProperty(t.identifier('__esModule'), t.booleanLiteral(true))</div><div class="line">                ]</div><div class="line">            ))</div><div class="line">        ])</div><div class="line">    );</div><div class="line">    returnStatement.target.argument = t.identifier('__esModuleAMDExport');</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后，要说的是：</p>
+<p>如果遇到了这样的问题，只能改代码了，因为根据babel6的设计，这样本来就是不行的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在文件a中</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> b = <span class="number">1</span>;</div><div class="line"></div><div class="line"><span class="comment">// 然后你非要在其他的文件中去</span></div><div class="line"><span class="keyword">import</span> a <span class="keyword">from</span> <span class="string">'./a'</span>;</div><div class="line">a.b;  <span class="comment">// 这样是不行的</span></div><div class="line"></div><div class="line"><span class="comment">// 应该是</span></div><div class="line"><span class="keyword">import</span> &#123;b&#125; <span class="keyword">from</span> <span class="string">'./a'</span>;</div></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -534,10 +538,10 @@ babel-plugin-transform-es2015-m">
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/"
+        <div class="ds-share flat" data-thread-key="2017/03/16/es6/try resolve old amd modules problem with babel6/"
      data-title="babel6的新老AMD模块并存问题"
      data-content=""
-     data-url="https://leowang721.github.io/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/">
+     data-url="https://leowang721.github.io/2017/03/16/es6/try resolve old amd modules problem with babel6/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -564,8 +568,8 @@ babel-plugin-transform-es2015-m">
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/"
-           data-title="babel6的新老AMD模块并存问题" data-url="https://leowang721.github.io/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/">
+      <div class="ds-thread" data-thread-key="2017/03/16/es6/try resolve old amd modules problem with babel6/"
+           data-title="babel6的新老AMD模块并存问题" data-url="https://leowang721.github.io/2017/03/16/es6/try resolve old amd modules problem with babel6/">
       </div>
     
   </div>

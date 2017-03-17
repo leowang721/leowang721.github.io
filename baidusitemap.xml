@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>https://leowang721.github.io/2017/03/16/es6/try%20resolve%20old%20amd%20modules%20problem%20with%20babel6/</loc>
+    <lastmod>2017-03-17T01:46:38.000Z</lastmod>
+    <data>
+        <display>
+        <title>babel6的新老AMD模块并存问题</title>
+        <pubTime>2017-03-16T02:27:43.000Z</pubTime>
+        
+        <tag>babel</tag>
+         
+        <tag>插件</tag>
+         
+         
+           
+             
+              <breadCrumb title="es6" url="https://leowang721.github.io/categories/es6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async%20await/</loc>
     <lastmod>2017-03-17T01:38:54.000Z</lastmod>
     <data>
@@ -23,28 +45,6 @@
            
              
               <breadCrumb title="架构" url="https://leowang721.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://leowang721.github.io/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/</loc>
-    <lastmod>2017-03-16T14:43:09.000Z</lastmod>
-    <data>
-        <display>
-        <title>babel6的新老AMD模块并存问题</title>
-        <pubTime>2017-03-16T02:27:43.000Z</pubTime>
-        
-        <tag>babel</tag>
-         
-        <tag>插件</tag>
-         
-         
-           
-             
-              <breadCrumb title="es6" url="https://leowang721.github.io/categories/es6/"/>
           
         </display>
     </data>
