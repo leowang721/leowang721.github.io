@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://leowang721.github.io/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/</loc>
+    <loc>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async%20await/</loc>
     
-    <lastmod>2017-03-16T14:43:09.000Z</lastmod>
+    <lastmod>2017-03-17T01:38:54.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async&await/</loc>
+    <loc>https://leowang721.github.io/2017/03/16/es6/old_and_new_amd_modules_problem_with_babel6/</loc>
     
-    <lastmod>2017-03-13T13:22:24.000Z</lastmod>
+    <lastmod>2017-03-16T14:43:09.000Z</lastmod>
     
   </url>
   
@@ -72,7 +72,7 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/react-native/detail/View.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/variable.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -93,14 +93,14 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/class.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/control.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/variable.html</loc>
+    <loc>https://leowang721.github.io/learning/react-native/detail/View.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -108,13 +108,6 @@
   
   <url>
     <loc>https://leowang721.github.io/learning/swift/dictionary.html</loc>
-    
-    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://leowang721.github.io/learning/swift/extension.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -129,6 +122,13 @@
   
   <url>
     <loc>https://leowang721.github.io/learning/swift/function.html</loc>
+    
+    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://leowang721.github.io/learning/swift/extension.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -163,13 +163,6 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/protocol.html</loc>
-    
-    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://leowang721.github.io/learning/swift/string.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
@@ -177,7 +170,14 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/control.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/protocol.html</loc>
+    
+    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://leowang721.github.io/learning/swift/class.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
