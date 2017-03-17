@@ -4,25 +4,21 @@
 
     
   <url>
-    <loc>https://leowang721.github.io/2017/03/13/es6/koa%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%9C%BA%E5%88%B6%E5%8E%9F%E7%90%86%E5%8F%8Aasync%20await%E7%89%88%E6%9C%AC%E5%AE%9E%E7%8E%B0/</loc>
-    <lastmod>2017-03-17T01:50:28.000Z</lastmod>
+    <loc>https://leowang721.github.io/2017/03/16/es6/try-resolve-old-amd-modules-problem-with-babel6/</loc>
+    <lastmod>2017-03-17T01:52:32.000Z</lastmod>
     <data>
         <display>
-        <title>koa的中间件机制原理及async await版本实现</title>
-        <pubTime>2017-03-13T12:04:28.000Z</pubTime>
+        <title>babel6的新老AMD模块并存问题</title>
+        <pubTime>2017-03-16T02:27:43.000Z</pubTime>
         
-        <tag>es6</tag>
+        <tag>babel</tag>
          
-        <tag>es7</tag>
-         
-        <tag>设计模式</tag>
-         
-        <tag>架构</tag>
+        <tag>插件</tag>
          
          
            
              
-              <breadCrumb title="架构" url="https://leowang721.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
+              <breadCrumb title="es6" url="https://leowang721.github.io/categories/es6/"/>
           
         </display>
     </data>
@@ -30,8 +26,8 @@
 
     
   <url>
-    <loc>https://leowang721.github.io/2017/03/13/es6/Iterator,%20Generator%20%E5%92%8C%20Async/</loc>
-    <lastmod>2017-03-17T01:50:19.000Z</lastmod>
+    <loc>https://leowang721.github.io/2017/03/13/es6/iterator-generator-and-async/</loc>
+    <lastmod>2017-03-17T01:52:23.000Z</lastmod>
     <data>
         <display>
         <title>Iterator, Generator 和 Async</title>
@@ -52,21 +48,25 @@
 
     
   <url>
-    <loc>https://leowang721.github.io/2017/03/16/es6/babel6%E7%9A%84%E6%96%B0%E8%80%81AMD%E6%A8%A1%E5%9D%97%E5%B9%B6%E5%AD%98%E9%97%AE%E9%A2%98/</loc>
-    <lastmod>2017-03-17T01:50:10.000Z</lastmod>
+    <loc>https://leowang721.github.io/2017/03/13/es6/koa-middlewares-implementation-with-async-await/</loc>
+    <lastmod>2017-03-17T01:52:12.000Z</lastmod>
     <data>
         <display>
-        <title>babel6的新老AMD模块并存问题</title>
-        <pubTime>2017-03-16T02:27:43.000Z</pubTime>
+        <title>koa的中间件机制原理及async await版本实现</title>
+        <pubTime>2017-03-13T12:04:28.000Z</pubTime>
         
-        <tag>babel</tag>
+        <tag>es6</tag>
          
-        <tag>插件</tag>
+        <tag>es7</tag>
+         
+        <tag>设计模式</tag>
+         
+        <tag>架构</tag>
          
          
            
              
-              <breadCrumb title="es6" url="https://leowang721.github.io/categories/es6/"/>
+              <breadCrumb title="架构" url="https://leowang721.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
           
         </display>
     </data>
