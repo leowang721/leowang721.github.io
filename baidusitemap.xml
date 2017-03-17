@@ -5,7 +5,7 @@
     
   <url>
     <loc>https://leowang721.github.io/2017/03/16/es6/try-resolve-old-amd-modules-problem-with-babel6/</loc>
-    <lastmod>2017-03-17T01:52:32.000Z</lastmod>
+    <lastmod>2017-03-17T02:24:11.000Z</lastmod>
     <data>
         <display>
         <title>babel6的新老AMD模块并存问题</title>
@@ -18,7 +18,7 @@
          
            
              
-              <breadCrumb title="es6" url="https://leowang721.github.io/categories/es6/"/>
+              <breadCrumb title="前端" url="https://leowang721.github.io/categories/frontend/"/>
           
         </display>
     </data>
@@ -27,7 +27,7 @@
     
   <url>
     <loc>https://leowang721.github.io/2017/03/13/es6/iterator-generator-and-async/</loc>
-    <lastmod>2017-03-17T01:52:23.000Z</lastmod>
+    <lastmod>2017-03-17T02:23:59.000Z</lastmod>
     <data>
         <display>
         <title>Iterator, Generator 和 Async</title>
@@ -40,12 +40,14 @@
          
            
              
-              <breadCrumb title="es6" url="https://leowang721.github.io/categories/es6/"/>
+              <breadCrumb title="前端" url="https://leowang721.github.io/categories/frontend/"/>
           
         </display>
     </data>
     </url>
 
+    
+    
     
   <url>
     <loc>https://leowang721.github.io/2017/03/13/es6/koa-middlewares-implementation-with-async-await/</loc>
@@ -66,7 +68,7 @@
          
            
              
-              <breadCrumb title="架构" url="https://leowang721.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
+              <breadCrumb title="架构" url="https://leowang721.github.io/categories/architecture/"/>
           
         </display>
     </data>
