@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[babel6的新老AMD模块并存问题]]></title>
-      <url>https://leowang721.github.io/2017/03/16/es6/try%20resolve%20old%20amd%20modules%20problem%20with%20babel6/</url>
+      <url>https://leowang721.github.io/2017/03/16/es6/babel6%E7%9A%84%E6%96%B0%E8%80%81AMD%E6%A8%A1%E5%9D%97%E5%B9%B6%E5%AD%98%E9%97%AE%E9%A2%98/</url>
       <content type="html"><![CDATA[<p>近来又遇到了很恶心的事儿，那就是想要升级babel为6的时候，遇到了新老AMD模块并存的问题。</p>
 <p>是的，又遇到了，尽管在babel7都WIP了，升级个6还是恶心的够呛，扫了一圈之后发现，圈里貌似还是没人去解决这个问题……</p>
 <p>先列出引到的链接：</p>
@@ -78,7 +78,7 @@
     
     <entry>
       <title><![CDATA[koa的中间件机制原理及async await版本实现]]></title>
-      <url>https://leowang721.github.io/2017/03/13/es6/koa%20middlewares%20implementation%20with%20async%20await/</url>
+      <url>https://leowang721.github.io/2017/03/13/es6/koa%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%9C%BA%E5%88%B6%E5%8E%9F%E7%90%86%E5%8F%8Aasync%20await%E7%89%88%E6%9C%AC%E5%AE%9E%E7%8E%B0/</url>
       <content type="html"><![CDATA[<p>个人还是很喜欢这种机制，也想搞一个这般的 <a href="https://github.com/leowang721/k-core" target="_blank" rel="external">Workflow</a> 辅助类出来，不过不想用 Generator，所以折腾了一小下……</p>
 <h2 id="不得不说的-yield"><a href="#不得不说的-yield" class="headerlink" title="不得不说的 yield *"></a>不得不说的 yield *</h2><p><code>yield*</code>最大的作用，就是将<code>Generator</code>嵌在另一个<code>Generator</code>的内部执行。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">a</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">    b();</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">b</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -136,7 +136,7 @@
     
     <entry>
       <title><![CDATA[Iterator, Generator 和 Async]]></title>
-      <url>https://leowang721.github.io/2017/03/13/es6/Iterator,%20Generator%20And%20Async/</url>
+      <url>https://leowang721.github.io/2017/03/13/es6/Iterator,%20Generator%20%E5%92%8C%20Async/</url>
       <content type="html"><![CDATA[<h2 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h2><p><code>Iterator</code>为不同的数据结构提供统一的访问机制，只要它部署Iterator接口，就可以完成遍历操作。</p>
 <p>它的流程其实是跟链表的遍历很相似的：创建一个指针对象，指向当前数据结构的起始位置，然后不断的<code>next()</code>，每次返回的是一个对象数据，包含value和done两个字段供访问。</p>
 <p><code>for...of</code>循环实际上会去自动找<code>Iterator</code>接口。</p>
