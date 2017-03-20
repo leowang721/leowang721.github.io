@@ -12,6 +12,7 @@
 <h2 id="库选择"><a href="#库选择" class="headerlink" title="库选择"></a>库选择</h2><h3 id="测试库mocha"><a href="#测试库mocha" class="headerlink" title="测试库mocha"></a>测试库<code>mocha</code></h3><p>很正常的选择。</p>
 <p><a href="https://mochajs.org/" target="_blank" rel="external">官网</a><br><a href="https://github.com/mochajs/mocha" target="_blank" rel="external">Github</a></p>
 <h3 id="断言库chai"><a href="#断言库chai" class="headerlink" title="断言库chai"></a>断言库<code>chai</code></h3><p>说实话我也没想那么多，<code>mocha</code>官网用了就直接用了而已，其实本身并不在意是<code>chai</code>还是<code>jasmine</code>……</p>
+<a id="more"></a>
 <p><a href="http://chaijs.com/" target="_blank" rel="external">官网</a><br><a href="https://github.com/chaijs/chai" target="_blank" rel="external">Github</a></p>
 <h3 id="覆盖率nyc"><a href="#覆盖率nyc" class="headerlink" title="覆盖率nyc"></a>覆盖率<code>nyc</code></h3><p>实际上还是<code>istanbul</code>，<code>nyc</code>是做了些增强：</p>
 <ul>
