@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/</loc>
+    <lastmod>2017-03-20T11:28:41.000Z</lastmod>
+    <data>
+        <display>
+        <title>【持续更新】JavaScript中的数据结构</title>
+        <pubTime>2017-03-20T07:34:32.000Z</pubTime>
+        
+        <tag>数据结构</tag>
+         
+        <tag>优化</tag>
+         
+         
+           
+             
+              <breadCrumb title="算法" url="https://leowang721.github.io/categories/algorithm/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://leowang721.github.io/2017/03/20/test/frontend-continuous-integrationtest-with-istanbul-mocha-babel-etc/</loc>
     <lastmod>2017-03-20T05:17:22.000Z</lastmod>
     <data>

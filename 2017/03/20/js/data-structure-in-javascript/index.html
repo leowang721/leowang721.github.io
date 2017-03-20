@@ -1,0 +1,890 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据结构,优化," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="数组在 js 中，除了基础类型 Boolean、Number、String、Null和Undefined以外，其他都是对象。
+所以在这里简单记录的是，作为一种基础数据结构，js中的数组有什么特殊的地方，以及在性能上需要注意的地方。
+我们都知道数组这种数据结构，它的经典实现就是：内存中一段连续的位置分配来存储数据的线性集合。所以在C等语言中，它是需要在声明时指定长度的，以便在栈区分配内存，并且长度是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【持续更新】JavaScript中的数据结构">
+<meta property="og:url" content="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/index.html">
+<meta property="og:site_name" content="炽天使的羽翼">
+<meta property="og:description" content="数组在 js 中，除了基础类型 Boolean、Number、String、Null和Undefined以外，其他都是对象。
+所以在这里简单记录的是，作为一种基础数据结构，js中的数组有什么特殊的地方，以及在性能上需要注意的地方。
+我们都知道数组这种数据结构，它的经典实现就是：内存中一段连续的位置分配来存储数据的线性集合。所以在C等语言中，它是需要在声明时指定长度的，以便在栈区分配内存，并且长度是">
+<meta property="og:updated_time" content="2017-03-20T11:28:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【持续更新】JavaScript中的数据结构">
+<meta name="twitter:description" content="数组在 js 中，除了基础类型 Boolean、Number、String、Null和Undefined以外，其他都是对象。
+所以在这里简单记录的是，作为一种基础数据结构，js中的数组有什么特殊的地方，以及在性能上需要注意的地方。
+我们都知道数组这种数据结构，它的经典实现就是：内存中一段连续的位置分配来存储数据的线性集合。所以在C等语言中，它是需要在声明时指定长度的，以便在栈区分配内存，并且长度是">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/"/>
+
+
+
+
+
+  <title> 【持续更新】JavaScript中的数据结构 | 炽天使的羽翼 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-93415740-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ee21d9b55241bf465e619f6fc6b07300";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1256024176&web_id=1256024176" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">炽天使的羽翼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leo Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="炽天使的羽翼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                【持续更新】JavaScript中的数据结构
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-20T15:34:32+08:00">
+                2017-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/20/js/data-structure-in-javascript/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/20/js/data-structure-in-javascript/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>在 js 中，除了基础类型 <code>Boolean</code>、<code>Number</code>、<code>String</code>、<code>Null</code>和<code>Undefined</code>以外，其他都是对象。</p>
+<p>所以在这里简单记录的是，作为一种基础数据结构，js中的数组有什么特殊的地方，以及在性能上需要注意的地方。</p>
+<p>我们都知道<code>数组</code>这种数据结构，它的经典实现就是：内存中一段连续的位置分配来存储数据的线性集合。所以在C等语言中，它是需要在声明时指定长度的，以便在<code>栈区</code>分配内存，并且长度是不可变的。</p>
+<p>不过 js 的数组最突出的特点就是：长度可变。</p>
+<p>那么，会不会对数组本身的优点即“快速读取”带来影响呢？</p>
+<p>在V8中，数组的存储方式基本上就是：</p>
+<ol>
+<li>Fast Elements 传统的线性存储方式，动态分配内存</li>
+<li>Fast Holey Elements 如果出现了不连续的索引位置赋值，则转换为Fast Holey Elements，没有赋值的位置被赋值undefined，动态分配内存</li>
+<li>Dictionary Elements 以 <code>Dictionary</code> 本质是 <code>HashTable</code>的方式存储，内存或许上节省了，但是使用的开销增加了</li>
+</ol>
+<p>所以，Fast Elements最接近原本数组的特性，而其他的两种都是由它“转换”而来的，在性能上有所下降——基本都是在赋值的时候。</p>
+<p>需要注意的是，如果 key 不是无符号整数，这时已经不按数组处理了，而是按照Object来处理的，此时不会去处理 <code>length</code> 属性。</p>
+<h3 id="性能注意点"><a href="#性能注意点" class="headerlink" title="性能注意点"></a>性能注意点</h3><p>下面的几个性能点可能都要执行量过10W甚至100W的时候才能看出明显区别……</p>
+<a id="more"></a>
+<h4 id="使用非负整数作为索引下标，从0开始用"><a href="#使用非负整数作为索引下标，从0开始用" class="headerlink" title="使用非负整数作为索引下标，从0开始用"></a>使用非负整数作为索引下标，从0开始用</h4><p>使用非整数、字符串、负数这样的索引下标，实际上会把它作为一般的对象key来处理了，作为属性来使用，其实要比常规数组慢很多！</p>
+<p>如果不从0开始用，那直接就带洞了，并且还可能变成<code>Dictionary Elements</code>，详看下面。</p>
+<h4 id="最好是避免洞的出现"><a href="#最好是避免洞的出现" class="headerlink" title="最好是避免洞的出现"></a>最好是避免洞的出现</h4><p>所谓的洞，就是数组中存在元素未赋值，也就是undefined。</p>
+<p><code>new Array(1000)</code>这般的预分配的数组，如果长度小于100000（in v8），这时候其实倒是无所谓的，底层的实现还是C数组的模式，也就匹配了上面的<code>Fast Holey Elements</code>而已，多出了一点开销在“洞”的处理上。</p>
+<p>来看不是预分配的数组</p>
+<p>如果是连续使用索引，从0开始一直到lengt - 1，无洞，那么其实就会一直保证是C数组模式了，效率赞赞的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [];</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">200000</span>; i++) &#123;</div><div class="line">    arr.push(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果跳着用，而要设置的索引值超出数组当前长度已经达到kMaxGap决定的阈值——通常是1024——这时就会被转换为<code>Dictionary Elements</code>了，效率下降很多</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>];</div><div class="line">arr[<span class="number">1234</span>] = <span class="number">1234</span>;</div></pre></td></tr></table></figure>
+<p>所以，通常来说超过1024长度的数组的逆向赋值也是不建议的，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [];</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2000</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">    arr[i] = i;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然我们本身也要看为什么要使用数组，以及为什么要使用不连续的数组，这么使用的原因到底是为了省事儿，还是需求导致的。</p>
+<p>错误的使用可能会导致不必要的内存消耗，以及潜在的转换消耗。</p>
+<p>然则貌似我们真不怎么关注内存…… 然而如果做<code>WebGL</code>了就另说喽！！</p>
+<h4 id="综合衡量来使用提前分配长度数组"><a href="#综合衡量来使用提前分配长度数组" class="headerlink" title="综合衡量来使用提前分配长度数组"></a>综合衡量来使用提前分配长度数组</h4><p>从上面的例子可以看出，提前分配内存，就是空间换时间，不然如果被转成<code>Dictionary Elements</code>就是时间换空间了。</p>
+<p>其实在浏览器端的话，时间更重要，因为在浏览器端很少去处理超大规模的数据，反倒是 Node 里可能要更注意一点空间的处理。</p>
+<p>所以如果是较小的数组使用，例如已经知道最多用100这么大的数组，又有可能需要有洞，那么提前分配为Array(100)不失为一个好主意。</p>
+<p>但是如果是长度超过64000（PagesPerChunk的大小限制？）这种，使用时的重点就在于：1. 动态分配内存 2. 连续使用索引，总之是避免一次初始化过大的数组，更要避免<code>Dictionary Elements</code>的转换。</p>
+<h4 id="Dictionary-Elements可能会被v8的启发式算法弄回C数组模式"><a href="#Dictionary-Elements可能会被v8的启发式算法弄回C数组模式" class="headerlink" title="Dictionary Elements可能会被v8的启发式算法弄回C数组模式"></a><code>Dictionary Elements</code>可能会被v8的启发式算法弄回C数组模式</h4><p>不过，还是别指望了，这个只是个优化而已，本质是检查洞数量是否够少。</p>
+<h4 id="元素值的类型"><a href="#元素值的类型" class="headerlink" title="元素值的类型"></a>元素值的类型</h4><p>尽量使用一样的类型，如果不行，那最好是使用字面量直接初始化，避免一堆隐式的封箱处理(boxing)。</p>
+<p>数组也是对象，而在v8中有这样一个优化：首先将key为非负整数的元素成为Element，对于Element有一个优化就是如果存储的值都是&gt;=0的整数（符合32位的条件），那么v8就认为存储的东西都是Fast small integers，以每个都是带符号31位整数去连续的分配内存，即C数组模式。</p>
+<p>而如果这时加了个小数、超大整数或者-0这样的数，就会导致将数组的元素类型提升为Fast doubles，从32位变64位了，好么，重新申请内存，再复制当前的值过去。</p>
+<p>其实这时候还是很快的，因为所有的数字都是无封箱存储的。</p>
+<p>若再扔个字符串或对象，又转为Fast values类型，这时候就很慢了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>大体如此罢，随时补充，反正如果能确保<code>Dictionary Elements</code>别冒出来，js数组的性能还是很不错的。</p>
+<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><p>对象在最差的时候就是 <code>Dictionary</code> ，不过其实是可以优化为连续内存模式的，这个在上面的部分已经提到了，只要key是满足非负整数的元素，就可能会触发相应的优化。</p>
+<p>Element与普通属性是分开的，性能上其实互不影响！所以，Object的数组化使用，也可能会是个优化点……</p>
+<p>来看另外一个v8的优化：隐藏类。</p>
+<h3 id="隐藏类"><a href="#隐藏类" class="headerlink" title="隐藏类"></a>隐藏类</h3><p>js的对象可以动态的修改属性，这导致了其结构可能会频繁改变，这样字典类型存储属性的话，每次都要动态的去定位属性对应的下标地址，然后访问。</p>
+<p>为了提升读取性能，v8是利用动态创建隐藏内部类的方式动态地将属性的内存地址记录在对象内，从而提升整体的属性访问速度。</p>
+<p>每次修改，都是创建一个新的隐藏类，然后尽量的复用之前的隐藏类的已有属性（一次一个属性/方法）。</p>
+<p>而在new的时候，其实不会再创建了，而是使用已有的，除非又去添加新的属性。</p>
+<p>这就带来了一个优化处理：<strong>尽量在构造函数内去连续的声明完，不要在new出来新实例后，又手动的增加新的属性</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">P</span>(<span class="params">x, y</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.x = x;</div><div class="line">    <span class="keyword">this</span>.y = y;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> P(<span class="number">1</span>, <span class="number">2</span>);</div><div class="line">p.z = <span class="number">3</span>;  <span class="comment">// 不要这么做</span></div></pre></td></tr></table></figure>
+<h3 id="Dictionary-Mode（for复杂属性的对象）"><a href="#Dictionary-Mode（for复杂属性的对象）" class="headerlink" title="Dictionary Mode（for复杂属性的对象）"></a>Dictionary Mode（for复杂属性的对象）</h3><p>其实至少也能当个 <code>Dictionary</code> 来用，还是小优化过的…… 说是<code>HashTable</code>也OK。</p>
+<p>不过这种模式下，性能最差了…… 尽管存储开销要小于上面的隐藏类，但是初始化时，哈希表中的所有的键与值都被设置为了undefined，当插入新的数据时，会去计算键名的哈希值的低位会被当做初始的存储索引地址。如果此地址已经被占用了，V8 会尝试向下一个地址进行插入，直到插入成功。</p>
+<p>每次都要计算，所以肯定是个不大好消耗。</p>
+<p>总之，js中的对象起到的作用已经超过了基础的数据结构 <code>Dictionary</code> 和 <code>HashTable</code>，也不必费心去实现了。</p>
+<p>待续…</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+            <a href="/tags/优化/" rel="tag"># 优化</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/20/test/frontend-continuous-integrationtest-with-istanbul-mocha-babel-etc/" rel="next" title="小结下前端的持续集成（istanbul, mocha, babel, etc）">
+                <i class="fa fa-chevron-left"></i> 小结下前端的持续集成（istanbul, mocha, babel, etc）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/03/20/js/data-structure-in-javascript/"
+     data-title="【持续更新】JavaScript中的数据结构"
+     data-content=""
+     data-url="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/20/js/data-structure-in-javascript/"
+           data-title="【持续更新】JavaScript中的数据结构" data-url="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.jpg"
+               alt="Leo Wang" />
+          <p class="site-author-name" itemprop="name">Leo Wang</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leowang721" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/leowang721" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/seraphwings" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/seraphwings" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">1.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#性能注意点"><span class="nav-number">1.1.</span> <span class="nav-text">性能注意点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用非负整数作为索引下标，从0开始用"><span class="nav-number">1.1.1.</span> <span class="nav-text">使用非负整数作为索引下标，从0开始用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最好是避免洞的出现"><span class="nav-number">1.1.2.</span> <span class="nav-text">最好是避免洞的出现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#综合衡量来使用提前分配长度数组"><span class="nav-number">1.1.3.</span> <span class="nav-text">综合衡量来使用提前分配长度数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dictionary-Elements可能会被v8的启发式算法弄回C数组模式"><span class="nav-number">1.1.4.</span> <span class="nav-text">Dictionary Elements可能会被v8的启发式算法弄回C数组模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#元素值的类型"><span class="nav-number">1.1.5.</span> <span class="nav-text">元素值的类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.2.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象"><span class="nav-number">2.</span> <span class="nav-text">对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏类"><span class="nav-number">2.1.</span> <span class="nav-text">隐藏类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dictionary-Mode（for复杂属性的对象）"><span class="nav-number">2.2.</span> <span class="nav-text">Dictionary Mode（for复杂属性的对象）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Wang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"leowang721"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

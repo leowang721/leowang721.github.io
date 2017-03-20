@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/</loc>
+    
+    <lastmod>2017-03-20T11:28:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://leowang721.github.io/2017/03/20/test/frontend-continuous-integrationtest-with-istanbul-mocha-babel-etc/</loc>
     
     <lastmod>2017-03-20T05:17:22.000Z</lastmod>
@@ -79,13 +86,6 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/kc/register.html</loc>
-    
-    <lastmod>2017-03-09T08:46:15.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://leowang721.github.io/kc/index.html</loc>
     
     <lastmod>2017-03-09T08:46:15.000Z</lastmod>
@@ -93,16 +93,9 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/react-native/detail/View.html</loc>
+    <loc>https://leowang721.github.io/kc/register.html</loc>
     
-    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://leowang721.github.io/learning/swift/struct.html</loc>
-    
-    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
+    <lastmod>2017-03-09T08:46:15.000Z</lastmod>
     
   </url>
   
@@ -114,7 +107,14 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/control.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/optional.html</loc>
+    
+    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://leowang721.github.io/learning/react-native/detail/View.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -128,7 +128,7 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/enum.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/control.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -149,14 +149,7 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/function.html</loc>
-    
-    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://leowang721.github.io/learning/swift/generics.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/enum.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -170,6 +163,13 @@
   </url>
   
   <url>
+    <loc>https://leowang721.github.io/learning/swift/generics.html</loc>
+    
+    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://leowang721.github.io/learning/swift/number.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
@@ -177,7 +177,14 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/optional.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/function.html</loc>
+    
+    <lastmod>2017-03-09T08:46:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://leowang721.github.io/learning/swift/string.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
@@ -191,7 +198,7 @@
   </url>
   
   <url>
-    <loc>https://leowang721.github.io/learning/swift/string.html</loc>
+    <loc>https://leowang721.github.io/learning/swift/struct.html</loc>
     
     <lastmod>2017-03-09T08:46:06.000Z</lastmod>
     
