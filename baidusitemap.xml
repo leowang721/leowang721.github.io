@@ -4,16 +4,20 @@
 
     
   <url>
-    <loc>https://leowang721.github.io/2017/03/16/es6/try-resolve-old-amd-modules-problem-with-babel6/</loc>
-    <lastmod>2017-03-17T02:24:11.000Z</lastmod>
+    <loc>https://leowang721.github.io/2017/03/20/test/frontend-continuous-integrationtest-with-istanbul-mocha-babel-etc/</loc>
+    <lastmod>2017-03-20T05:09:28.000Z</lastmod>
     <data>
         <display>
-        <title>babel6的新老AMD模块并存问题</title>
-        <pubTime>2017-03-16T02:27:43.000Z</pubTime>
+        <title>小结下前端的持续集成（istanbul, mocha, babel, etc）</title>
+        <pubTime>2017-03-20T02:40:00.000Z</pubTime>
         
-        <tag>babel</tag>
+        <tag>es6</tag>
          
-        <tag>插件</tag>
+        <tag>架构</tag>
+         
+        <tag>测试</tag>
+         
+        <tag>持续集成</tag>
          
          
            
@@ -27,7 +31,7 @@
     
   <url>
     <loc>https://leowang721.github.io/2017/03/13/es6/iterator-generator-and-async/</loc>
-    <lastmod>2017-03-17T02:23:59.000Z</lastmod>
+    <lastmod>2017-03-20T02:44:57.000Z</lastmod>
     <data>
         <display>
         <title>Iterator, Generator 和 Async</title>
@@ -47,11 +51,9 @@
     </url>
 
     
-    
-    
   <url>
     <loc>https://leowang721.github.io/2017/03/13/es6/koa-middlewares-implementation-with-async-await/</loc>
-    <lastmod>2017-03-17T01:52:12.000Z</lastmod>
+    <lastmod>2017-03-20T02:44:55.000Z</lastmod>
     <data>
         <display>
         <title>koa的中间件机制原理及async await版本实现</title>
@@ -74,6 +76,30 @@
     </data>
     </url>
 
+    
+  <url>
+    <loc>https://leowang721.github.io/2017/03/16/es6/try-resolve-old-amd-modules-problem-with-babel6/</loc>
+    <lastmod>2017-03-17T02:24:11.000Z</lastmod>
+    <data>
+        <display>
+        <title>babel6的新老AMD模块并存问题</title>
+        <pubTime>2017-03-16T02:27:43.000Z</pubTime>
+        
+        <tag>babel</tag>
+         
+        <tag>插件</tag>
+         
+         
+           
+             
+              <breadCrumb title="前端" url="https://leowang721.github.io/categories/frontend/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
     
   <url>
     <loc>https://leowang721.github.io/2015/08/10/learning/react-native/structure/</loc>
