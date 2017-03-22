@@ -1,0 +1,974 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="优化," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="引擎暂时只是v8, JavaScriptCore、SpiderMonkey、Chakra、Carakan等等这些回头再看看做做对比啥的吧……
+其他语言是以C/C++为例。
+测试环境为Mac，并列出浏览器 or 环境的版本
+
+Chrome: 56.0.2924.87 (64-bit)
+Firefox: 51.0.1 (64 位)
+Safari: 10.0.3 (12602.4.8)
+Node.js:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高性能的JavaScript开发">
+<meta property="og:url" content="https://leowang721.github.io/2017/03/21/js/effective-coding/index.html">
+<meta property="og:site_name" content="炽天使的羽翼">
+<meta property="og:description" content="引擎暂时只是v8, JavaScriptCore、SpiderMonkey、Chakra、Carakan等等这些回头再看看做做对比啥的吧……
+其他语言是以C/C++为例。
+测试环境为Mac，并列出浏览器 or 环境的版本
+
+Chrome: 56.0.2924.87 (64-bit)
+Firefox: 51.0.1 (64 位)
+Safari: 10.0.3 (12602.4.8)
+Node.js:">
+<meta property="og:image" content="https://leowang721.github.io/images/learning/v8/tagged-values.png">
+<meta property="og:updated_time" content="2017-03-22T09:12:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高性能的JavaScript开发">
+<meta name="twitter:description" content="引擎暂时只是v8, JavaScriptCore、SpiderMonkey、Chakra、Carakan等等这些回头再看看做做对比啥的吧……
+其他语言是以C/C++为例。
+测试环境为Mac，并列出浏览器 or 环境的版本
+
+Chrome: 56.0.2924.87 (64-bit)
+Firefox: 51.0.1 (64 位)
+Safari: 10.0.3 (12602.4.8)
+Node.js:">
+<meta name="twitter:image" content="https://leowang721.github.io/images/learning/v8/tagged-values.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://leowang721.github.io/2017/03/21/js/effective-coding/"/>
+
+
+
+
+
+  <title> 高性能的JavaScript开发 | 炽天使的羽翼 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-93415740-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ee21d9b55241bf465e619f6fc6b07300";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1256024176&web_id=1256024176" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">炽天使的羽翼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/21/js/effective-coding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leo Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="炽天使的羽翼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                高性能的JavaScript开发
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-21T11:43:32+08:00">
+                2017-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/frontend/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/21/js/effective-coding/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/21/js/effective-coding/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>引擎暂时只是v8, JavaScriptCore、SpiderMonkey、Chakra、Carakan等等这些回头再看看做做对比啥的吧……</p>
+<p>其他语言是以C/C++为例。</p>
+<p>测试环境为Mac，并列出浏览器 or 环境的版本</p>
+<ul>
+<li>Chrome: 56.0.2924.87 (64-bit)</li>
+<li>Firefox: 51.0.1 (64 位)</li>
+<li>Safari: 10.0.3 (12602.4.8)</li>
+<li>Node.js: v7.7.2</li>
+</ul>
+<p>持续更新中… 只是个持续更新的笔记而已，只是希望能说明白罢了！！</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>C的访问机制，基本是编译确定了位置，偏移信息共享，使用时直接使用偏移量，所以非常高效。而js则不然，它在执行阶段才能确定结构，而且还能够增减对象的属性，在查找值时需要匹配属性名才能找到正确的值，这是很浪费时间的。</p>
+<p>不过引擎们做了很多努力，已经在逐步接近其他语言的性能了，例如隐藏类。</p>
+<p>这里说到的东西目的主要是为了避免让引擎的优化被浪费，甚至是倒退。</p>
+<p>其实呢，对于WebGL这类的貌似更有用一些，对于一般开发倒是意义不大。</p>
+<a id="more"></a>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>在v8中，除了基础类型 <code>Boolean</code>、<code>Number</code>、<code>String</code>、<code>Null</code>和<code>Undefined</code>以外，其他都是对象。</p>
+<p>在v8中，数据以两种形式来表示：</p>
+<ul>
+<li>值：例如 String、对象等，它们是变长的，而且内容的类型也不一样。</li>
+<li>句柄：大小是固定的，句柄中包含了指向数据的指针</li>
+</ul>
+<p>v8实际上将所有的数据交由GC管理的，被定义在内部，我们不能直接操作，只能通过<code>Handle</code>（句柄类）来进行操作，所以访问的时候都是先找到<code>Handle</code>，再通过指针去访问实际的值，修改的时候也是修改<code>Handle</code>中的指针。</p>
+<blockquote>
+<p>除了极少数的数据例如整型，其他的内容都是从堆里申请内存来存储的。</p>
+</blockquote>
+<p><code>Handle</code>本身能够存放特定数据，这也就使得这些数据不需要再从堆中分配，这也就减少了内存的使用并增加了访问速度。</p>
+<p>在v8中，<code>Handle</code>对象的大小是4/8字节（32/64位机器），在JavaScriptCore中是8字节。JavaScript的数字尽管按照标准都应是64位浮点格式来表示，但是对于整数实际的操作是基于32位整数，这也就意味着可以在<code>Handle</code>中直接存储整数以达到快速访问的目的。</p>
+<p>但针对着32位的<code>Handle</code>对象而言，它至少要区分存储的数据是整数还是指针，而指针本身的最后两位都是00，其实是不需要的，所以，就用这两位来表示句柄中包含的数据的类型，最后一位如果为0表示是整数，如果是1则表示是其他类型。</p>
+<p>所以v8中实际能够直接快速使用的整数是<code>小整数</code>，31位的有符号整数。</p>
+<p>v8中的<code>Handle</code>数据表示：<br><img src="/images/learning/v8/tagged-values.png" width="300" alt="tagged values"></p>
+<p>超过31位的数字，则被转换为double，放到一个Object中，再用指针指过去。</p>
+<h3 id="开发指引"><a href="#开发指引" class="headerlink" title="开发指引"></a>开发指引</h3><ol>
+<li>尽可能的使用31位有符号的整数，它很快！[-1073741825, 1073741824]</li>
+</ol>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>我们都知道<code>数组</code>这种数据结构，它的经典实现就是：内存中一段连续的位置分配来存储数据的线性集合。在其他语言中，它是需要在声明时固定类型、指定长度，以便在<code>栈区</code>分配内存，并且长度是不可变的。</p>
+<blockquote>
+<p>数组能够高效的访问，其实就在于内存的“固定”分配机制，元素类型固定，每次偏移的长度也是固定的，那么对于访问而言，仅需要计算地址位移信息而已，仅需要几个机器语言指令就可以存、取及使用。</p>
+</blockquote>
+<p>js的数组本质是个对象，但在v8中，以非负整数为key的元素被称为Element，每个对象都有一个指向Element数组的指针，其存放和其他属性是分开的，这其实也是针对数组的优化。</p>
+<p>那么<code>Element</code>，其实也就是数组元素，它有两种类型：</p>
+<ul>
+<li>Fast Elements: C语言模式的数组内存分配</li>
+<li>Dictionary Elements：hash table</li>
+</ul>
+<p>毫无疑问，<code>Dictionary Elements</code>要比<code>Fast Elements</code>慢很多，所以从性能角度而言，我们要做的事情是避免<code>Dictionary Elements</code>的出现。</p>
+<p>什么状况下会导致<code>Dictionary Elements</code>的出现呢？</p>
+<ol>
+<li>过大的预分配数组，通常阈值是 64K（PagesPerChunk的大小限制？）</li>
+<li>在非预分配的数组中，过多的超越当前数组长度的下标赋值，这个阈值由kMaxGap决定，通常是1024</li>
+<li>删除元素也有可能会导致</li>
+</ol>
+<p>至于过多的“洞”出现在数组中会不会导致转换为<code>Dictionary Elements</code>暂时还没有明确的结论，不过不建议这样的用法。</p>
+<p>示例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// for 1</span></div><div class="line"><span class="keyword">let</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">65000</span>);</div><div class="line"><span class="comment">// for 2</span></div><div class="line"><span class="keyword">let</span> arr = [];</div><div class="line">arr[<span class="number">1024</span>] = <span class="number">1024</span>;</div></pre></td></tr></table></figure></p>
+<p>再来看<code>Fast Elements</code>，它其实也有三种类型：</p>
+<ol>
+<li>Fast integer values</li>
+<li>Fast doubles</li>
+<li>Fast values</li>
+</ol>
+<p>这里其实是由元素类型导致的不同类型，所以可以再看一下上面的<code>数据类型</code>这部分</p>
+<p>首先是整型，v8为了提高效率，31位有符号整数是由<code>Handle</code>保存的，所以处理起来是极快的。<br>再来是 doubles，常见的触发条件就是在整数数组中增加了一个浮点数，这会导致整个数组都被展开转换为double来存储，通过增加一个隐藏类实现的<br>最后是 values，例如再加入了一个<code>true|undefined|null</code>，这时候就要再次增加隐藏类，指明要存储的是Object</p>
+<p>如果涉及到了这些转化，都会是性能的消耗，所以我们要尽可能的避免这种情况的出现。</p>
+<p>然而如果一开始就初始化如：<code>let arr = [1, 2, 1.5, true]</code>，并没有这样的转换问题，所以复杂类型的字面直接初始化是一个好主意，但是更好的主意是：尽量的在数组中存储相同类型的元素。</p>
+<p>在Google IO 2012年的v8讲解中有这方面的讲解，清晰易懂，建议查看一下：<a href="http://www.tudou.com/programs/view/bqxvrifP4mk/" target="_blank" rel="external">视频</a> <a href="http://v8-io12.appspot.com/#47" target="_blank" rel="external">PPT</a></p>
+<p>上面的说到的东西谈及了一个概念：<code>隐藏类</code>，这个会在后面的部分再细说，在这里只需要知道这个就行了：数组的<code>Fast Elements</code>模式默认是<code>小整数</code>，随着不同类型值的进入，会导致数组类型发生转换，都是通过<code>隐藏类</code>来实现的，而这个转换往往是一种不必要的消耗。</p>
+<p>下面的代码注释部分就是在说明<code>隐藏类</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Array</span>();</div><div class="line">a[<span class="number">0</span>] = <span class="number">77</span>;   <span class="comment">// integer 无洞</span></div><div class="line">a[<span class="number">1</span>] = <span class="number">88</span>;</div><div class="line">a[<span class="number">2</span>] = <span class="number">0.5</span>;   <span class="comment">// double 无洞</span></div><div class="line">a[<span class="number">3</span>] = <span class="literal">true</span>; <span class="comment">// Object 无洞</span></div></pre></td></tr></table></figure>
+<p>可以看出，有洞、无洞也会是<code>隐藏类</code>的一个标记，所以洞的出现不可避免的会造成性能的下降。</p>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><h4 id="测试预分配与动态分配"><a href="#测试预分配与动态分配" class="headerlink" title="测试预分配与动态分配"></a>测试预分配与动态分配</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var length = 10000000;</div><div class="line">function a()&#123;</div><div class="line">    var arr = [];</div><div class="line">    var i = 0;</div><div class="line">    for (i = 0; i &lt; length; i++) &#123;</div><div class="line">        arr[i] = i;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">function b()&#123;</div><div class="line">    var arr = new Array(length);</div><div class="line">    var i = 0;</div><div class="line">    for (i = 0; i &lt; length; i++) &#123;</div><div class="line">        arr[i] = i;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>计算10次运行的平均值，结果依次为 a 和 b，Safari不支持performance.mark，所以都用了new Date()计算：</p>
+<p>1000W次运算的结果</p>
+<ul>
+<li>Chrome: 295.8, 72.3</li>
+<li>Node.js: 290.4, 65.7  （它也是v8）</li>
+<li>Firefox: 77.1, 73.1</li>
+<li>Safari: 53.2, 13.4</li>
+</ul>
+<p>100W：</p>
+<ul>
+<li>Chrome: 24.8, 4.9</li>
+<li>Node.js: 24.1, 5.5  （它也是v8）</li>
+<li>Firefox: 6.4, 5.9</li>
+<li>Safari: 5.7, 1.5</li>
+</ul>
+<p>10W及以下几可无视差别。</p>
+<p>其实还尝试了小额内存预分配(&lt;64K)且试探性的内存延展(1024)，不过从实验结果上来看由于引入了额外的计算，反而时间较内存自动分配有所增加。</p>
+<h4 id="逆向赋值的测试"><a href="#逆向赋值的测试" class="headerlink" title="逆向赋值的测试"></a>逆向赋值的测试</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var length = 10000000;</div><div class="line">function a()&#123;</div><div class="line">    var arr = new Array(length);</div><div class="line">    var i = 0;</div><div class="line">    for (; i &lt; length; i++) &#123;</div><div class="line">        arr[i] = i;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">function b()&#123;</div><div class="line">    var arr = new Array(length);</div><div class="line">    var i = length - 1;</div><div class="line">    for (; i &gt;= 0; i--) &#123;</div><div class="line">        arr[i] = i;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试结果几近相同，b的表现偶尔会变坏一点点，但是不知是不是触发什么bug了，Firefox直接在逆向赋值崩掉了，刷出了<code>61.3, 5782</code>这样令人崩溃的结果。</p>
+<p>anyway，不要逆向赋值了！！</p>
+<h3 id="开发指引-1"><a href="#开发指引-1" class="headerlink" title="开发指引"></a>开发指引</h3><ol>
+<li>使用非负整数作为数组下标，不要使用负数、浮点数、字符串等会被认为是一般性的Object的key</li>
+<li>在数组中存储同一类型的元素</li>
+<li>尽量的避免使用不连续的索引值，而且从0开始</li>
+<li>如果非要存不同类型的元素，那么使用字面直接量初始化而不是一个一个的存入</li>
+<li>预先分配数组大小，这在大多数状况下都有较大的性能提升，可以忽略掉64K的限制，但是小于万量级的话差别几可无视</li>
+<li>不要逆向赋值！！不要逆向赋值！！不要逆向赋值！！</li>
+<li>最好不要随便删除数组元素，这可能会导致转为<code>Dictionary Elements</code>，据说洞变少可能会被v8优化回紧凑结构，但是这是不可依赖的行为</li>
+<li>先赋值，再访问，避免使用 <code>arr[100] == null</code> 或者隐式转换的判断性访问。</li>
+</ol>
+<h2 id="对象（隐藏类）"><a href="#对象（隐藏类）" class="headerlink" title="对象（隐藏类）"></a>对象（隐藏类）</h2><p>之前说过，js中除了那五种基础类型，其他的都是对象。而js又是个弱类型的语言，为了能够达到优化的目的（还记得与C类语言的特点么？就在<code>前言</code>部分。），即提升读取性能，v8利用动态创建隐藏内部类的方式动态地将属性的内存地址记录在对象内，从而提升整体的属性访问速度。</p>
+<p>避免了通过字符串匹配的方式来查找属性值。</p>
+<p><code>隐藏类</code>是为Object服务的，相同结构的Object会共享<code>隐藏类</code>，当结构发生了改变，对应的<code>隐藏类</code>也会发生改变，要么复用，要么新增。</p>
+<p>而且会将使用过的<code>隐藏类</code>结构通过内嵌缓存（inline cache）缓存起来，以便复用时可以快速的访问偏移值。</p>
+<p>复用的一个最佳例子就是类的使用了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function Point(x, y) &#123;</div><div class="line">    this.x = x;</div><div class="line">    this.y = y;</div><div class="line">&#125;</div><div class="line">var p1 = new Point(1, 2);</div><div class="line">var p2 = new Point(3, 4);  // 复用隐藏类</div><div class="line">p2.z = 5;  // p2使用了不同的隐藏类！！很可能触发了一个新增处理</div></pre></td></tr></table></figure>
+<p>需要注意的是，<code>隐藏类</code>将属性这些东西解析为树，所以顺序不同的初始化会导致<code>隐藏类</code>的解析结果也不同。</p>
+<p>所有的Object类型都是这样。</p>
+<h3 id="开发指引-2"><a href="#开发指引-2" class="headerlink" title="开发指引"></a>开发指引</h3><ol>
+<li>一次性的初始化所有的属性，而不是后续的动态增加</li>
+<li>属性初始化的顺序应当一致，以便保证能够复用隐藏类。</li>
+<li><code>delete</code> 会触发隐藏类的改变，如果是为了内存回收，设置为null是更好的选择</li>
+</ol>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="避免触发优化回滚"><a href="#避免触发优化回滚" class="headerlink" title="避免触发优化回滚"></a>避免触发优化回滚</h3><p>v8有一个优化行为，针对于热点函数，会使用<code>Crankshaft</code>编译器去乐观且猜测性的生成高效的本地代码，这通常是建立在变量类型不改变的前提下，如果发现类型变化了，那么v8就会使用优化回滚（Deoptimization）机制来回滚到之前的一个没有经过特别优化的代码。</p>
+<p>例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> counter = <span class="number">0</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitThenGo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    counter++;</div><div class="line">    <span class="keyword">if</span> (counter &lt; <span class="number">10000000</span>) &#123;</div><div class="line">        <span class="keyword">return</span> counter;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line">    <span class="built_in">console</span>.log(now);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>或许目的只是为了等一段时间之后打印当前时间，但是对于v8来说，waitThenGo执行了很多次之后，就可能会触发<code>Crankshaft</code>编译器来生成优化的代码了，它认为已经知道了所有的信息了，例如类型。</p>
+<p>但是实际上，没运行到 now 这一行之前，我们都不知道 now 的类型，所以当运行到这一行时，v8就别无选择的只能回滚到一个通用的状态了。</p>
+<h3 id="开发指引-3"><a href="#开发指引-3" class="headerlink" title="开发指引"></a>开发指引</h3><ol>
+<li>随用随声明是好的，但是如果前面的代码会触发大量的执行return，那么提前声明后面的变量是能够在一定程度上起到优化效果的</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/优化/" rel="tag"># 优化</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/20/js/data-structure-in-javascript/" rel="next" title="JavaScript中的数据结构">
+                <i class="fa fa-chevron-left"></i> JavaScript中的数据结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/21/js/javascript-engine/" rel="prev" title="JavaScript引擎">
+                JavaScript引擎 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/03/21/js/effective-coding/"
+     data-title="高性能的JavaScript开发"
+     data-content=""
+     data-url="https://leowang721.github.io/2017/03/21/js/effective-coding/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/21/js/effective-coding/"
+           data-title="高性能的JavaScript开发" data-url="https://leowang721.github.io/2017/03/21/js/effective-coding/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.jpg"
+               alt="Leo Wang" />
+          <p class="site-author-name" itemprop="name">Leo Wang</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leowang721" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/leowang721" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/seraphwings" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/seraphwings" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发指引"><span class="nav-number">2.1.</span> <span class="nav-text">开发指引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">3.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实验"><span class="nav-number">3.1.</span> <span class="nav-text">实验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#测试预分配与动态分配"><span class="nav-number">3.1.1.</span> <span class="nav-text">测试预分配与动态分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逆向赋值的测试"><span class="nav-number">3.1.2.</span> <span class="nav-text">逆向赋值的测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发指引-1"><span class="nav-number">3.2.</span> <span class="nav-text">开发指引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象（隐藏类）"><span class="nav-number">4.</span> <span class="nav-text">对象（隐藏类）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发指引-2"><span class="nav-number">4.1.</span> <span class="nav-text">开发指引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数"><span class="nav-number">5.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#避免触发优化回滚"><span class="nav-number">5.1.</span> <span class="nav-text">避免触发优化回滚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发指引-3"><span class="nav-number">5.2.</span> <span class="nav-text">开发指引</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Wang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"leowang721"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -5,10 +5,10 @@
     
   <url>
     <loc>https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/</loc>
-    <lastmod>2017-03-20T11:28:41.000Z</lastmod>
+    <lastmod>2017-03-22T09:22:07.000Z</lastmod>
     <data>
         <display>
-        <title>【持续更新】JavaScript中的数据结构</title>
+        <title>JavaScript中的数据结构</title>
         <pubTime>2017-03-20T07:34:32.000Z</pubTime>
         
         <tag>数据结构</tag>
@@ -26,6 +26,46 @@
 
     
   <url>
+    <loc>https://leowang721.github.io/2017/03/21/js/effective-coding/</loc>
+    <lastmod>2017-03-22T09:12:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>高性能的JavaScript开发</title>
+        <pubTime>2017-03-21T03:43:32.000Z</pubTime>
+        
+        <tag>优化</tag>
+         
+         
+           
+             
+              <breadCrumb title="前端" url="https://leowang721.github.io/categories/frontend/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://leowang721.github.io/2017/03/21/js/javascript-engine/</loc>
+    <lastmod>2017-03-22T09:07:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>JavaScript引擎</title>
+        <pubTime>2017-03-21T07:43:32.000Z</pubTime>
+        
+        <tag>引擎</tag>
+         
+         
+           
+             
+              <breadCrumb title="前端" url="https://leowang721.github.io/categories/frontend/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://leowang721.github.io/2017/03/20/test/frontend-continuous-integrationtest-with-istanbul-mocha-babel-etc/</loc>
     <lastmod>2017-03-20T05:17:22.000Z</lastmod>
     <data>
@@ -33,11 +73,11 @@
         <title>小结下前端的持续集成（istanbul, mocha, babel, etc）</title>
         <pubTime>2017-03-20T02:40:00.000Z</pubTime>
         
-        <tag>es6</tag>
+        <tag>测试</tag>
          
         <tag>架构</tag>
          
-        <tag>测试</tag>
+        <tag>es6</tag>
          
         <tag>持续集成</tag>
          
@@ -81,13 +121,13 @@
         <title>koa的中间件机制原理及async await版本实现</title>
         <pubTime>2017-03-13T12:04:28.000Z</pubTime>
         
+        <tag>架构</tag>
+         
         <tag>es6</tag>
          
         <tag>es7</tag>
          
         <tag>设计模式</tag>
-         
-        <tag>架构</tag>
          
          
            

@@ -4,61 +4,208 @@
   
     
     <entry>
-      <title><![CDATA[【持续更新】JavaScript中的数据结构]]></title>
-      <url>https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/</url>
-      <content type="html"><![CDATA[<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>在 js 中，除了基础类型 <code>Boolean</code>、<code>Number</code>、<code>String</code>、<code>Null</code>和<code>Undefined</code>以外，其他都是对象。</p>
-<p>所以在这里简单记录的是，作为一种基础数据结构，js中的数组有什么特殊的地方，以及在性能上需要注意的地方。</p>
-<p>我们都知道<code>数组</code>这种数据结构，它的经典实现就是：内存中一段连续的位置分配来存储数据的线性集合。所以在C等语言中，它是需要在声明时指定长度的，以便在<code>栈区</code>分配内存，并且长度是不可变的。</p>
-<p>不过 js 的数组最突出的特点就是：长度可变。</p>
-<p>那么，会不会对数组本身的优点即“快速读取”带来影响呢？</p>
-<p>在V8中，数组的存储方式基本上就是：</p>
-<ol>
-<li>Fast Elements 传统的线性存储方式，动态分配内存</li>
-<li>Fast Holey Elements 如果出现了不连续的索引位置赋值，则转换为Fast Holey Elements，没有赋值的位置被赋值undefined，动态分配内存</li>
-<li>Dictionary Elements 以 <code>Dictionary</code> 本质是 <code>HashTable</code>的方式存储，内存或许上节省了，但是使用的开销增加了</li>
-</ol>
-<p>所以，Fast Elements最接近原本数组的特性，而其他的两种都是由它“转换”而来的，在性能上有所下降——基本都是在赋值的时候。</p>
-<p>需要注意的是，如果 key 不是无符号整数，这时已经不按数组处理了，而是按照Object来处理的，此时不会去处理 <code>length</code> 属性。</p>
-<h3 id="性能注意点"><a href="#性能注意点" class="headerlink" title="性能注意点"></a>性能注意点</h3><p>下面的几个性能点可能都要执行量过10W甚至100W的时候才能看出明显区别……</p>
+      <title><![CDATA[JavaScript引擎]]></title>
+      <url>https://leowang721.github.io/2017/03/21/js/javascript-engine/</url>
+      <content type="html"><![CDATA[<p>JavaScript引擎是能够将JavaScript代码处理并执行的运行环境，不要把它跟浏览器内核搞混了！内核（如Webkit、Trident、Gecko等）主要是将页面转变成可视化的图像结果，即渲染出来，所以通常也被称为渲染引擎。</p>
+<p>渲染引擎和JavaScript引擎是浏览器处理网页过程的两个核心部分，它们是相互合作的关系。</p>
+<p>一般来说，渲染引擎根据JavaScript提供的桥接接口提供给JavaScript访问DOM的能力，很多HTML5也是通过桥接接口实现的。</p>
+<p>桥接接口复杂而不高效往往是一个性能瓶颈，所以才说DOM的频繁使用会导致性能问题。</p>
+<h2 id="常见的JavaScript引擎"><a href="#常见的JavaScript引擎" class="headerlink" title="常见的JavaScript引擎"></a>常见的JavaScript引擎</h2><p>排名不分先后。</p>
+<h3 id="v8"><a href="#v8" class="headerlink" title="v8"></a>v8</h3><p>Google开源的使用C++编写的引擎，有其他语言（如Java）的封装，<code>BSD</code>协议，自体还有其他协议。</p>
 <a id="more"></a>
-<h4 id="使用非负整数作为索引下标，从0开始用"><a href="#使用非负整数作为索引下标，从0开始用" class="headerlink" title="使用非负整数作为索引下标，从0开始用"></a>使用非负整数作为索引下标，从0开始用</h4><p>使用非整数、字符串、负数这样的索引下标，实际上会把它作为一般的对象key来处理了，作为属性来使用，其实要比常规数组慢很多！</p>
-<p>如果不从0开始用，那直接就带洞了，并且还可能变成<code>Dictionary Elements</code>，详看下面。</p>
-<h4 id="最好是避免洞的出现"><a href="#最好是避免洞的出现" class="headerlink" title="最好是避免洞的出现"></a>最好是避免洞的出现</h4><p>所谓的洞，就是数组中存在元素未赋值，也就是undefined。</p>
-<p><code>new Array(1000)</code>这般的预分配的数组，如果长度小于100000（in v8），这时候其实倒是无所谓的，底层的实现还是C数组的模式，也就匹配了上面的<code>Fast Holey Elements</code>而已，多出了一点开销在“洞”的处理上。</p>
-<p>来看不是预分配的数组</p>
-<p>如果是连续使用索引，从0开始一直到lengt - 1，无洞，那么其实就会一直保证是C数组模式了，效率赞赞的</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [];</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">200000</span>; i++) &#123;</div><div class="line">    arr.push(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果跳着用，而要设置的索引值超出数组当前长度已经达到kMaxGap决定的阈值——通常是1024——这时就会被转换为<code>Dictionary Elements</code>了，效率下降很多</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>];</div><div class="line">arr[<span class="number">1234</span>] = <span class="number">1234</span>;</div></pre></td></tr></table></figure>
-<p>所以，通常来说超过1024长度的数组的逆向赋值也是不建议的，例如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [];</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2000</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">    arr[i] = i;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>当然我们本身也要看为什么要使用数组，以及为什么要使用不连续的数组，这么使用的原因到底是为了省事儿，还是需求导致的。</p>
-<p>错误的使用可能会导致不必要的内存消耗，以及潜在的转换消耗。</p>
-<p>然则貌似我们真不怎么关注内存…… 然而如果做<code>WebGL</code>了就另说喽！！</p>
-<h4 id="综合衡量来使用提前分配长度数组"><a href="#综合衡量来使用提前分配长度数组" class="headerlink" title="综合衡量来使用提前分配长度数组"></a>综合衡量来使用提前分配长度数组</h4><p>从上面的例子可以看出，提前分配内存，就是空间换时间，不然如果被转成<code>Dictionary Elements</code>就是时间换空间了。</p>
-<p>其实在浏览器端的话，时间更重要，因为在浏览器端很少去处理超大规模的数据，反倒是 Node 里可能要更注意一点空间的处理。</p>
-<p>所以如果是较小的数组使用，例如已经知道最多用100这么大的数组，又有可能需要有洞，那么提前分配为Array(100)不失为一个好主意。</p>
-<p>但是如果是长度超过64000（PagesPerChunk的大小限制？）这种，使用时的重点就在于：1. 动态分配内存 2. 连续使用索引，总之是避免一次初始化过大的数组，更要避免<code>Dictionary Elements</code>的转换。</p>
-<h4 id="Dictionary-Elements可能会被v8的启发式算法弄回C数组模式"><a href="#Dictionary-Elements可能会被v8的启发式算法弄回C数组模式" class="headerlink" title="Dictionary Elements可能会被v8的启发式算法弄回C数组模式"></a><code>Dictionary Elements</code>可能会被v8的启发式算法弄回C数组模式</h4><p>不过，还是别指望了，这个只是个优化而已，本质是检查洞数量是否够少。</p>
-<h4 id="元素值的类型"><a href="#元素值的类型" class="headerlink" title="元素值的类型"></a>元素值的类型</h4><p>尽量使用一样的类型，如果不行，那最好是使用字面量直接初始化，避免一堆隐式的封箱处理(boxing)。</p>
-<p>数组也是对象，而在v8中有这样一个优化：首先将key为非负整数的元素成为Element，对于Element有一个优化就是如果存储的值都是&gt;=0的整数（符合32位的条件），那么v8就认为存储的东西都是Fast small integers，以每个都是带符号31位整数去连续的分配内存，即C数组模式。</p>
-<p>而如果这时加了个小数、超大整数或者-0这样的数，就会导致将数组的元素类型提升为Fast doubles，从32位变64位了，好么，重新申请内存，再复制当前的值过去。</p>
-<p>其实这时候还是很快的，因为所有的数字都是无封箱存储的。</p>
-<p>若再扔个字符串或对象，又转为Fast values类型，这时候就很慢了。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>大体如此罢，随时补充，反正如果能确保<code>Dictionary Elements</code>别冒出来，js数组的性能还是很不错的。</p>
-<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><p>对象在最差的时候就是 <code>Dictionary</code> ，不过其实是可以优化为连续内存模式的，这个在上面的部分已经提到了，只要key是满足非负整数的元素，就可能会触发相应的优化。</p>
-<p>Element与普通属性是分开的，性能上其实互不影响！所以，Object的数组化使用，也可能会是个优化点……</p>
-<p>来看另外一个v8的优化：隐藏类。</p>
-<h3 id="隐藏类"><a href="#隐藏类" class="headerlink" title="隐藏类"></a>隐藏类</h3><p>js的对象可以动态的修改属性，这导致了其结构可能会频繁改变，这样字典类型存储属性的话，每次都要动态的去定位属性对应的下标地址，然后访问。</p>
-<p>为了提升读取性能，v8是利用动态创建隐藏内部类的方式动态地将属性的内存地址记录在对象内，从而提升整体的属性访问速度。</p>
-<p>每次修改，都是创建一个新的隐藏类，然后尽量的复用之前的隐藏类的已有属性（一次一个属性/方法）。</p>
-<p>而在new的时候，其实不会再创建了，而是使用已有的，除非又去添加新的属性。</p>
-<p>这就带来了一个优化处理：<strong>尽量在构造函数内去连续的声明完，不要在new出来新实例后，又手动的增加新的属性</strong>。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">P</span>(<span class="params">x, y</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.x = x;</div><div class="line">    <span class="keyword">this</span>.y = y;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> P(<span class="number">1</span>, <span class="number">2</span>);</div><div class="line">p.z = <span class="number">3</span>;  <span class="comment">// 不要这么做</span></div></pre></td></tr></table></figure>
-<h3 id="Dictionary-Mode（for复杂属性的对象）"><a href="#Dictionary-Mode（for复杂属性的对象）" class="headerlink" title="Dictionary Mode（for复杂属性的对象）"></a>Dictionary Mode（for复杂属性的对象）</h3><p>其实至少也能当个 <code>Dictionary</code> 来用，还是小优化过的…… 说是<code>HashTable</code>也OK。</p>
-<p>不过这种模式下，性能最差了…… 尽管存储开销要小于上面的隐藏类，但是初始化时，哈希表中的所有的键与值都被设置为了undefined，当插入新的数据时，会去计算键名的哈希值的低位会被当做初始的存储索引地址。如果此地址已经被占用了，V8 会尝试向下一个地址进行插入，直到插入成功。</p>
-<p>每次都要计算，所以肯定是个不大好消耗。</p>
-<p>总之，js中的对象起到的作用已经超过了基础的数据结构 <code>Dictionary</code> 和 <code>HashTable</code>，也不必费心去实现了。</p>
+<p><a href="https://github.com/v8/v8-git-mirror" target="_blank" rel="external">Github</a> <a href="https://github.com/v8/v8/wiki" target="_blank" rel="external">Wiki</a></p>
+<p><code>Chrome</code>、<code>Chromium</code>都是使用v8的，另外<code>Android</code>上的浏览器默认也是使用v8作为js引擎，当然还有<code>Node.js</code>。</p>
+<p>还有个有趣的： <a href="https://github.com/sdesalas/trifleJS" target="_blank" rel="external">TrifleJS</a>，一个使用 .NET WebBrowser Class 及 v8引擎的IE浏览器。</p>
+<h3 id="JavaScriptCore"><a href="#JavaScriptCore" class="headerlink" title="JavaScriptCore"></a>JavaScriptCore</h3><p>是WebKit的默认JavaScript引擎，它其实是跟着 Webkit 一起发布的，源码在Source/JavaScript，东家是苹果，<code>BSD</code>/<code>LGPL</code>。</p>
+<p>它有不少别名： <code>SquirrelFish</code>，<code>SquirrelFish Extreme</code>，在<code>Safari</code>中还有<code>Nitro</code>，<code>Nitro Extreme</code>，但其实项目、库的名字始终都是JavaScriptCore。</p>
+<p><a href="http://trac.webkit.org/browser/trunk/Source/JavaScriptCore" target="_blank" rel="external">Code</a> <a href="http://trac.webkit.org/wiki/JavaScriptCore" target="_blank" rel="external">Wiki</a></p>
+<p><code>Safari</code>使用JavaScriptCore，无论是PC还是M。<code>PhantomJS</code>是基于<code>Webkit</code>搞出来的，也是使用的JavaScriptCore。</p>
+<p>iOS的开发能够直接用 JavaScriptCore 的，一家的。</p>
+<h3 id="Chakra"><a href="#Chakra" class="headerlink" title="Chakra"></a>Chakra</h3><p>微软系的引擎，微软以<code>ChakraCore</code>为名在Github上开放了源代码，<code>MIT</code>协议。</p>
+<p>IE9+浏览器及Edge都是使用Chakra，Win10的应用也是使用了它。</p>
+<h3 id="SpiderMonkey-OdinMonkey"><a href="#SpiderMonkey-OdinMonkey" class="headerlink" title="SpiderMonkey / OdinMonkey"></a>SpiderMonkey / OdinMonkey</h3><p>Mozilla系的就是多，标题取了第一个和最新的一个……</p>
+<p>SpiderMonkey，第一款JavaScript引擎，由Brendan Eich在Netscape Communications时编写，用于Mozilla Firefox 1.0～3.0版本。</p>
+<p>Rhino，由Mozilla基金会管理，开放源代码，完全以Java编写。</p>
+<p>TraceMonkey，基于实时编译的引擎，其中部份代码取自Tamarin引擎，用于Mozilla Firefox 3.5～3.6版本。</p>
+<p>JaegerMonkey，德文Jäger原意为猎人，结合追踪和组合码技术大幅提高性能，部分技术借凿了V8、JavaScriptCore、WebKit，用于Mozilla Firefox 4.0以上版本。</p>
+<p>IonMonkey，可以对JavaScript编译后的结果进行优化，用于Mozilla Firefox 18.0以上版本。</p>
+<p>OdinMonkey，可以对asm.js进行优化，用于Mozilla Firefox 22.0以上版本。</p>
+<h3 id="Carakan"><a href="#Carakan" class="headerlink" title="Carakan"></a>Carakan</h3><p>自Opera10.50版本开始使用。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="JerryScript"><a href="#JerryScript" class="headerlink" title="JerryScript"></a>JerryScript</h3><p>三星搞出的一个用于物联网的引擎，可以运行在受限制的设备上，例如微控制器：</p>
+<p>只有几 KB RAM 能运行引擎的设备（&lt;64 KB RAM）</p>
+<p>只能为代码引擎提供有限 ROM 空间的设备（&lt;200 KB ROM）</p>
+<p>该引擎支持设备上编译，提供从 JavaScript 到外设的访问</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 前端 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 引擎 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[高性能的JavaScript开发]]></title>
+      <url>https://leowang721.github.io/2017/03/21/js/effective-coding/</url>
+      <content type="html"><![CDATA[<p>引擎暂时只是v8, JavaScriptCore、SpiderMonkey、Chakra、Carakan等等这些回头再看看做做对比啥的吧……</p>
+<p>其他语言是以C/C++为例。</p>
+<p>测试环境为Mac，并列出浏览器 or 环境的版本</p>
+<ul>
+<li>Chrome: 56.0.2924.87 (64-bit)</li>
+<li>Firefox: 51.0.1 (64 位)</li>
+<li>Safari: 10.0.3 (12602.4.8)</li>
+<li>Node.js: v7.7.2</li>
+</ul>
+<p>持续更新中… 只是个持续更新的笔记而已，只是希望能说明白罢了！！</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>C的访问机制，基本是编译确定了位置，偏移信息共享，使用时直接使用偏移量，所以非常高效。而js则不然，它在执行阶段才能确定结构，而且还能够增减对象的属性，在查找值时需要匹配属性名才能找到正确的值，这是很浪费时间的。</p>
+<p>不过引擎们做了很多努力，已经在逐步接近其他语言的性能了，例如隐藏类。</p>
+<p>这里说到的东西目的主要是为了避免让引擎的优化被浪费，甚至是倒退。</p>
+<p>其实呢，对于WebGL这类的貌似更有用一些，对于一般开发倒是意义不大。</p>
+<a id="more"></a>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>在v8中，除了基础类型 <code>Boolean</code>、<code>Number</code>、<code>String</code>、<code>Null</code>和<code>Undefined</code>以外，其他都是对象。</p>
+<p>在v8中，数据以两种形式来表示：</p>
+<ul>
+<li>值：例如 String、对象等，它们是变长的，而且内容的类型也不一样。</li>
+<li>句柄：大小是固定的，句柄中包含了指向数据的指针</li>
+</ul>
+<p>v8实际上将所有的数据交由GC管理的，被定义在内部，我们不能直接操作，只能通过<code>Handle</code>（句柄类）来进行操作，所以访问的时候都是先找到<code>Handle</code>，再通过指针去访问实际的值，修改的时候也是修改<code>Handle</code>中的指针。</p>
+<blockquote>
+<p>除了极少数的数据例如整型，其他的内容都是从堆里申请内存来存储的。</p>
+</blockquote>
+<p><code>Handle</code>本身能够存放特定数据，这也就使得这些数据不需要再从堆中分配，这也就减少了内存的使用并增加了访问速度。</p>
+<p>在v8中，<code>Handle</code>对象的大小是4/8字节（32/64位机器），在JavaScriptCore中是8字节。JavaScript的数字尽管按照标准都应是64位浮点格式来表示，但是对于整数实际的操作是基于32位整数，这也就意味着可以在<code>Handle</code>中直接存储整数以达到快速访问的目的。</p>
+<p>但针对着32位的<code>Handle</code>对象而言，它至少要区分存储的数据是整数还是指针，而指针本身的最后两位都是00，其实是不需要的，所以，就用这两位来表示句柄中包含的数据的类型，最后一位如果为0表示是整数，如果是1则表示是其他类型。</p>
+<p>所以v8中实际能够直接快速使用的整数是<code>小整数</code>，31位的有符号整数。</p>
+<p>v8中的<code>Handle</code>数据表示：<br><img src="/images/learning/v8/tagged-values.png" width="300" alt="tagged values"></p>
+<p>超过31位的数字，则被转换为double，放到一个Object中，再用指针指过去。</p>
+<h3 id="开发指引"><a href="#开发指引" class="headerlink" title="开发指引"></a>开发指引</h3><ol>
+<li>尽可能的使用31位有符号的整数，它很快！[-1073741825, 1073741824]</li>
+</ol>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>我们都知道<code>数组</code>这种数据结构，它的经典实现就是：内存中一段连续的位置分配来存储数据的线性集合。在其他语言中，它是需要在声明时固定类型、指定长度，以便在<code>栈区</code>分配内存，并且长度是不可变的。</p>
+<blockquote>
+<p>数组能够高效的访问，其实就在于内存的“固定”分配机制，元素类型固定，每次偏移的长度也是固定的，那么对于访问而言，仅需要计算地址位移信息而已，仅需要几个机器语言指令就可以存、取及使用。</p>
+</blockquote>
+<p>js的数组本质是个对象，但在v8中，以非负整数为key的元素被称为Element，每个对象都有一个指向Element数组的指针，其存放和其他属性是分开的，这其实也是针对数组的优化。</p>
+<p>那么<code>Element</code>，其实也就是数组元素，它有两种类型：</p>
+<ul>
+<li>Fast Elements: C语言模式的数组内存分配</li>
+<li>Dictionary Elements：hash table</li>
+</ul>
+<p>毫无疑问，<code>Dictionary Elements</code>要比<code>Fast Elements</code>慢很多，所以从性能角度而言，我们要做的事情是避免<code>Dictionary Elements</code>的出现。</p>
+<p>什么状况下会导致<code>Dictionary Elements</code>的出现呢？</p>
+<ol>
+<li>过大的预分配数组，通常阈值是 64K（PagesPerChunk的大小限制？）</li>
+<li>在非预分配的数组中，过多的超越当前数组长度的下标赋值，这个阈值由kMaxGap决定，通常是1024</li>
+<li>删除元素也有可能会导致</li>
+</ol>
+<p>至于过多的“洞”出现在数组中会不会导致转换为<code>Dictionary Elements</code>暂时还没有明确的结论，不过不建议这样的用法。</p>
+<p>示例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// for 1</span></div><div class="line"><span class="keyword">let</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">65000</span>);</div><div class="line"><span class="comment">// for 2</span></div><div class="line"><span class="keyword">let</span> arr = [];</div><div class="line">arr[<span class="number">1024</span>] = <span class="number">1024</span>;</div></pre></td></tr></table></figure></p>
+<p>再来看<code>Fast Elements</code>，它其实也有三种类型：</p>
+<ol>
+<li>Fast integer values</li>
+<li>Fast doubles</li>
+<li>Fast values</li>
+</ol>
+<p>这里其实是由元素类型导致的不同类型，所以可以再看一下上面的<code>数据类型</code>这部分</p>
+<p>首先是整型，v8为了提高效率，31位有符号整数是由<code>Handle</code>保存的，所以处理起来是极快的。<br>再来是 doubles，常见的触发条件就是在整数数组中增加了一个浮点数，这会导致整个数组都被展开转换为double来存储，通过增加一个隐藏类实现的<br>最后是 values，例如再加入了一个<code>true|undefined|null</code>，这时候就要再次增加隐藏类，指明要存储的是Object</p>
+<p>如果涉及到了这些转化，都会是性能的消耗，所以我们要尽可能的避免这种情况的出现。</p>
+<p>然而如果一开始就初始化如：<code>let arr = [1, 2, 1.5, true]</code>，并没有这样的转换问题，所以复杂类型的字面直接初始化是一个好主意，但是更好的主意是：尽量的在数组中存储相同类型的元素。</p>
+<p>在Google IO 2012年的v8讲解中有这方面的讲解，清晰易懂，建议查看一下：<a href="http://www.tudou.com/programs/view/bqxvrifP4mk/" target="_blank" rel="external">视频</a> <a href="http://v8-io12.appspot.com/#47" target="_blank" rel="external">PPT</a></p>
+<p>上面的说到的东西谈及了一个概念：<code>隐藏类</code>，这个会在后面的部分再细说，在这里只需要知道这个就行了：数组的<code>Fast Elements</code>模式默认是<code>小整数</code>，随着不同类型值的进入，会导致数组类型发生转换，都是通过<code>隐藏类</code>来实现的，而这个转换往往是一种不必要的消耗。</p>
+<p>下面的代码注释部分就是在说明<code>隐藏类</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Array</span>();</div><div class="line">a[<span class="number">0</span>] = <span class="number">77</span>;   <span class="comment">// integer 无洞</span></div><div class="line">a[<span class="number">1</span>] = <span class="number">88</span>;</div><div class="line">a[<span class="number">2</span>] = <span class="number">0.5</span>;   <span class="comment">// double 无洞</span></div><div class="line">a[<span class="number">3</span>] = <span class="literal">true</span>; <span class="comment">// Object 无洞</span></div></pre></td></tr></table></figure>
+<p>可以看出，有洞、无洞也会是<code>隐藏类</code>的一个标记，所以洞的出现不可避免的会造成性能的下降。</p>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><h4 id="测试预分配与动态分配"><a href="#测试预分配与动态分配" class="headerlink" title="测试预分配与动态分配"></a>测试预分配与动态分配</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var length = 10000000;</div><div class="line">function a()&#123;</div><div class="line">    var arr = [];</div><div class="line">    var i = 0;</div><div class="line">    for (i = 0; i &lt; length; i++) &#123;</div><div class="line">        arr[i] = i;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">function b()&#123;</div><div class="line">    var arr = new Array(length);</div><div class="line">    var i = 0;</div><div class="line">    for (i = 0; i &lt; length; i++) &#123;</div><div class="line">        arr[i] = i;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>计算10次运行的平均值，结果依次为 a 和 b，Safari不支持performance.mark，所以都用了new Date()计算：</p>
+<p>1000W次运算的结果</p>
+<ul>
+<li>Chrome: 295.8, 72.3</li>
+<li>Node.js: 290.4, 65.7  （它也是v8）</li>
+<li>Firefox: 77.1, 73.1</li>
+<li>Safari: 53.2, 13.4</li>
+</ul>
+<p>100W：</p>
+<ul>
+<li>Chrome: 24.8, 4.9</li>
+<li>Node.js: 24.1, 5.5  （它也是v8）</li>
+<li>Firefox: 6.4, 5.9</li>
+<li>Safari: 5.7, 1.5</li>
+</ul>
+<p>10W及以下几可无视差别。</p>
+<p>其实还尝试了小额内存预分配(&lt;64K)且试探性的内存延展(1024)，不过从实验结果上来看由于引入了额外的计算，反而时间较内存自动分配有所增加。</p>
+<h4 id="逆向赋值的测试"><a href="#逆向赋值的测试" class="headerlink" title="逆向赋值的测试"></a>逆向赋值的测试</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var length = 10000000;</div><div class="line">function a()&#123;</div><div class="line">    var arr = new Array(length);</div><div class="line">    var i = 0;</div><div class="line">    for (; i &lt; length; i++) &#123;</div><div class="line">        arr[i] = i;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">function b()&#123;</div><div class="line">    var arr = new Array(length);</div><div class="line">    var i = length - 1;</div><div class="line">    for (; i &gt;= 0; i--) &#123;</div><div class="line">        arr[i] = i;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试结果几近相同，b的表现偶尔会变坏一点点，但是不知是不是触发什么bug了，Firefox直接在逆向赋值崩掉了，刷出了<code>61.3, 5782</code>这样令人崩溃的结果。</p>
+<p>anyway，不要逆向赋值了！！</p>
+<h3 id="开发指引-1"><a href="#开发指引-1" class="headerlink" title="开发指引"></a>开发指引</h3><ol>
+<li>使用非负整数作为数组下标，不要使用负数、浮点数、字符串等会被认为是一般性的Object的key</li>
+<li>在数组中存储同一类型的元素</li>
+<li>尽量的避免使用不连续的索引值，而且从0开始</li>
+<li>如果非要存不同类型的元素，那么使用字面直接量初始化而不是一个一个的存入</li>
+<li>预先分配数组大小，这在大多数状况下都有较大的性能提升，可以忽略掉64K的限制，但是小于万量级的话差别几可无视</li>
+<li>不要逆向赋值！！不要逆向赋值！！不要逆向赋值！！</li>
+<li>最好不要随便删除数组元素，这可能会导致转为<code>Dictionary Elements</code>，据说洞变少可能会被v8优化回紧凑结构，但是这是不可依赖的行为</li>
+<li>先赋值，再访问，避免使用 <code>arr[100] == null</code> 或者隐式转换的判断性访问。</li>
+</ol>
+<h2 id="对象（隐藏类）"><a href="#对象（隐藏类）" class="headerlink" title="对象（隐藏类）"></a>对象（隐藏类）</h2><p>之前说过，js中除了那五种基础类型，其他的都是对象。而js又是个弱类型的语言，为了能够达到优化的目的（还记得与C类语言的特点么？就在<code>前言</code>部分。），即提升读取性能，v8利用动态创建隐藏内部类的方式动态地将属性的内存地址记录在对象内，从而提升整体的属性访问速度。</p>
+<p>避免了通过字符串匹配的方式来查找属性值。</p>
+<p><code>隐藏类</code>是为Object服务的，相同结构的Object会共享<code>隐藏类</code>，当结构发生了改变，对应的<code>隐藏类</code>也会发生改变，要么复用，要么新增。</p>
+<p>而且会将使用过的<code>隐藏类</code>结构通过内嵌缓存（inline cache）缓存起来，以便复用时可以快速的访问偏移值。</p>
+<p>复用的一个最佳例子就是类的使用了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function Point(x, y) &#123;</div><div class="line">    this.x = x;</div><div class="line">    this.y = y;</div><div class="line">&#125;</div><div class="line">var p1 = new Point(1, 2);</div><div class="line">var p2 = new Point(3, 4);  // 复用隐藏类</div><div class="line">p2.z = 5;  // p2使用了不同的隐藏类！！很可能触发了一个新增处理</div></pre></td></tr></table></figure>
+<p>需要注意的是，<code>隐藏类</code>将属性这些东西解析为树，所以顺序不同的初始化会导致<code>隐藏类</code>的解析结果也不同。</p>
+<p>所有的Object类型都是这样。</p>
+<h3 id="开发指引-2"><a href="#开发指引-2" class="headerlink" title="开发指引"></a>开发指引</h3><ol>
+<li>一次性的初始化所有的属性，而不是后续的动态增加</li>
+<li>属性初始化的顺序应当一致，以便保证能够复用隐藏类。</li>
+<li><code>delete</code> 会触发隐藏类的改变，如果是为了内存回收，设置为null是更好的选择</li>
+</ol>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="避免触发优化回滚"><a href="#避免触发优化回滚" class="headerlink" title="避免触发优化回滚"></a>避免触发优化回滚</h3><p>v8有一个优化行为，针对于热点函数，会使用<code>Crankshaft</code>编译器去乐观且猜测性的生成高效的本地代码，这通常是建立在变量类型不改变的前提下，如果发现类型变化了，那么v8就会使用优化回滚（Deoptimization）机制来回滚到之前的一个没有经过特别优化的代码。</p>
+<p>例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> counter = <span class="number">0</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitThenGo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    counter++;</div><div class="line">    <span class="keyword">if</span> (counter &lt; <span class="number">10000000</span>) &#123;</div><div class="line">        <span class="keyword">return</span> counter;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line">    <span class="built_in">console</span>.log(now);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>或许目的只是为了等一段时间之后打印当前时间，但是对于v8来说，waitThenGo执行了很多次之后，就可能会触发<code>Crankshaft</code>编译器来生成优化的代码了，它认为已经知道了所有的信息了，例如类型。</p>
+<p>但是实际上，没运行到 now 这一行之前，我们都不知道 now 的类型，所以当运行到这一行时，v8就别无选择的只能回滚到一个通用的状态了。</p>
+<h3 id="开发指引-3"><a href="#开发指引-3" class="headerlink" title="开发指引"></a>开发指引</h3><ol>
+<li>随用随声明是好的，但是如果前面的代码会触发大量的执行return，那么提前声明后面的变量是能够在一定程度上起到优化效果的</li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> 前端 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 优化 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[JavaScript中的数据结构]]></title>
+      <url>https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/</url>
+      <content type="html"><![CDATA[<p>持续更新中…</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>js引擎都在尽力的优化以接近C类语言的性能。</p>
+<p>对于数组而言，可以直接使用，但最好是触发<code>Fast Elements</code>，具体可查看：<a href="/2017/03/21/js/effective-coding/#数组">《高性能的JavaScript开发》的数组部分</a></p>
+<h2 id="栈、队列"><a href="#栈、队列" class="headerlink" title="栈、队列"></a>栈、队列</h2><p>使用数组就可以轻易的模拟了，最多封装个类方便使用。</p>
+<p>栈： push pop<br>队列：unshift pop</p>
+<h2 id="HashTable、Dictionary"><a href="#HashTable、Dictionary" class="headerlink" title="HashTable、Dictionary"></a>HashTable、Dictionary</h2><p>js中的对象起到的作用已经超过了基础的数据结构 <code>Dictionary</code> 和 <code>HashTable</code>，也不必费心去实现了，而且es6还有<code>Map</code>。</p>
+<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><p>es6已经有了，直接使用吧！</p>
+<a id="more"></a>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>我一直认为 <code>链表</code> 是数组长度固定化的产物，js的数组是动态的，其实不觉得它还有什么存在的必要， <code>arr.splice(10, 1, newNode)</code> 这种代码不是比链表插入要优美得多？而且还有一堆方法可以直接用：shift, unshift, pop, push, forEach, map …</p>
+<p>遍历也可以直接用 <code>for...of</code> 使用<code>Iterator</code>的方式</p>
+<p>当然如果有不同的意见，我也可以改正。</p>
+<p>如果是为了练习代码能力，那倒是不妨自己实现一个。</p>
 <p>待续…</p>
 ]]></content>
       
@@ -136,11 +283,11 @@
         
         <tags>
             
-            <tag> es6 </tag>
+            <tag> 测试 </tag>
             
             <tag> 架构 </tag>
             
-            <tag> 测试 </tag>
+            <tag> es6 </tag>
             
             <tag> 持续集成 </tag>
             
@@ -267,13 +414,13 @@
         
         <tags>
             
+            <tag> 架构 </tag>
+            
             <tag> es6 </tag>
             
             <tag> es7 </tag>
             
             <tag> 设计模式 </tag>
-            
-            <tag> 架构 </tag>
             
         </tags>
         

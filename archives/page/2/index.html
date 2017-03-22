@@ -87,19 +87,15 @@
 
 
 
-<meta name="description" content="#简述结构体与类很像，都有方法和构造器，它们最大的不同是：结构体传递值，类则传递引用！Swift 并不要求你为自定义类和结构去创建独立的接口和实现文件。你所要做的是在一个单一文件中定义一个类或者结构体，系统将会自动生成面向其它代码的外部接口
-12345678910111213141516171819202122struct Square &amp;#123;    var length: Int    v">
+<meta name="description" content="I&apos;m a leaf on the wind, watch how I soar.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Struct">
-<meta property="og:url" content="https://leowang721.github.io/learning/swift/struct.html">
+<meta property="og:title" content="炽天使的羽翼">
+<meta property="og:url" content="https://leowang721.github.io/archives/page/2/index.html">
 <meta property="og:site_name" content="炽天使的羽翼">
-<meta property="og:description" content="#简述结构体与类很像，都有方法和构造器，它们最大的不同是：结构体传递值，类则传递引用！Swift 并不要求你为自定义类和结构去创建独立的接口和实现文件。你所要做的是在一个单一文件中定义一个类或者结构体，系统将会自动生成面向其它代码的外部接口
-12345678910111213141516171819202122struct Square &amp;#123;    var length: Int    v">
-<meta property="og:updated_time" content="2017-03-09T08:46:06.000Z">
+<meta property="og:description" content="I&apos;m a leaf on the wind, watch how I soar.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Struct">
-<meta name="twitter:description" content="#简述结构体与类很像，都有方法和构造器，它们最大的不同是：结构体传递值，类则传递引用！Swift 并不要求你为自定义类和结构去创建独立的接口和实现文件。你所要做的是在一个单一文件中定义一个类或者结构体，系统将会自动生成面向其它代码的外部接口
-12345678910111213141516171819202122struct Square &amp;#123;    var length: Int    v">
+<meta name="twitter:title" content="炽天使的羽翼">
+<meta name="twitter:description" content="I&apos;m a leaf on the wind, watch how I soar.">
 
 
 
@@ -127,19 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://leowang721.github.io/learning/swift/struct.html"/>
+  <link rel="canonical" href="https://leowang721.github.io/archives/page/2/"/>
 
 
 
 
 
-  <title>
-  
-
-  
-    Struct | 炽天使的羽翼
-  
-</title>
+  <title> 归档 | 炽天使的羽翼 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -189,7 +179,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left  page-archive  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -303,22 +293,107 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-  <header class="post-header">
+  <section id="posts" class="posts-collapse">
+    <span class="archive-move-on"></span>
 
-	<h2 class="post-title" itemprop="name headline">Struct</h2>
-
-
-
-</header>
-
-    
-    
-      <p>#简述<br>结构体与类很像，都有方法和构造器，它们最大的不同是：结构体传递值，类则传递引用！<br>Swift 并不要求你为自定义类和结构去创建独立的接口和实现文件。你所要做的是在一个单一文件中定义一个类或者结构体，系统将会自动生成面向其它代码的外部接口</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Square</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> length: <span class="type">Int</span></div><div class="line">    <span class="keyword">var</span> width: <span class="type">Int</span></div><div class="line">    <span class="keyword">var</span> height: <span class="type">Int</span></div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">desc</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="built_in">println</span>(<span class="string">"a square [\(length), \(width), \(height)]"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SpecialThing</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> atTop: <span class="type">Circle</span></div><div class="line">    <span class="keyword">var</span> atBottom: <span class="type">Square</span></div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">desc</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="string">"AT TOP: "</span>)</div><div class="line">        atTop.desc()</div><div class="line">        <span class="built_in">print</span>(<span class="string">"AT BOTTOM: "</span>)</div><div class="line">        atBottom.desc()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> a = <span class="type">SpecialThing</span>(atTop: <span class="type">Circle</span>(radius: <span class="number">10</span>), atBottom: <span class="type">Square</span>(length: <span class="number">30</span>, width: <span class="number">20</span>, height: <span class="number">40</span>))</div><div class="line">a.desc()</div></pre></td></tr></table></figure>
+    <span class="archive-page-counter">
+      
+      
+      
+        
+      
+      嗯..! 目前共计 12 篇日志。 继续努力。
+    </span>
 
     
-  </div>
+
+      
+      
+      
+
+      
+        
+        <div class="collection-title">
+          <h2 class="archive-year motion-element" id="archive-year-2015">2015</h2>
+        </div>
+      
+      
+
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2015/08/10/learning/react-native/structure/" itemprop="url">
+              
+                <span itemprop="name">React Native 浅入门 —— 结构篇</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-08-10T11:52:30+08:00"
+              content="2015-08-10" >
+          08-10
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+
+    
+
+      
+      
+      
+
+      
+      
+
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2015/08/10/learning/react-native/index/" itemprop="url">
+              
+                <span itemprop="name">React Native 浅入门</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-08-10T11:21:12+08:00"
+              content="2015-08-10" >
+          08-10
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+
+    
+
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/archives/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
+  </nav>
+
+
 
           
           </div>
@@ -326,14 +401,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="learning/swift/struct.html"
-           data-title="Struct" data-url="https://leowang721.github.io/learning/swift/struct.html">
-      </div>
-    
-  </div>
-
 
         </div>
         
@@ -566,6 +633,12 @@
 
 
   
+  
+    <script type="text/javascript" id="motion.page.archive">
+      $('.archive-year').velocity('transition.slideLeftIn');
+    </script>
+  
+
 
   
 

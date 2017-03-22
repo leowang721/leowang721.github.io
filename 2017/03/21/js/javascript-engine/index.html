@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="数据结构,优化," />
+  <meta name="keywords" content="引擎," />
 
 
 
@@ -87,31 +87,22 @@
 
 
 
-<meta name="description" content="持续更新中…
-数组js引擎都在尽力的优化以接近C类语言的性能。
-对于数组而言，可以直接使用，但最好是触发Fast Elements，具体可查看：《高性能的JavaScript开发》的数组部分
-栈、队列使用数组就可以轻易的模拟了，最多封装个类方便使用。
-栈： push pop队列：unshift pop
-HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数据结构 Dict">
+<meta name="description" content="JavaScript引擎是能够将JavaScript代码处理并执行的运行环境，不要把它跟浏览器内核搞混了！内核（如Webkit、Trident、Gecko等）主要是将页面转变成可视化的图像结果，即渲染出来，所以通常也被称为渲染引擎。
+渲染引擎和JavaScript引擎是浏览器处理网页过程的两个核心部分，它们是相互合作的关系。
+一般来说，渲染引擎根据JavaScript提供的桥接接口提供给JavaS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript中的数据结构">
-<meta property="og:url" content="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/index.html">
+<meta property="og:title" content="JavaScript引擎">
+<meta property="og:url" content="https://leowang721.github.io/2017/03/21/js/javascript-engine/index.html">
 <meta property="og:site_name" content="炽天使的羽翼">
-<meta property="og:description" content="持续更新中…
-数组js引擎都在尽力的优化以接近C类语言的性能。
-对于数组而言，可以直接使用，但最好是触发Fast Elements，具体可查看：《高性能的JavaScript开发》的数组部分
-栈、队列使用数组就可以轻易的模拟了，最多封装个类方便使用。
-栈： push pop队列：unshift pop
-HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数据结构 Dict">
-<meta property="og:updated_time" content="2017-03-22T09:22:07.000Z">
+<meta property="og:description" content="JavaScript引擎是能够将JavaScript代码处理并执行的运行环境，不要把它跟浏览器内核搞混了！内核（如Webkit、Trident、Gecko等）主要是将页面转变成可视化的图像结果，即渲染出来，所以通常也被称为渲染引擎。
+渲染引擎和JavaScript引擎是浏览器处理网页过程的两个核心部分，它们是相互合作的关系。
+一般来说，渲染引擎根据JavaScript提供的桥接接口提供给JavaS">
+<meta property="og:updated_time" content="2017-03-22T09:07:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaScript中的数据结构">
-<meta name="twitter:description" content="持续更新中…
-数组js引擎都在尽力的优化以接近C类语言的性能。
-对于数组而言，可以直接使用，但最好是触发Fast Elements，具体可查看：《高性能的JavaScript开发》的数组部分
-栈、队列使用数组就可以轻易的模拟了，最多封装个类方便使用。
-栈： push pop队列：unshift pop
-HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数据结构 Dict">
+<meta name="twitter:title" content="JavaScript引擎">
+<meta name="twitter:description" content="JavaScript引擎是能够将JavaScript代码处理并执行的运行环境，不要把它跟浏览器内核搞混了！内核（如Webkit、Trident、Gecko等）主要是将页面转变成可视化的图像结果，即渲染出来，所以通常也被称为渲染引擎。
+渲染引擎和JavaScript引擎是浏览器处理网页过程的两个核心部分，它们是相互合作的关系。
+一般来说，渲染引擎根据JavaScript提供的桥接接口提供给JavaS">
 
 
 
@@ -139,13 +130,13 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
 
 
 
-  <link rel="canonical" href="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/"/>
+  <link rel="canonical" href="https://leowang721.github.io/2017/03/21/js/javascript-engine/"/>
 
 
 
 
 
-  <title> JavaScript中的数据结构 | 炽天使的羽翼 </title>
+  <title> JavaScript引擎 | 炽天使的羽翼 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -319,7 +310,7 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/">
+    <link itemprop="mainEntityOfPage" href="https://leowang721.github.io/2017/03/21/js/javascript-engine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Leo Wang">
@@ -340,7 +331,7 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
             
             
               
-                JavaScript中的数据结构
+                JavaScript引擎
               
             
           </h2>
@@ -355,8 +346,8 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-20T15:34:32+08:00">
-                2017-03-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-21T15:43:32+08:00">
+                2017-03-21
               </time>
             
 
@@ -378,8 +369,8 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/categories/frontend/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
                   </a>
                 </span>
 
@@ -396,8 +387,8 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/03/20/js/data-structure-in-javascript/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/20/js/data-structure-in-javascript/" itemprop="commentCount"></span>
+                <a href="/2017/03/21/js/javascript-engine/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/21/js/javascript-engine/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -423,19 +414,35 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
       
 
       
-        <p>持续更新中…</p>
-<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>js引擎都在尽力的优化以接近C类语言的性能。</p>
-<p>对于数组而言，可以直接使用，但最好是触发<code>Fast Elements</code>，具体可查看：<a href="/2017/03/21/js/effective-coding/#数组">《高性能的JavaScript开发》的数组部分</a></p>
-<h2 id="栈、队列"><a href="#栈、队列" class="headerlink" title="栈、队列"></a>栈、队列</h2><p>使用数组就可以轻易的模拟了，最多封装个类方便使用。</p>
-<p>栈： push pop<br>队列：unshift pop</p>
-<h2 id="HashTable、Dictionary"><a href="#HashTable、Dictionary" class="headerlink" title="HashTable、Dictionary"></a>HashTable、Dictionary</h2><p>js中的对象起到的作用已经超过了基础的数据结构 <code>Dictionary</code> 和 <code>HashTable</code>，也不必费心去实现了，而且es6还有<code>Map</code>。</p>
-<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><p>es6已经有了，直接使用吧！</p>
+        <p>JavaScript引擎是能够将JavaScript代码处理并执行的运行环境，不要把它跟浏览器内核搞混了！内核（如Webkit、Trident、Gecko等）主要是将页面转变成可视化的图像结果，即渲染出来，所以通常也被称为渲染引擎。</p>
+<p>渲染引擎和JavaScript引擎是浏览器处理网页过程的两个核心部分，它们是相互合作的关系。</p>
+<p>一般来说，渲染引擎根据JavaScript提供的桥接接口提供给JavaScript访问DOM的能力，很多HTML5也是通过桥接接口实现的。</p>
+<p>桥接接口复杂而不高效往往是一个性能瓶颈，所以才说DOM的频繁使用会导致性能问题。</p>
+<h2 id="常见的JavaScript引擎"><a href="#常见的JavaScript引擎" class="headerlink" title="常见的JavaScript引擎"></a>常见的JavaScript引擎</h2><p>排名不分先后。</p>
+<h3 id="v8"><a href="#v8" class="headerlink" title="v8"></a>v8</h3><p>Google开源的使用C++编写的引擎，有其他语言（如Java）的封装，<code>BSD</code>协议，自体还有其他协议。</p>
 <a id="more"></a>
-<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>我一直认为 <code>链表</code> 是数组长度固定化的产物，js的数组是动态的，其实不觉得它还有什么存在的必要， <code>arr.splice(10, 1, newNode)</code> 这种代码不是比链表插入要优美得多？而且还有一堆方法可以直接用：shift, unshift, pop, push, forEach, map …</p>
-<p>遍历也可以直接用 <code>for...of</code> 使用<code>Iterator</code>的方式</p>
-<p>当然如果有不同的意见，我也可以改正。</p>
-<p>如果是为了练习代码能力，那倒是不妨自己实现一个。</p>
-<p>待续…</p>
+<p><a href="https://github.com/v8/v8-git-mirror" target="_blank" rel="external">Github</a> <a href="https://github.com/v8/v8/wiki" target="_blank" rel="external">Wiki</a></p>
+<p><code>Chrome</code>、<code>Chromium</code>都是使用v8的，另外<code>Android</code>上的浏览器默认也是使用v8作为js引擎，当然还有<code>Node.js</code>。</p>
+<p>还有个有趣的： <a href="https://github.com/sdesalas/trifleJS" target="_blank" rel="external">TrifleJS</a>，一个使用 .NET WebBrowser Class 及 v8引擎的IE浏览器。</p>
+<h3 id="JavaScriptCore"><a href="#JavaScriptCore" class="headerlink" title="JavaScriptCore"></a>JavaScriptCore</h3><p>是WebKit的默认JavaScript引擎，它其实是跟着 Webkit 一起发布的，源码在Source/JavaScript，东家是苹果，<code>BSD</code>/<code>LGPL</code>。</p>
+<p>它有不少别名： <code>SquirrelFish</code>，<code>SquirrelFish Extreme</code>，在<code>Safari</code>中还有<code>Nitro</code>，<code>Nitro Extreme</code>，但其实项目、库的名字始终都是JavaScriptCore。</p>
+<p><a href="http://trac.webkit.org/browser/trunk/Source/JavaScriptCore" target="_blank" rel="external">Code</a> <a href="http://trac.webkit.org/wiki/JavaScriptCore" target="_blank" rel="external">Wiki</a></p>
+<p><code>Safari</code>使用JavaScriptCore，无论是PC还是M。<code>PhantomJS</code>是基于<code>Webkit</code>搞出来的，也是使用的JavaScriptCore。</p>
+<p>iOS的开发能够直接用 JavaScriptCore 的，一家的。</p>
+<h3 id="Chakra"><a href="#Chakra" class="headerlink" title="Chakra"></a>Chakra</h3><p>微软系的引擎，微软以<code>ChakraCore</code>为名在Github上开放了源代码，<code>MIT</code>协议。</p>
+<p>IE9+浏览器及Edge都是使用Chakra，Win10的应用也是使用了它。</p>
+<h3 id="SpiderMonkey-OdinMonkey"><a href="#SpiderMonkey-OdinMonkey" class="headerlink" title="SpiderMonkey / OdinMonkey"></a>SpiderMonkey / OdinMonkey</h3><p>Mozilla系的就是多，标题取了第一个和最新的一个……</p>
+<p>SpiderMonkey，第一款JavaScript引擎，由Brendan Eich在Netscape Communications时编写，用于Mozilla Firefox 1.0～3.0版本。</p>
+<p>Rhino，由Mozilla基金会管理，开放源代码，完全以Java编写。</p>
+<p>TraceMonkey，基于实时编译的引擎，其中部份代码取自Tamarin引擎，用于Mozilla Firefox 3.5～3.6版本。</p>
+<p>JaegerMonkey，德文Jäger原意为猎人，结合追踪和组合码技术大幅提高性能，部分技术借凿了V8、JavaScriptCore、WebKit，用于Mozilla Firefox 4.0以上版本。</p>
+<p>IonMonkey，可以对JavaScript编译后的结果进行优化，用于Mozilla Firefox 18.0以上版本。</p>
+<p>OdinMonkey，可以对asm.js进行优化，用于Mozilla Firefox 22.0以上版本。</p>
+<h3 id="Carakan"><a href="#Carakan" class="headerlink" title="Carakan"></a>Carakan</h3><p>自Opera10.50版本开始使用。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="JerryScript"><a href="#JerryScript" class="headerlink" title="JerryScript"></a>JerryScript</h3><p>三星搞出的一个用于物联网的引擎，可以运行在受限制的设备上，例如微控制器：</p>
+<p>只有几 KB RAM 能运行引擎的设备（&lt;64 KB RAM）</p>
+<p>只能为代码引擎提供有限 ROM 空间的设备（&lt;200 KB ROM）</p>
+<p>该引擎支持设备上编译，提供从 JavaScript 到外设的访问</p>
 
       
     </div>
@@ -459,9 +466,7 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
       
         <div class="post-tags">
           
-            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
-          
-            <a href="/tags/优化/" rel="tag"># 优化</a>
+            <a href="/tags/引擎/" rel="tag"># 引擎</a>
           
         </div>
       
@@ -474,8 +479,8 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/20/test/frontend-continuous-integrationtest-with-istanbul-mocha-babel-etc/" rel="next" title="小结下前端的持续集成（istanbul, mocha, babel, etc）">
-                <i class="fa fa-chevron-left"></i> 小结下前端的持续集成（istanbul, mocha, babel, etc）
+              <a href="/2017/03/21/js/effective-coding/" rel="next" title="高性能的JavaScript开发">
+                <i class="fa fa-chevron-left"></i> 高性能的JavaScript开发
               </a>
             
           </div>
@@ -483,10 +488,6 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/21/js/effective-coding/" rel="prev" title="高性能的JavaScript开发">
-                高性能的JavaScript开发 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -501,10 +502,10 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2017/03/20/js/data-structure-in-javascript/"
-     data-title="JavaScript中的数据结构"
+        <div class="ds-share flat" data-thread-key="2017/03/21/js/javascript-engine/"
+     data-title="JavaScript引擎"
      data-content=""
-     data-url="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/">
+     data-url="https://leowang721.github.io/2017/03/21/js/javascript-engine/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -531,8 +532,8 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/03/20/js/data-structure-in-javascript/"
-           data-title="JavaScript中的数据结构" data-url="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/">
+      <div class="ds-thread" data-thread-key="2017/03/21/js/javascript-engine/"
+           data-title="JavaScript引擎" data-url="https://leowang721.github.io/2017/03/21/js/javascript-engine/">
       </div>
     
   </div>
@@ -676,7 +677,7 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">1.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈、队列"><span class="nav-number">2.</span> <span class="nav-text">栈、队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashTable、Dictionary"><span class="nav-number">3.</span> <span class="nav-text">HashTable、Dictionary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set"><span class="nav-number">4.</span> <span class="nav-text">Set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表"><span class="nav-number">5.</span> <span class="nav-text">链表</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的JavaScript引擎"><span class="nav-number">1.</span> <span class="nav-text">常见的JavaScript引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#v8"><span class="nav-number">1.1.</span> <span class="nav-text">v8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScriptCore"><span class="nav-number">1.2.</span> <span class="nav-text">JavaScriptCore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chakra"><span class="nav-number">1.3.</span> <span class="nav-text">Chakra</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SpiderMonkey-OdinMonkey"><span class="nav-number">1.4.</span> <span class="nav-text">SpiderMonkey / OdinMonkey</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Carakan"><span class="nav-number">1.5.</span> <span class="nav-text">Carakan</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">2.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JerryScript"><span class="nav-number">2.1.</span> <span class="nav-text">JerryScript</span></a></li></ol></li></ol></div>
             
 
           </div>
