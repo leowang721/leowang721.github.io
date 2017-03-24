@@ -88,30 +88,34 @@
 
 
 <meta name="description" content="持续更新中…
-数组js引擎都在尽力的优化以接近C类语言的性能。
+数组JavaScript引擎都在尽力的优化以接近C类语言的性能。
 对于数组而言，可以直接使用，但最好是触发Fast Elements，具体可查看：《高性能的JavaScript开发》的数组部分
 栈、队列使用数组就可以轻易的模拟了，最多封装个类方便使用。
 栈： push pop队列：unshift pop
-HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数据结构 Dict">
+Setes6已经有了，直接使用吧！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript中的数据结构">
 <meta property="og:url" content="https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/index.html">
 <meta property="og:site_name" content="炽天使的羽翼">
 <meta property="og:description" content="持续更新中…
-数组js引擎都在尽力的优化以接近C类语言的性能。
+数组JavaScript引擎都在尽力的优化以接近C类语言的性能。
 对于数组而言，可以直接使用，但最好是触发Fast Elements，具体可查看：《高性能的JavaScript开发》的数组部分
 栈、队列使用数组就可以轻易的模拟了，最多封装个类方便使用。
 栈： push pop队列：unshift pop
-HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数据结构 Dict">
-<meta property="og:updated_time" content="2017-03-22T09:22:07.000Z">
+Setes6已经有了，直接使用吧！">
+<meta property="og:image" content="https://leowang721.github.io/images/learning/ds/graph-link-table.jpg">
+<meta property="og:image" content="https://leowang721.github.io/images/learning/ds/graph-table-direction.jpg">
+<meta property="og:image" content="https://leowang721.github.io/images/learning/ds/graph-matrix.jpg">
+<meta property="og:updated_time" content="2017-03-24T07:38:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript中的数据结构">
 <meta name="twitter:description" content="持续更新中…
-数组js引擎都在尽力的优化以接近C类语言的性能。
+数组JavaScript引擎都在尽力的优化以接近C类语言的性能。
 对于数组而言，可以直接使用，但最好是触发Fast Elements，具体可查看：《高性能的JavaScript开发》的数组部分
 栈、队列使用数组就可以轻易的模拟了，最多封装个类方便使用。
 栈： push pop队列：unshift pop
-HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数据结构 Dict">
+Setes6已经有了，直接使用吧！">
+<meta name="twitter:image" content="https://leowang721.github.io/images/learning/ds/graph-link-table.jpg">
 
 
 
@@ -424,17 +428,40 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
 
       
         <p>持续更新中…</p>
-<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>js引擎都在尽力的优化以接近C类语言的性能。</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p><a href="/2017/03/21/js/javascript-engine/">JavaScript引擎</a>都在尽力的优化以接近C类语言的性能。</p>
 <p>对于数组而言，可以直接使用，但最好是触发<code>Fast Elements</code>，具体可查看：<a href="/2017/03/21/js/effective-coding/#数组">《高性能的JavaScript开发》的数组部分</a></p>
 <h2 id="栈、队列"><a href="#栈、队列" class="headerlink" title="栈、队列"></a>栈、队列</h2><p>使用数组就可以轻易的模拟了，最多封装个类方便使用。</p>
 <p>栈： push pop<br>队列：unshift pop</p>
-<h2 id="HashTable、Dictionary"><a href="#HashTable、Dictionary" class="headerlink" title="HashTable、Dictionary"></a>HashTable、Dictionary</h2><p>js中的对象起到的作用已经超过了基础的数据结构 <code>Dictionary</code> 和 <code>HashTable</code>，也不必费心去实现了，而且es6还有<code>Map</code>。</p>
 <h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><p>es6已经有了，直接使用吧！</p>
 <a id="more"></a>
-<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>我一直认为 <code>链表</code> 是数组长度固定化的产物，js的数组是动态的，其实不觉得它还有什么存在的必要， <code>arr.splice(10, 1, newNode)</code> 这种代码不是比链表插入要优美得多？而且还有一堆方法可以直接用：shift, unshift, pop, push, forEach, map …</p>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>我一直认为 <code>链表</code> 是数组长度固定化的产物，js的数组是动态的，不觉得它还有什么存在的必要， <code>arr.splice(10, 1, newNode)</code> 这种代码不是比链表插入要优美得多？而且还有一堆方法可以直接用：shift, unshift, pop, push, forEach, map …</p>
 <p>遍历也可以直接用 <code>for...of</code> 使用<code>Iterator</code>的方式</p>
 <p>当然如果有不同的意见，我也可以改正。</p>
 <p>如果是为了练习代码能力，那倒是不妨自己实现一个。</p>
+<h2 id="HashTable、Dictionary"><a href="#HashTable、Dictionary" class="headerlink" title="HashTable、Dictionary"></a>HashTable、Dictionary</h2><p>js中的对象起到的作用已经超过了基础的数据结构 <code>Dictionary</code> 和 <code>HashTable</code>，也不必费心去实现了，而且es6还有<code>Map</code>。</p>
+<p>hash算法倒是个有意思的东西，不过不在当前范畴。</p>
+<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><p>这里还是数学概念：</p>
+<ul>
+<li><code>自由树</code>是一个连通的、无回路的无向图。</li>
+<li><code>有根树</code>就是多了个根节点，由此就有了“父子层级”的概念。</li>
+<li><code>有序树</code>指的是子级节点有序的树。</li>
+<li><code>二叉树</code>是指最多有两个子节点的树。</li>
+<li><code>完全二叉树</code>是指子节点是满的，只要有就一定是两个，并且叶节点的深度一定相同（就是说左右子树的层数相等）。</li>
+</ul>
+<p>树的最大特点是：任意两个顶点由唯一一条简单路径相连</p>
+<p>二叉树 =&gt; 二叉查找树 =&gt; 红黑树 =&gt; B树 =&gt; B+树 …. ????</p>
+<h3 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h3><p>节点存值，左子树都比它小，右子树都比它大。</p>
+<p>执行基本操作的时间与树的高度成正比。n个节点的完全二叉树，操作最坏运行时间为O(lgn)；如果是线性链（子级节点都跑一边去了），最坏是O(n)。</p>
+<p>一颗随机构造的二叉树期望高度为O(lgn)，基本操作的平均时间为O(lgn)。</p>
+<p><a href="https://github.com/leowang721/k-ds/blob/master/lib/tree/BinSearchTree.js" target="_blank" rel="external">一个简陋的二叉查找树的实现</a></p>
+<h2 id="图"><a href="#图" class="headerlink" title="图"></a>图</h2><p>经典的图定义是 <code>G = (V, E)</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 至少我曾经会这么写……</div><div class="line">class Graph &#123;</div><div class="line">    nodes = [];</div><div class="line">    edges = [];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但实际上有两种表示方法：<code>邻接表</code> or <code>邻接矩阵</code>，上面那个一般是邻接矩阵，当然要写成边集的话那也没办法~~</p>
+<p>来看图示：</p>
+<p><code>邻接表</code>无向图 <img src="/images/learning/ds/graph-link-table.jpg"><br><code>邻接表</code>有向图 <img src="/images/learning/ds/graph-table-direction.jpg"></p>
+<p><code>邻接矩阵</code>，<a href="http://c.biancheng.net/cpp/html/991.html" target="_blank" rel="external">网上找的图</a>：</p>
+<p><img src="/images/learning/ds/graph-matrix.jpg"></p>
+<p>邻接表适合于稀疏图（|E|远小于|V|^2)，因为表示出来比较紧凑<br>邻接矩阵则适合于稠密图，或必须很快判别两个给定顶点是否存在连接边（<code>顶点间最短路径算法</code>）</p>
 <p>待续…</p>
 
       
@@ -676,7 +703,7 @@ HashTable、Dictionaryjs中的对象起到的作用已经超过了基础的数�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">1.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈、队列"><span class="nav-number">2.</span> <span class="nav-text">栈、队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashTable、Dictionary"><span class="nav-number">3.</span> <span class="nav-text">HashTable、Dictionary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set"><span class="nav-number">4.</span> <span class="nav-text">Set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表"><span class="nav-number">5.</span> <span class="nav-text">链表</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">1.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈、队列"><span class="nav-number">2.</span> <span class="nav-text">栈、队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set"><span class="nav-number">3.</span> <span class="nav-text">Set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表"><span class="nav-number">4.</span> <span class="nav-text">链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashTable、Dictionary"><span class="nav-number">5.</span> <span class="nav-text">HashTable、Dictionary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#树"><span class="nav-number">6.</span> <span class="nav-text">树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二叉查找树"><span class="nav-number">6.1.</span> <span class="nav-text">二叉查找树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图"><span class="nav-number">7.</span> <span class="nav-text">图</span></a></li></ol></div>
             
 
           </div>

@@ -5,7 +5,7 @@
     
   <url>
     <loc>https://leowang721.github.io/2017/03/20/js/data-structure-in-javascript/</loc>
-    <lastmod>2017-03-22T09:22:07.000Z</lastmod>
+    <lastmod>2017-03-24T07:38:17.000Z</lastmod>
     <data>
         <display>
         <title>JavaScript中的数据结构</title>
@@ -73,11 +73,11 @@
         <title>小结下前端的持续集成（istanbul, mocha, babel, etc）</title>
         <pubTime>2017-03-20T02:40:00.000Z</pubTime>
         
-        <tag>测试</tag>
+        <tag>es6</tag>
          
         <tag>架构</tag>
          
-        <tag>es6</tag>
+        <tag>测试</tag>
          
         <tag>持续集成</tag>
          
@@ -121,13 +121,13 @@
         <title>koa的中间件机制原理及async await版本实现</title>
         <pubTime>2017-03-13T12:04:28.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>es6</tag>
          
         <tag>es7</tag>
          
         <tag>设计模式</tag>
+         
+        <tag>架构</tag>
          
          
            
